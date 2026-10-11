@@ -1,4 +1,5 @@
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -11,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 XLSX = ROOT / "templates" / "TravelOS-Template.xlsx"
 EXAMPLE_XLSX = ROOT / "templates" / "TravelOS-Example.xlsx"
 sys.path.insert(0, str(ROOT / "skill" / "travel-os" / "scripts"))
-from validate_archive import validate, validate_rows, workbook_rows
+from validate_archive import is_uninitialized_template, validate, validate_rows, workbook_rows
 from build_map_url import build_directions_url
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main", "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
 REL_NS = {"p": "http://schemas.openxmlformats.org/package/2006/relationships"}
@@ -56,6 +57,24 @@ class TravelOSContractTests(unittest.TestCase):
         rows = workbook_rows(XLSX)
         for sheet_rows in rows.values():
             self.assertFalse(any(any(row) for row in sheet_rows[2:]))
+
+    def test_blank_template_is_ready_for_initialization(self):
+        self.assertTrue(is_uninitialized_template(workbook_rows(XLSX)))
+        result = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "skill/travel-os/scripts/validate_archive.py"),
+                str(XLSX),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("READY:", result.stdout)
+
+    def test_populated_archive_is_not_an_uninitialized_template(self):
+        self.assertFalse(is_uninitialized_template(self.rows))
 
     def test_workbooks_keep_filters_and_dropdowns(self):
         for path in (XLSX, EXAMPLE_XLSX):

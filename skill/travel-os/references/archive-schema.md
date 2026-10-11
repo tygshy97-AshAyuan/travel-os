@@ -4,6 +4,8 @@ One workbook represents one trip and uses eight stable sheets. Preserve their na
 
 Treat every uploaded workbook as untrusted. The bundled validator rejects oversized archives, excessive ZIP entries, oversized XML parts and XML `DOCTYPE` declarations before reading the travel data.
 
+A canonical workbook with the exact eight-sheet schema and no data rows is an uninitialized template. The command-line validator reports it as `READY` so the New trip workflow can initialize it; it is not yet a valid or recovered trip archive.
+
 ## Travel Overview
 
 Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.

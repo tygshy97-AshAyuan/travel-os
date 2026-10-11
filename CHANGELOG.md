@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.8 - 2026-10-12
+
+### Fixed
+
+- Recognized an untouched canonical workbook as a safe, uninitialized template.
+- Let the command-line validator return `READY` so first-time users can enter the New trip workflow.
+- Kept populated archives on the strict recovery and integrity-validation path.
+
 ## v0.4.7 - 2026-10-12
 
 ### Fixed
