@@ -12,6 +12,13 @@ REL_NS = {"p": "http://schemas.openxmlformats.org/package/2006/relationships"}
 
 
 def workbook_rows():
+    def column_index(reference):
+        letters = re.match(r"[A-Z]+", reference).group()
+        index = 0
+        for letter in letters:
+            index = index * 26 + ord(letter) - ord("A") + 1
+        return index - 1
+
     with zipfile.ZipFile(XLSX) as archive:
         strings = []
         if "xl/sharedStrings.xml" in archive.namelist():
@@ -31,6 +38,8 @@ def workbook_rows():
             for row in xml.findall("m:sheetData/m:row", NS):
                 values = []
                 for cell in row.findall("m:c", NS):
+                    index = column_index(cell.attrib["r"])
+                    values.extend([""] * (index - len(values)))
                     value = cell.find("m:v", NS)
                     raw = "" if value is None else value.text or ""
                     if cell.attrib.get("t") == "s" and raw:
@@ -60,8 +69,14 @@ class TravelOSContractTests(unittest.TestCase):
         cls.rows = workbook_rows()
 
     def test_required_files(self):
-        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx"]:
+        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
+
+    def test_installed_skill_contains_canonical_template(self):
+        self.assertEqual(
+            XLSX.read_bytes(),
+            (ROOT / "skill/travel-os/assets/TravelOS-Template.xlsx").read_bytes(),
+        )
 
     def test_skill_frontmatter_and_references(self):
         text = (ROOT / "skill/travel-os/SKILL.md").read_text(encoding="utf-8")
@@ -72,6 +87,7 @@ class TravelOSContractTests(unittest.TestCase):
     def test_workbook_schema(self):
         required = {"Travel Overview", "Daily Plan", "Bookings", "Checklist", "Preferences", "Change Log", "Members", "Proposals"}
         self.assertTrue(required.issubset(self.rows), required - self.rows.keys())
+        self.assertEqual(1, sum(any(row) for row in self.rows["Travel Overview"][2:]), "one workbook must contain exactly one trip row")
 
     def test_active_version_integrity(self):
         overview = self.rows["Travel Overview"]

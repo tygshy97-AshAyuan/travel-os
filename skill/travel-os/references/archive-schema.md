@@ -1,12 +1,10 @@
-# Travel archive schema
-
 # Travel archive schema and invariants
 
-The workbook uses eight stable sheets. Preserve their names so the same archive works across sessions.
+One workbook represents one trip and uses eight stable sheets. Preserve their names so the same archive works across sessions.
 
 ## Travel Overview
 
-One row per trip: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.
+Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.
 
 Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. Draft trips may leave it blank.
 
@@ -23,6 +21,8 @@ One row per booking: ID, category, provider, start/end, city, status, refundable
 One row per itinerary item: item ID, version, date, start/end time, time zone, city, activity, location, transport, booking ID, execution status, cost, currency, source, checked time and notes. Rows whose version does not match Active Version are historical.
 
 Item IDs remain stable when an item is copied into a new version. Execution status is Planned, Ready, In progress, Done, Skipped or Blocked.
+
+Execution status and notes may be updated in place because they record what happened rather than changing the plan. If reality changes any remaining itinerary item, use the version workflow.
 
 ## Checklist
 
@@ -42,7 +42,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 
 ## Required integrity checks
 
-- Exactly one trip overview row exists per Trip ID.
+- Exactly one trip overview data row exists in a workbook.
 - Active and Completed trips have a non-empty Active Version.
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
