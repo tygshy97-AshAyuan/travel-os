@@ -11,8 +11,8 @@ Travel OS is currently in Early Access. Work is ordered by whether it makes a re
 ## Next
 
 - Re-plan affected days from current weather while preserving confirmed bookings.
-- Parse booking emails into reviewable proposals without storing credentials.
-- Export map-ready locations and route segments.
+- Add optional direct mailbox import with explicit account permission.
+- Validate route links and weather-driven changes in supported Agent clients.
 
 ## Later
 
