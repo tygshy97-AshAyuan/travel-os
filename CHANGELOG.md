@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.4.1 - 2026-10-11
+
+### Fixed
+
+- Bundled the canonical blank Excel template inside the installable Skill.
+- Separated the blank template from the fictional completed example.
+- Defined where execution-only updates are stored without creating a new version.
+- Preserved empty Excel columns when validating archive relationships.
+- Added native table filters to all eight workbook sheets.
+- Extended credential scanning into XLSX contents and prevented blank public issues.
+- Removed duplicate branch and pull-request CI runs.
+
 ## v0.4.0 - 2026-10-11
 
 ### Changed

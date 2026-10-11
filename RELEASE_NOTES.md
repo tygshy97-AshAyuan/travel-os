@@ -1,7 +1,7 @@
-# Travel OS v0.4.0
+# Travel OS v0.4.1
 
-GitHub Early Access release aligned with the Travel OS product design.
+GitHub Early Access reliability update.
 
-This release completes the Planning, Execution, Memory and Collaboration workflow, adds the eight-sheet Trip Master, and runs archive contract tests in GitHub Actions.
+This release makes the installed Skill self-contained, separates the blank workbook from the fictional example, and adds native filters across all eight sheets.
 
-The package has been checked for required files, workbook readability, Active Version integrity, booking references and common credential patterns. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.
+Contract tests now preserve empty Excel columns correctly and scan workbook XML for common credentials. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.
