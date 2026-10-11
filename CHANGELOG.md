@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.4 - 2026-10-11
+
+### Added
+
+- Added a review-first booking import workflow for pasted or exported confirmations.
+- Treated imported message content as untrusted and excluded sensitive raw fields.
+- Added an API-key-free Google Maps directions URL builder.
+- Added regression cases for malicious booking messages and route links.
+- Automated tag-based test, ZIP, SHA-256 and prerelease creation.
+
 ## v0.4.3 - 2026-10-11
 
 ### Fixed

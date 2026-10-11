@@ -1,7 +1,7 @@
-# Travel OS v0.4.3
+# Travel OS v0.4.4
 
-GitHub Early Access archive-integrity update.
+GitHub Early Access workflow update.
 
-This release extends the zero-dependency validator to cover trip date bounds, ordered version predecessors, checklist links, accepted proposal results, template vocabularies and evidence for confirmed facts.
+This release adds a review-first workflow for pasted or exported booking confirmations. Message content is treated as untrusted, sensitive fields stay out of the archive, and every extracted booking requires user review before writing.
 
-Collaboration integrity now requires exactly one Owner, reconciles the overview traveler count with Members, and checks that preferences target an existing member or everyone. The example archive passes all 20 contract tests. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.
+It also adds an API-key-free Google Maps directions URL builder with ordered waypoints and travel modes. Release tags now run the full test suite and automatically publish a ZIP plus SHA-256 file from the exact tagged commit. The package passes 22 contract tests. Direct mailbox synchronization and supported-client behavior evaluation remain pending.

@@ -1,7 +1,7 @@
 # Travel OS
 
 [![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
-[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.3)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.4)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **让 AI 不再每次从零规划旅行。**
@@ -25,9 +25,20 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 | 途中变化与正式计划混在一起 | 运行状态与正式版本分开记录 |
 | 旅行结束后经验丢失 | 复盘结果沉淀到偏好和历史记录 |
 
+## 已支持的工作流
+
+- 从零生成 Draft，确认后激活首个版本
+- 恢复已有档案并只读取 Active Version
+- 通过提案修改行程，同时保留旧版本
+- 记录旅行中的完成、跳过和阻塞状态
+- 协调 Owner、同行者意见和偏好
+- 从粘贴或导出的订单确认中提取事实，审核后写入
+- 生成带途经点和交通方式的共享地图路线链接
+- 旅行结束后复盘，并把明确反馈沉淀为长期偏好
+
 ## 5 分钟开始
 
-1. 下载 [Travel OS v0.4.3](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.3) 并解压。
+1. 下载 [Travel OS v0.4.4](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.4) 并解压。
 2. 将 `skill/travel-os/` 安装到支持 Agent Skill 的客户端；安装目录已自带 Excel 模板。
 3. 复制空白的 `skill/travel-os/assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员；需要参考时查看 `templates/TravelOS-Example.xlsx`。
 4. 上传表格，把下面这句话发给 AI：
