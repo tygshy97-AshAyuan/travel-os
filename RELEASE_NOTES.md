@@ -1,7 +1,7 @@
-# Travel OS v0.3.1
+# Travel OS v0.4.0
 
-Early-access release for testing versioned AI travel planning.
+GitHub Early Access release aligned with the Travel OS product design.
 
-This release includes a standard Agent Skill, a single-file Markdown submission variant, an Excel travel archive, user guidance, regression cases and GitHub feedback templates.
+This release completes the Planning, Execution, Memory and Collaboration workflow, adds the eight-sheet Trip Master, and runs archive contract tests in GitHub Actions.
 
-The package has been checked locally for required files, workbook readability and common credential patterns. RedSkill platform review and real-client installation remain unverified.
+The package has been checked for required files, workbook readability, Active Version integrity, booking references and common credential patterns. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.

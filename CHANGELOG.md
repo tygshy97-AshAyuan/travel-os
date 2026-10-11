@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.0 - 2026-10-11
+
+### Changed
+
+- Completed the Planning, Execution, Memory and Collaboration operating model.
+- Added recovery, fact-state, constraint-priority and atomic version-write rules.
+- Expanded the workbook schema for constraints, bookings and execution state.
+- Replaced file-presence CI with executable archive contract tests.
+- Removed creator-platform-specific packaging and documentation.
+
 ## v0.3.1 - 2026-10-11
 
 ### Added
@@ -17,5 +27,5 @@
 
 ### Known limitations
 
-- RedSkill upload, review and installation have not been validated on a real account.
+- Third-party creator-platform upload and review were not validated.
 - Travel OS does not provide live booking, price or safety guarantees.

@@ -1,26 +1,41 @@
 ---
 name: travel-os
-description: Maintain a versioned travel plan from a user-provided workbook or itinerary, including change proposals, collaboration decisions, and recovery of the active version. Use when planning or revising a trip that needs a durable source of truth.
+description: Plan, execute and maintain a trip from a workbook or itinerary with durable state, versioned changes, verified facts and collaboration decisions. Use for new trip planning, itinerary changes, daily execution, or cross-session recovery.
 ---
 
 # Travel OS
 
-Treat the user's travel archive as the source of truth. Read it before planning, identify the Active Version, and state which version you used.
+Travel OS follows `Planning → Execution → Memory → Collaboration`. The travel archive is the durable source of truth; chat history is context only.
 
-## Workflow
+## Start every session with recovery
 
-1. Read the trip overview, active itinerary, confirmed bookings, constraints, open decisions and version history.
-2. Flag missing or conflicting facts. Never invent reservation, visa, health, price, opening-hour or safety facts.
-3. For a requested change, present a concise proposal with affected days, dependencies, trade-offs and facts that require current verification.
-4. Apply the change only after the user accepts it. Create a new version, update Active Version, preserve the previous version record and note why the change occurred.
-5. Record collaborator suggestions as Pending, Accepted, Rejected or Needs clarification. The trip owner resolves conflicts.
-6. Return an execution view for the next relevant day and a short list of unresolved actions.
+1. Read all archive sheets and validate the archive using [references/archive-schema.md](references/archive-schema.md).
+2. Resolve Active Version from `Travel Overview`; use only matching `Daily Plan` rows as the current plan.
+3. Reconcile hard constraints, confirmed bookings, open decisions and execution events. A confirmed booking or hard constraint wins over an unconfirmed itinerary row.
+4. State the Trip ID, Active Version, archive status, unresolved conflicts, stale facts and the next action before planning or editing.
+5. If recovery fails, stop writes and explain the smallest repair needed. Do not guess which version is current.
 
-Use [references/archive-schema.md](references/archive-schema.md) when reading or writing the workbook. Use [references/versioning.md](references/versioning.md) for changes and collaboration.
+## Choose the workflow
+
+- **New trip:** collect only decision-driving facts, distinguish hard constraints from preferences, create a Draft, expose assumptions and request confirmation before activating it.
+- **Plan or optimize:** preserve confirmed bookings and hard constraints; compare alternatives by time, cost, fatigue, risk and user priorities. Verify time-sensitive facts before relying on them.
+- **Change:** follow the proposal and atomic version update in [references/versioning.md](references/versioning.md).
+- **Execute:** return the next actionable block, local time, transport buffer, booking reference location, current verification state and fallback. Record deviations as execution events; version only changes that affect the remaining plan.
+- **Collaborate:** record each suggestion and its owner-visible status. Never treat silence or a vote as authority unless the trip owner defined that rule.
+- **Resume:** run recovery again even if the chat claims to remember the trip.
+- **Review:** after the trip, compare planned and actual outcomes, close tasks, record reusable lessons, and update Preferences only from explicit feedback or repeated observed choices. Never infer sensitive traits.
+
+Read [references/operating-rules.md](references/operating-rules.md) for planning, verification and execution rules.
+Read [references/planning-rules.md](references/planning-rules.md) before researching destinations or building a route.
+
+## Output contract
+
+Keep answers operational. Identify the version used, separate confirmed facts from assumptions, show conflicts before recommendations, and finish with unresolved decisions and the next action. When proposing a write, list every sheet and row type that will change.
 
 ## Boundaries
 
-- Confirm time-sensitive transport, entry, weather, safety, availability and pricing from current reliable sources when tools allow; label anything unverified.
+- Confirm time-sensitive transport, entry, weather, safety, availability and pricing from current reliable sources when tools allow; record source and checked time, and label anything unverified or stale.
 - Do not purchase, book, cancel or disclose private itinerary data without the user's explicit authorization.
 - Minimize personal data and never place credentials or identity documents in the archive.
-- If the archive is unavailable, build a draft and label it as a draft without an Active Version.
+- Do not overwrite history, silently resolve conflicts, or update Active Version before all new-version rows and the version record are written successfully.
+- If the archive is unavailable, build a Draft without claiming an Active Version or cross-session memory.
