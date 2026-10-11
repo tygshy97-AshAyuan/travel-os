@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4.5 - 2026-10-11
+
+### Added
+
+- Added README previews rendered from the fictional example workbook.
+- Added XLSX limits for ZIP entries, uncompressed bytes and individual XML parts.
+- Rejected XML DOCTYPE declarations before archive parsing.
+- Reported workbook file-access failures as validation errors.
+
 ## v0.4.4 - 2026-10-11
 
 ### Added
