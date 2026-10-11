@@ -225,6 +225,48 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_daily_plan_requires_executable_fields(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][1] = ""
+        broken["Daily Plan"][2][5] = ""
+        self.assertIn(
+            "Daily Plan row 3 is missing: 版本, 时区",
+            validate_rows(broken),
+        )
+
+    def test_new_version_preserves_completed_execution_state(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior_plan = broken["Daily Plan"][2][:]
+        prior_plan[1] = "v0.0.9"
+        prior_plan[11] = "Done"
+        broken["Daily Plan"].append(prior_plan)
+        prior_history = broken["Change Log"][2][:]
+        prior_history[0] = "v0.0.9"
+        prior_history[5] = ""
+        broken["Change Log"].insert(2, prior_history)
+        broken["Change Log"][3][5] = "v0.0.9"
+        self.assertIn(
+            "Version v0.1.0 regresses completed item I-001 from Done to Ready",
+            validate_rows(broken),
+        )
+
+    def test_new_version_keeps_completed_items(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior_plan = broken["Daily Plan"][2][:]
+        prior_plan[1] = "v0.0.9"
+        prior_plan[11] = "Done"
+        broken["Daily Plan"].append(prior_plan)
+        broken["Daily Plan"].pop(2)
+        prior_history = broken["Change Log"][2][:]
+        prior_history[0] = "v0.0.9"
+        prior_history[5] = ""
+        broken["Change Log"].insert(2, prior_history)
+        broken["Change Log"][3][5] = "v0.0.9"
+        self.assertIn(
+            "Version v0.1.0 drops completed item I-001 from v0.0.9",
+            validate_rows(broken),
+        )
+
     def test_confirmed_facts_require_evidence(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Bookings"][2][11] = ""

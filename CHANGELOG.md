@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.14 - 2026-10-12
+
+### Fixed
+
+- Required the minimum executable fields on every Daily Plan row.
+- Prevented successor versions from dropping Done or Skipped items.
+- Prevented successor versions from regressing completed execution states.
+
 ## v0.4.13 - 2026-10-12
 
 ### Fixed
