@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.4.6 - 2026-10-11
+
+### Added
+
+- Added client-facing Skill metadata, icon and default recovery prompt.
+- Added a direct-install Skill ZIP with `SKILL.md` at the archive root.
+- Included both the source and Skill archives in the release checksum file.
+- Verified the Skill ZIP structure during automated release creation.
+
 ## v0.4.5 - 2026-10-11
 
 ### Added
