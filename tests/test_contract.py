@@ -11,6 +11,7 @@ XLSX = ROOT / "templates" / "TravelOS-Template.xlsx"
 EXAMPLE_XLSX = ROOT / "templates" / "TravelOS-Example.xlsx"
 sys.path.insert(0, str(ROOT / "skill" / "travel-os" / "scripts"))
 from validate_archive import validate, validate_rows, workbook_rows
+from build_map_url import build_directions_url
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main", "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
 REL_NS = {"p": "http://schemas.openxmlformats.org/package/2006/relationships"}
 
@@ -41,7 +42,7 @@ class TravelOSContractTests(unittest.TestCase):
         cls.rows = workbook_rows(EXAMPLE_XLSX)
 
     def test_required_files(self):
-        for relative in ["README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
+        for relative in ["README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):
@@ -166,6 +167,22 @@ class TravelOSContractTests(unittest.TestCase):
             "Preferences row 3 references missing member M-404",
             validate_rows(broken),
         )
+
+    def test_map_url_preserves_route_and_mode(self):
+        url = build_directions_url(
+            "Tokyo Station",
+            "Shinjuku Station",
+            waypoints=["Ginza", "Shibuya"],
+            travel_mode="transit",
+        )
+        self.assertEqual(
+            "https://www.google.com/maps/dir/?api=1&origin=Tokyo+Station&destination=Shinjuku+Station&travelmode=transit&waypoints=Ginza%7CShibuya",
+            url,
+        )
+
+    def test_map_url_rejects_missing_location(self):
+        with self.assertRaisesRegex(ValueError, "origin and destination are required"):
+            build_directions_url("", "Shinjuku Station")
 
     def test_member_references_and_owner(self):
         members = self.rows["Members"]

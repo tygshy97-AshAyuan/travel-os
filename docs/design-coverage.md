@@ -15,8 +15,8 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference test | Implemented |
 | Post-trip learning | Review workflow and durable preference rules | Manual behavior scenario | Implemented in Skill |
 | Weather re-planning | Fact states and change workflow | Manual behavior scenario | Partial: requires a current weather source at runtime |
-| Email booking parsing | Booking schema only | None | Deferred P1 |
-| Map output | Location and route fields only | None | Deferred P1 |
+| Email booking parsing | Review-first import rules for pasted or exported confirmations | Skill reference-link test; manual behavior scenario | Partial: direct mailbox sync is deferred |
+| Map output | API-key-free directions URL builder | Automated URL test | Implemented for shareable route links |
 | Automatic booking | Permission boundary only | None | Deferred P2 |
 | Content generation and community learning | Outside MVP | None | Deferred P2 |
 
