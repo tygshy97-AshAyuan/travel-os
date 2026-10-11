@@ -1,0 +1,21 @@
+name: Feature request / 功能建议
+description: 描述需要解决的旅行协作问题
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 遇到的问题
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 期望完成的任务
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: 如何判断已解决

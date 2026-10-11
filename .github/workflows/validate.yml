@@ -1,0 +1,19 @@
+name: Validate package
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required files and private-key patterns
+        shell: bash
+        run: |
+          test -f README.md
+          test -f skill/travel-os/SKILL.md
+          test -f templates/TravelOS-Template.xlsx
+          test -f redskill/02-单文件投稿-SKILL.md
+          ! grep -RIE --exclude='*.xlsx' --exclude-dir='.git' '(BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,})' .

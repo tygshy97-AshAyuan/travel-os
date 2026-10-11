@@ -1,0 +1,32 @@
+name: Bug report / 问题反馈
+description: 报告可复现的问题，请勿提交私人旅行数据
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: "请删除姓名、订单号、电话、证件、精确住宿地址和凭据，使用虚构数据复现。"
+  - type: input
+    id: version
+    attributes:
+      label: Travel OS 版本
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: AI 平台、模型和表格软件
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 期望与实际结果
+    validations:
+      required: true
