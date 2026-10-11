@@ -38,6 +38,14 @@ EXPECTED_HEADERS = {
 MAX_ARCHIVE_ENTRIES = 1000
 MAX_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
 MAX_XML_BYTES = 8 * 1024 * 1024
+ARCHIVE_ERRORS = (
+    KeyError,
+    IndexError,
+    OSError,
+    ValueError,
+    ET.ParseError,
+    zipfile.BadZipFile,
+)
 ENUM_FIELDS = {
     "Travel Overview": {
         8: {"行前规划", "旅行中", "旅行后"},
@@ -334,17 +342,22 @@ def validate_rows(rows):
     return errors
 
 
+def is_uninitialized_template(rows):
+    if not REQUIRED_SHEETS.issubset(rows):
+        return False
+    for sheet_name, expected in EXPECTED_HEADERS.items():
+        sheet_rows = rows[sheet_name]
+        if len(sheet_rows) < 2 or sheet_rows[1][:len(expected)] != expected:
+            return False
+        if any(any(row) for row in sheet_rows[2:]):
+            return False
+    return True
+
+
 def validate(path):
     try:
         return validate_rows(workbook_rows(path))
-    except (
-        KeyError,
-        IndexError,
-        OSError,
-        ValueError,
-        ET.ParseError,
-        zipfile.BadZipFile,
-    ) as error:
+    except ARCHIVE_ERRORS as error:
         return [f"Unreadable Travel OS archive: {error}"]
 
 
@@ -352,7 +365,15 @@ def main():
     parser = argparse.ArgumentParser(description="Validate a Travel OS Excel archive")
     parser.add_argument("workbook", type=Path)
     args = parser.parse_args()
-    errors = validate(args.workbook)
+    try:
+        rows = workbook_rows(args.workbook)
+    except ARCHIVE_ERRORS as error:
+        print(f"ERROR: Unreadable Travel OS archive: {error}")
+        return 1
+    if is_uninitialized_template(rows):
+        print(f"READY: {args.workbook} is an uninitialized Travel OS template")
+        return 0
+    errors = validate_rows(rows)
     if errors:
         for error in errors:
             print(f"ERROR: {error}")

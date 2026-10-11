@@ -13,10 +13,11 @@ For a new trip, copy [assets/TravelOS-Template.xlsx](assets/TravelOS-Template.xl
 
 1. Read all archive sheets and validate the archive using [references/archive-schema.md](references/archive-schema.md).
    When Python execution is available, run `python scripts/validate_archive.py <workbook.xlsx>` before reading and after every write.
+   `READY: ... is an uninitialized Travel OS template` is a safe bootstrap state: enter **New trip**, initialize the overview and members, then validate the first draft. Do not claim that an uninitialized template is a recovered trip.
 2. Resolve Active Version from `Travel Overview`; use only matching `Daily Plan` rows as the current plan.
 3. Reconcile hard constraints, confirmed bookings, open decisions and execution events. A confirmed booking or hard constraint wins over an unconfirmed itinerary row.
 4. State the Trip ID, Active Version, archive status, unresolved conflicts, stale facts and the next action before planning or editing.
-5. If recovery fails, stop writes and explain the smallest repair needed. Do not guess which version is current.
+5. If recovery of a populated archive fails, stop writes and explain the smallest repair needed. Do not guess which version is current.
 
 ## Choose the workflow
 
