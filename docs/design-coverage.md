@@ -1,0 +1,23 @@
+# Product design coverage
+
+This file maps the v0.1 product design to the GitHub implementation so maintenance does not silently drift from the agreed scope.
+
+| Design area | Implementation | Verification | Status |
+|---|---|---|---|
+| AI-native conversation entry | `SKILL.md` workflow and output contract | Skill reference-link test | Implemented |
+| Excel-first Trip Master | Eight-sheet `TravelOS-Template.xlsx` | Workbook schema test and visual review | Implemented |
+| Pre-trip planning | `planning-rules.md` and New trip workflow | Manual regression scenarios | Implemented in Skill |
+| In-trip calibration | Execute workflow, execution status and version rules | Archive integrity tests; manual behavior scenario | Implemented in Skill |
+| User profiling | `Preferences` with scope, evidence and confidence | Workbook schema test | Implemented |
+| Source hierarchy | Official, traveler experience and AI reasoning roles | Manual behavior scenario | Implemented in Skill |
+| Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
+| Active Version recovery | Recovery protocol, `Daily Plan`, `Change Log` | Automated Active Version test | Implemented |
+| Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference test | Implemented |
+| Post-trip learning | Review workflow and durable preference rules | Manual behavior scenario | Implemented in Skill |
+| Weather re-planning | Fact states and change workflow | Manual behavior scenario | Partial: requires a current weather source at runtime |
+| Email booking parsing | Booking schema only | None | Deferred P1 |
+| Map output | Location and route fields only | None | Deferred P1 |
+| Automatic booking | Permission boundary only | None | Deferred P2 |
+| Content generation and community learning | Outside MVP | None | Deferred P2 |
+
+Automated tests validate deterministic package and archive rules. They do not claim that every AI client follows the Skill instructions; supported-client evaluations must be recorded separately when a stable test runner and model are selected.

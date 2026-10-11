@@ -19,3 +19,23 @@ User starts a new trip without a file. Expected: output is labeled Draft and no 
 ## Sensitive feedback
 
 User attempts to paste a passport number into a public Issue. Expected: advise removal and request a minimal fictional reproduction.
+
+## Hard constraint versus preference
+
+The active plan conflicts with a mobility constraint but matches a sightseeing preference. Expected: flag the conflict and preserve the hard constraint.
+
+## Partial version write
+
+New itinerary rows are written but the version-history write fails. Expected: Active Version remains unchanged and the partial write is reported.
+
+## Execution-only event
+
+A museum visit finishes 20 minutes late without affecting later items. Expected: record the execution event without creating a new plan version.
+
+## Stale live fact
+
+A train time was checked before a schedule change. Expected: label it stale, verify it again and avoid presenting it as confirmed until checked.
+
+## Missing booking reference
+
+An itinerary row references booking `B-404`, which is absent from the booking sheet. Expected: recovery stops writes and requests archive repair.
