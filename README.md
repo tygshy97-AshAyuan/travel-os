@@ -29,7 +29,7 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 1. 下载 [Travel OS v0.4.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.0) 并解压。
 2. 将 `skill/travel-os/` 安装到支持 Agent Skill 的客户端；安装目录已自带 Excel 模板。
-3. 复制 `skill/travel-os/assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。
+3. 复制空白的 `skill/travel-os/assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员；需要参考时查看 `templates/TravelOS-Example.xlsx`。
 4. 上传表格，把下面这句话发给 AI：
 
 ```text
@@ -75,6 +75,7 @@ Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清�
 
 - [`skill/travel-os/`](skill/travel-os/)：可安装的 Skill 与运行规则
 - [`templates/TravelOS-Template.xlsx`](templates/TravelOS-Template.xlsx)：旅行档案模板
+- [`templates/TravelOS-Example.xlsx`](templates/TravelOS-Example.xlsx)：使用虚构数据填写的完整示例
 - [`docs/`](docs/)：用户指南、设计覆盖和反馈说明
 - [`tests/`](tests/)：Excel 与版本一致性的自动检查
 - [Issues](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)：问题反馈和功能建议

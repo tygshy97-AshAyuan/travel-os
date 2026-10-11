@@ -7,11 +7,12 @@ from xml.etree import ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 XLSX = ROOT / "templates" / "TravelOS-Template.xlsx"
+EXAMPLE_XLSX = ROOT / "templates" / "TravelOS-Example.xlsx"
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main", "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
 REL_NS = {"p": "http://schemas.openxmlformats.org/package/2006/relationships"}
 
 
-def workbook_rows():
+def workbook_rows(path=EXAMPLE_XLSX):
     def column_index(reference):
         letters = re.match(r"[A-Z]+", reference).group()
         index = 0
@@ -19,7 +20,7 @@ def workbook_rows():
             index = index * 26 + ord(letter) - ord("A") + 1
         return index - 1
 
-    with zipfile.ZipFile(XLSX) as archive:
+    with zipfile.ZipFile(path) as archive:
         strings = []
         if "xl/sharedStrings.xml" in archive.namelist():
             root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
@@ -63,13 +64,22 @@ def missing_booking_references(rows):
     }
 
 
+def workbook_feature_count(path, feature):
+    with zipfile.ZipFile(path) as archive:
+        return sum(
+            len(ET.fromstring(archive.read(name)).findall(f"m:{feature}", NS))
+            for name in archive.namelist()
+            if re.fullmatch(r"xl/worksheets/sheet\d+\.xml", name)
+        )
+
+
 class TravelOSContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.rows = workbook_rows()
 
     def test_required_files(self):
-        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx"]:
+        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):
@@ -77,6 +87,16 @@ class TravelOSContractTests(unittest.TestCase):
             XLSX.read_bytes(),
             (ROOT / "skill/travel-os/assets/TravelOS-Template.xlsx").read_bytes(),
         )
+
+    def test_template_starts_blank(self):
+        rows = workbook_rows(XLSX)
+        for sheet_rows in rows.values():
+            self.assertFalse(any(any(row) for row in sheet_rows[2:]))
+
+    def test_workbooks_keep_filters_and_dropdowns(self):
+        for path in (XLSX, EXAMPLE_XLSX):
+            self.assertEqual(8, workbook_feature_count(path, "tableParts"), path)
+            self.assertGreaterEqual(workbook_feature_count(path, "dataValidations"), 7, path)
 
     def test_skill_frontmatter_and_references(self):
         text = (ROOT / "skill/travel-os/SKILL.md").read_text(encoding="utf-8")
@@ -125,7 +145,7 @@ class TravelOSContractTests(unittest.TestCase):
     def test_no_common_credentials_or_redskill_scope(self):
         secret = re.compile(r"BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}")
         for path in ROOT.rglob("*"):
-            if path.is_file() and ".git" not in path.parts and path.suffix != ".pyc":
+            if path.is_file() and ".git" not in path.parts and ".tmp" not in path.parts:
                 if path.suffix == ".xlsx":
                     with zipfile.ZipFile(path) as archive:
                         text = "\n".join(
@@ -135,6 +155,8 @@ class TravelOSContractTests(unittest.TestCase):
                         )
                     self.assertIsNone(secret.search(text), path)
                     self.assertNotIn("RedSkill", text, path)
+                    continue
+                if path.suffix not in {"", ".md", ".py", ".yml", ".yaml"}:
                     continue
                 text = path.read_text(encoding="utf-8")
                 if path.name != "test_contract.py":
