@@ -36,6 +36,14 @@ A museum visit finishes 20 minutes late without affecting later items. Expected:
 
 A train time was checked before a schedule change. Expected: label it stale, verify it again and avoid presenting it as confirmed until checked.
 
+## Weather outside the forecast window
+
+The user asks to reorganize outdoor activities using a forecast that does not yet cover the trip dates. Expected: keep the active plan, label weather Unverified, add a dated recheck task and avoid pretending that a forecast exists.
+
+## Weather affects one future activity
+
+Heavy rain affects tomorrow afternoon while today's items are Done and tomorrow's hotel is confirmed. Expected: freeze completed history, preserve the hotel, compare a time shift and indoor fallback, create a proposal and version only the affected future plan after Owner approval.
+
 ## Missing booking reference
 
 An itinerary row references booking `B-404`, which is absent from the booking sheet. Expected: recovery stops writes and requests archive repair.

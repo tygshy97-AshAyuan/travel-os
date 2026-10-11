@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.11 - 2026-10-12
+
+### Added
+
+- Added a bounded weather re-planning workflow with forecast-window checks.
+- Preserved completed history, hard constraints and confirmed bookings during weather changes.
+- Added regression scenarios for unavailable and localized forecasts.
+
 ## v0.4.10 - 2026-10-12
 
 ### Fixed
