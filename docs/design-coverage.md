@@ -14,7 +14,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | Active Version recovery | Recovery protocol, `Daily Plan`, `Change Log` | Automated Active Version test | Implemented |
 | Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference and Owner-decision tests | Implemented |
 | Post-trip learning | Review workflow and durable preference rules | Automated preference integrity tests; manual behavior scenario | Implemented in Skill |
-| Weather re-planning | Fact states and change workflow | Manual behavior scenario | Partial: requires a current weather source at runtime |
+| Weather re-planning | `weather-replanning.md`, fact states and atomic change workflow | Automated workflow contract; manual behavior scenarios | Implemented when a current weather source is available at runtime |
 | Email booking parsing | Review-first import rules for pasted or exported confirmations | Skill reference-link test; manual behavior scenario | Partial: direct mailbox sync is deferred |
 | Map output | API-key-free directions URL builder | Automated URL test | Implemented for shareable route links |
 | Automatic booking | Permission boundary only | None | Deferred P2 |

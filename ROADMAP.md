@@ -7,12 +7,12 @@ Travel OS is currently in Early Access. Work is ordered by whether it makes a re
 - Validate the complete planning, change, execution and review flow in supported Agent clients.
 - Expand archive checks for dates, dependencies and accepted proposals.
 - Improve first-run instructions from real user reports.
+- Validate weather-driven changes in supported Agent clients.
 
 ## Next
 
-- Re-plan affected days from current weather while preserving confirmed bookings.
 - Add optional direct mailbox import with explicit account permission.
-- Validate route links and weather-driven changes in supported Agent clients.
+- Validate route links in supported Agent clients.
 
 ## Later
 
