@@ -148,6 +148,25 @@ class TravelOSContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_owner_and_traveler_count_are_unambiguous(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Members"][3][2] = "Owner"
+        broken["Travel Overview"][2][5] = "3"
+        errors = validate_rows(broken)
+        self.assertIn("Members must contain exactly one Owner; found 2", errors)
+        self.assertIn(
+            "Travel Overview traveler count 3 does not match 2 Members rows",
+            errors,
+        )
+
+    def test_preference_member_reference_is_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Preferences"][2][4] = "M-404"
+        self.assertIn(
+            "Preferences row 3 references missing member M-404",
+            validate_rows(broken),
+        )
+
     def test_member_references_and_owner(self):
         members = self.rows["Members"]
         member_ids = {row[0] for row in members[2:] if row and row[0]}

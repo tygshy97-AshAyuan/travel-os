@@ -211,13 +211,34 @@ def validate_rows(rows):
                     )
 
     members = rows["Members"]
-    member_ids = {row[0] for row in members[2:] if row and row[0]}
-    roles = {row[2] for row in members[2:] if len(row) > 2}
-    if "Owner" not in roles:
-        errors.append("Members has no Owner")
+    member_rows = [row for row in members[2:] if row and row[0]]
+    member_ids = {row[0] for row in member_rows}
+    owners = [row[0] for row in member_rows if len(row) > 2 and row[2] == "Owner"]
+    if len(owners) != 1:
+        errors.append(f"Members must contain exactly one Owner; found {len(owners)}")
     owner = trip[overview_header.index("负责人")]
     if owner and owner not in member_ids:
         errors.append(f"Trip owner {owner} is missing from Members")
+    elif owners and owner != owners[0]:
+        errors.append(f"Trip owner {owner} does not match Members Owner {owners[0]}")
+
+    travelers = trip[overview_header.index("人数")]
+    try:
+        traveler_count = int(float(travelers))
+    except (TypeError, ValueError):
+        traveler_count = -1
+    if traveler_count != len(member_rows):
+        errors.append(
+            f"Travel Overview traveler count {travelers or 'blank'} does not match {len(member_rows)} Members rows"
+        )
+
+    for row_number, row in enumerate(rows["Preferences"][2:], start=3):
+        traveler = row[4] if len(row) > 4 else ""
+        if traveler and traveler != "所有人" and traveler not in member_ids:
+            errors.append(
+                f"Preferences row {row_number} references missing member {traveler}"
+            )
+
     for sheet_name, indexes in {"Checklist": [3], "Proposals": [1, 7]}.items():
         for row_number, row in enumerate(rows[sheet_name][2:], start=3):
             for index in indexes:
