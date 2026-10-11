@@ -43,7 +43,7 @@ class TravelOSContractTests(unittest.TestCase):
         cls.rows = workbook_rows(EXAMPLE_XLSX)
 
     def test_required_files(self):
-        for relative in [".github/workflows/release.yml", "README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "docs/images/travel-overview.png", "docs/images/daily-plan.png", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
+        for relative in [".github/workflows/release.yml", "README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "docs/images/travel-overview.png", "docs/images/daily-plan.png", "skill/travel-os/SKILL.md", "skill/travel-os/agents/openai.yaml", "skill/travel-os/assets/travel-os.svg", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):
@@ -67,6 +67,16 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertRegex(text, r"\A---\s+name: travel-os\s+description: .+?\s+---")
         for reference in re.findall(r"\]\((references/[^)]+)\)", text):
             self.assertTrue((ROOT / "skill/travel-os" / reference).is_file(), reference)
+
+    def test_skill_interface_metadata(self):
+        metadata = (ROOT / "skill/travel-os/agents/openai.yaml").read_text(encoding="utf-8")
+        self.assertIn('display_name: "Travel OS"', metadata)
+        self.assertRegex(metadata, r'short_description: ".{25,64}"')
+        self.assertIn("$travel-os", metadata)
+        for icon in re.findall(r'icon_(?:small|large): "(\./assets/[^"]+)"', metadata):
+            self.assertTrue((ROOT / "skill/travel-os" / icon).is_file(), icon)
+        icon_root = ET.parse(ROOT / "skill/travel-os/assets/travel-os.svg").getroot()
+        self.assertEqual("0 0 512 512", icon_root.attrib["viewBox"])
 
     def test_workbook_schema(self):
         required = {"Travel Overview", "Daily Plan", "Bookings", "Checklist", "Preferences", "Change Log", "Members", "Proposals"}
