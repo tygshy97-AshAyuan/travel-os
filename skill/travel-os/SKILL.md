@@ -12,6 +12,7 @@ For a new trip, copy [assets/TravelOS-Template.xlsx](assets/TravelOS-Template.xl
 ## Start every session with recovery
 
 1. Read all archive sheets and validate the archive using [references/archive-schema.md](references/archive-schema.md).
+   When Python execution is available, run `python scripts/validate_archive.py <workbook.xlsx>` before reading and after every write.
 2. Resolve Active Version from `Travel Overview`; use only matching `Daily Plan` rows as the current plan.
 3. Reconcile hard constraints, confirmed bookings, open decisions and execution events. A confirmed booking or hard constraint wins over an unconfirmed itinerary row.
 4. State the Trip ID, Active Version, archive status, unresolved conflicts, stale facts and the next action before planning or editing.

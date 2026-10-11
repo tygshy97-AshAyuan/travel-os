@@ -1,4 +1,5 @@
 import re
+import sys
 import unittest
 import zipfile
 from pathlib import Path
@@ -8,49 +9,10 @@ from xml.etree import ElementTree as ET
 ROOT = Path(__file__).resolve().parents[1]
 XLSX = ROOT / "templates" / "TravelOS-Template.xlsx"
 EXAMPLE_XLSX = ROOT / "templates" / "TravelOS-Example.xlsx"
+sys.path.insert(0, str(ROOT / "skill" / "travel-os" / "scripts"))
+from validate_archive import validate, validate_rows, workbook_rows
 NS = {"m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main", "r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"}
 REL_NS = {"p": "http://schemas.openxmlformats.org/package/2006/relationships"}
-
-
-def workbook_rows(path=EXAMPLE_XLSX):
-    def column_index(reference):
-        letters = re.match(r"[A-Z]+", reference).group()
-        index = 0
-        for letter in letters:
-            index = index * 26 + ord(letter) - ord("A") + 1
-        return index - 1
-
-    with zipfile.ZipFile(path) as archive:
-        strings = []
-        if "xl/sharedStrings.xml" in archive.namelist():
-            root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
-            for item in root.findall("m:si", NS):
-                strings.append("".join(node.text or "" for node in item.iterfind(".//m:t", NS)))
-
-        book = ET.fromstring(archive.read("xl/workbook.xml"))
-        rels = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
-        targets = {rel.attrib["Id"]: rel.attrib["Target"] for rel in rels.findall("p:Relationship", REL_NS)}
-        result = {}
-        for sheet in book.findall("m:sheets/m:sheet", NS):
-            target = targets[sheet.attrib[f"{{{NS['r']}}}id"]].lstrip("/")
-            path = target if target.startswith("xl/") else f"xl/{target}"
-            xml = ET.fromstring(archive.read(path))
-            rows = []
-            for row in xml.findall("m:sheetData/m:row", NS):
-                values = []
-                for cell in row.findall("m:c", NS):
-                    index = column_index(cell.attrib["r"])
-                    values.extend([""] * (index - len(values)))
-                    value = cell.find("m:v", NS)
-                    raw = "" if value is None else value.text or ""
-                    if cell.attrib.get("t") == "s" and raw:
-                        raw = strings[int(raw)]
-                    elif cell.attrib.get("t") == "inlineStr":
-                        raw = "".join(node.text or "" for node in cell.iterfind(".//m:t", NS))
-                    values.append(raw)
-                rows.append(values)
-            result[sheet.attrib["name"]] = rows
-        return result
 
 
 def missing_booking_references(rows):
@@ -76,10 +38,10 @@ def workbook_feature_count(path, feature):
 class TravelOSContractTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.rows = workbook_rows()
+        cls.rows = workbook_rows(EXAMPLE_XLSX)
 
     def test_required_files(self):
-        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
+        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):
@@ -128,6 +90,15 @@ class TravelOSContractTests(unittest.TestCase):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][2][10] = "B-404"
         self.assertEqual({"B-404"}, missing_booking_references(broken))
+        self.assertIn("Missing booking references: B-404", validate_rows(broken))
+
+    def test_example_passes_runtime_validator(self):
+        self.assertEqual([], validate(EXAMPLE_XLSX))
+
+    def test_duplicate_ids_are_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"].append(broken["Daily Plan"][2][:])
+        self.assertIn("Daily Plan has duplicate IDs: I-001", validate_rows(broken))
 
     def test_member_references_and_owner(self):
         members = self.rows["Members"]
