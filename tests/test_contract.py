@@ -125,7 +125,17 @@ class TravelOSContractTests(unittest.TestCase):
     def test_no_common_credentials_or_redskill_scope(self):
         secret = re.compile(r"BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}")
         for path in ROOT.rglob("*"):
-            if path.is_file() and ".git" not in path.parts and path.suffix not in {".xlsx", ".pyc"}:
+            if path.is_file() and ".git" not in path.parts and path.suffix != ".pyc":
+                if path.suffix == ".xlsx":
+                    with zipfile.ZipFile(path) as archive:
+                        text = "\n".join(
+                            archive.read(name).decode("utf-8", errors="ignore")
+                            for name in archive.namelist()
+                            if name.endswith(".xml")
+                        )
+                    self.assertIsNone(secret.search(text), path)
+                    self.assertNotIn("RedSkill", text, path)
+                    continue
                 text = path.read_text(encoding="utf-8")
                 if path.name != "test_contract.py":
                     self.assertIsNone(secret.search(text), path)
