@@ -41,7 +41,7 @@ class TravelOSContractTests(unittest.TestCase):
         cls.rows = workbook_rows(EXAMPLE_XLSX)
 
     def test_required_files(self):
-        for relative in ["README.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
+        for relative in ["README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "skill/travel-os/SKILL.md", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):

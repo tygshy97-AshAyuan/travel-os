@@ -79,6 +79,7 @@ Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清�
 - [`docs/`](docs/)：用户指南、设计覆盖和反馈说明
 - [`tests/`](tests/)：Excel 与版本一致性的自动检查
 - [Issues](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)：问题反馈和功能建议
+- [Roadmap](ROADMAP.md)：当前、下一步和长期方向
 
 ## 当前状态
 
@@ -90,6 +91,8 @@ Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清�
 
 - 发现错误：提交 [Bug Report](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)
 - 有新想法：提交 [Feature Request](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)
+- 想参与开发：阅读 [Contributing](CONTRIBUTING.md)
+- 发现安全或隐私问题：通过 [私密安全报告](SECURITY.md) 提交
 - 觉得有用：点一个 Star，帮助更多旅行者看到它
 
 ## License
