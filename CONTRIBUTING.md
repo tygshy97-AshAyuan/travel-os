@@ -20,6 +20,10 @@ python skill/travel-os/scripts/validate_archive.py templates/TravelOS-Example.xl
 
 Open both workbooks in Excel or a compatible editor after workbook changes. Confirm that filters, dropdowns, dates, column widths and frozen headers still work.
 
+## Releases
+
+Prepare the README link, `RELEASE_NOTES.md` and `CHANGELOG.md` in a pull request. After it merges, push the matching `v*` tag. GitHub Actions reruns the contract tests, builds the ZIP and SHA-256 file from that exact commit, and creates the prerelease.
+
 ## Pull requests
 
 Explain the user-visible problem, the resulting behavior and how you verified it. Avoid unrelated formatting or dependency changes.
