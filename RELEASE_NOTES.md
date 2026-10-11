@@ -1,7 +1,7 @@
-# Travel OS v0.4.8
+# Travel OS v0.4.9
 
-First-run bootstrap fix.
+Preference and row integrity update.
 
-The command-line validator now recognizes the untouched canonical workbook as a structurally valid, uninitialized template and reports `READY`. This lets a first-time user proceed into the New trip workflow instead of being stopped by the recovery rule before any trip data exists.
+Travel OS now rejects any filled data row that omits its sheet-specific ID, preventing partially written rows from silently escaping relationship and version checks.
 
-Populated workbooks still receive full strict validation. The release includes a directly installable `Travel-OS-Skill-v0.4.8.zip`, the full repository archive and checksums for both. The package passes 28 contract tests.
+Every preference must include its scope, category, priority, subject, concrete statement, evidence and confidence. Post-trip learning rules now distinguish explicit or repeatedly observed preferences from one-off choices and unsupported profile labels. The release includes a directly installable `Travel-OS-Skill-v0.4.9.zip`, the full repository archive and checksums for both. The package passes 30 contract tests.

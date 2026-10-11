@@ -8,12 +8,12 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | Excel-first Trip Master | Eight-sheet `TravelOS-Template.xlsx` | Workbook schema test and visual review | Implemented |
 | Pre-trip planning | `planning-rules.md` and New trip workflow | Manual regression scenarios | Implemented in Skill |
 | In-trip calibration | Execute workflow, execution status and version rules | Archive integrity tests; manual behavior scenario | Implemented in Skill |
-| User profiling | `Preferences` with scope, evidence and confidence | Workbook schema test | Implemented |
+| User profiling | `Preferences` with scope, evidence and confidence | Automated preference integrity tests | Implemented |
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Manual behavior scenario | Implemented in Skill |
 | Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
 | Active Version recovery | Recovery protocol, `Daily Plan`, `Change Log` | Automated Active Version test | Implemented |
 | Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference test | Implemented |
-| Post-trip learning | Review workflow and durable preference rules | Manual behavior scenario | Implemented in Skill |
+| Post-trip learning | Review workflow and durable preference rules | Automated preference integrity tests; manual behavior scenario | Implemented in Skill |
 | Weather re-planning | Fact states and change workflow | Manual behavior scenario | Partial: requires a current weather source at runtime |
 | Email booking parsing | Review-first import rules for pasted or exported confirmations | Skill reference-link test; manual behavior scenario | Partial: direct mailbox sync is deferred |
 | Map output | API-key-free directions URL builder | Automated URL test | Implemented for shareable route links |
