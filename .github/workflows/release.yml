@@ -1,0 +1,38 @@
+name: Release package
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify version metadata
+        run: |
+          grep -F "Travel OS ${GITHUB_REF_NAME}" RELEASE_NOTES.md
+          grep -F "/tag/${GITHUB_REF_NAME}" README.md
+      - name: Run contract tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Build deterministic source package
+        run: |
+          archive="Travel-OS-${GITHUB_REF_NAME}.zip"
+          git archive --format=zip --output="$archive" "$GITHUB_SHA"
+          sha256sum "$archive" > "Travel-OS-${GITHUB_REF_NAME}.sha256"
+      - name: Create prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            "Travel-OS-${GITHUB_REF_NAME}.zip" \
+            "Travel-OS-${GITHUB_REF_NAME}.sha256" \
+            --title "Travel OS ${GITHUB_REF_NAME}" \
+            --notes-file RELEASE_NOTES.md \
+            --prerelease
