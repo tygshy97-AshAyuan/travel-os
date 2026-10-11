@@ -239,6 +239,37 @@ class TravelOSContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_ready_plan_requires_usable_booking(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Bookings"][2][6] = "已取消"
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Daily Plan row 3 references cancelled booking B-001",
+            errors,
+        )
+        self.assertIn(
+            "Ready Daily Plan row 3 requires confirmed booking B-001",
+            errors,
+        )
+
+    def test_booking_time_range_is_validated(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Bookings"][2][3] = "2030-05-02T12:00:00Z"
+        broken["Bookings"][2][4] = "2030-05-02T10:00:00Z"
+        self.assertIn(
+            "Bookings row 3 ends before it starts",
+            validate_rows(broken),
+        )
+
+    def test_booking_time_zones_cannot_be_mixed(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Bookings"][2][3] = "2030-05-02T10:00:00Z"
+        broken["Bookings"][2][4] = "2030-05-02T12:00:00"
+        self.assertIn(
+            "Bookings row 3 mixes zoned and unzoned times",
+            validate_rows(broken),
+        )
+
     def test_owner_and_traveler_count_are_unambiguous(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Members"][3][2] = "Owner"
