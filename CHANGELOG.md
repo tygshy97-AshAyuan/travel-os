@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.3 - 2026-10-11
+
+### Fixed
+
+- Enforced required overview fields and valid trip date ranges.
+- Checked current-plan dates, version predecessors, checklist links and accepted proposal results.
+- Validated dropdown vocabularies after pasted or programmatic edits.
+- Required source and checked time for confirmed bookings and Ready itinerary items.
+- Required exactly one Owner and reconciled traveler count and preference subjects with Members.
+
 ## v0.4.2 - 2026-10-11
 
 ### Added
