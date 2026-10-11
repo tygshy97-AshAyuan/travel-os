@@ -126,6 +126,28 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_invalid_status_is_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][11] = "Probably"
+        self.assertIn(
+            "Daily Plan row 3 has invalid 执行状态: Probably",
+            validate_rows(broken),
+        )
+
+    def test_confirmed_facts_require_evidence(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Bookings"][2][11] = ""
+        broken["Daily Plan"][2][14] = ""
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Confirmed booking on row 3 needs source and checked time",
+            errors,
+        )
+        self.assertIn(
+            "Ready Daily Plan row 3 needs source and checked time",
+            errors,
+        )
+
     def test_member_references_and_owner(self):
         members = self.rows["Members"]
         member_ids = {row[0] for row in members[2:] if row and row[0]}

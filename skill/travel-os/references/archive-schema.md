@@ -51,3 +51,5 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
 - Confirmed facts include a source and checked time when time-sensitive.
+- A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and Checked Time.
+- Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.
