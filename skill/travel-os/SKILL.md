@@ -7,6 +7,8 @@ description: Plan, execute and maintain a trip from a workbook or itinerary with
 
 Travel OS follows `Planning → Execution → Memory → Collaboration`. The travel archive is the durable source of truth; chat history is context only.
 
+For a new trip, copy [assets/TravelOS-Template.xlsx](assets/TravelOS-Template.xlsx). One workbook represents one trip.
+
 ## Start every session with recovery
 
 1. Read all archive sheets and validate the archive using [references/archive-schema.md](references/archive-schema.md).
@@ -20,7 +22,7 @@ Travel OS follows `Planning → Execution → Memory → Collaboration`. The tra
 - **New trip:** collect only decision-driving facts, distinguish hard constraints from preferences, create a Draft, expose assumptions and request confirmation before activating it.
 - **Plan or optimize:** preserve confirmed bookings and hard constraints; compare alternatives by time, cost, fatigue, risk and user priorities. Verify time-sensitive facts before relying on them.
 - **Change:** follow the proposal and atomic version update in [references/versioning.md](references/versioning.md).
-- **Execute:** return the next actionable block, local time, transport buffer, booking reference location, current verification state and fallback. Record deviations as execution events; version only changes that affect the remaining plan.
+- **Execute:** return the next actionable block, local time, transport buffer, booking reference location, current verification state and fallback. Record actual progress in the active `Daily Plan` row's execution status and notes; version only changes that affect the remaining plan.
 - **Collaborate:** record each suggestion and its owner-visible status. Never treat silence or a vote as authority unless the trip owner defined that rule.
 - **Resume:** run recovery again even if the chat claims to remember the trip.
 - **Review:** after the trip, compare planned and actual outcomes, close tasks, record reusable lessons, and update Preferences only from explicit feedback or repeated observed choices. Never infer sensitive traits.

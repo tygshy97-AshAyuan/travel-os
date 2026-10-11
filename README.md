@@ -28,8 +28,8 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 ## 5 分钟开始
 
 1. 下载 [Travel OS v0.4.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.0) 并解压。
-2. 将 `skill/travel-os/` 安装到支持 Agent Skill 的客户端。
-3. 打开 `templates/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。
+2. 将 `skill/travel-os/` 安装到支持 Agent Skill 的客户端；安装目录已自带 Excel 模板。
+3. 复制 `skill/travel-os/assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。
 4. 上传表格，把下面这句话发给 AI：
 
 ```text
