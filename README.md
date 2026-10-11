@@ -1,45 +1,96 @@
 # Travel OS
 
-Travel OS is an AI Agent Skill for planning, executing and maintaining a trip as a versioned source of truth.
+[![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.0)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-它解决三个常见问题：行程修改后信息互相冲突、AI 跨会话忘记最新版、同行者意见没有明确处理状态。
+**让 AI 不再每次从零规划旅行。**
+
+Travel OS 是一个以 Excel 为长期旅行档案的 Agent Skill。它让 AI 在规划、执行、临时调整和复盘之间持续记住同一份真实状态，同时保留每次修改的原因和版本。
+
+> 你负责做决定，AI 负责整理、核对、提案和维护版本。
+
+## 它解决什么
+
+普通 AI 对话适合生成一份行程，却很难长期维护它：酒店改了，旧地址还留着；同伴提出意见，不知道是否处理；换个会话，AI 又忘了当前版本。
+
+Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
+
+| 旅行中的问题 | Travel OS 的处理方式 |
+| --- | --- |
+| 修改后出现多个互相冲突的版本 | `Active Version` 明确唯一有效版本 |
+| AI 跨会话忘记最新状态 | 每次先读取、校验并恢复档案 |
+| AI 擅自覆盖已确认的信息 | 先提出变更，用户确认后再写入 |
+| 多人意见散落在聊天里 | 提案有待处理、接受、拒绝、澄清状态 |
+| 途中变化与正式计划混在一起 | 运行状态与正式版本分开记录 |
+| 旅行结束后经验丢失 | 复盘结果沉淀到偏好和历史记录 |
 
 ## 5 分钟开始
 
-1. 下载 Release 中的完整分发包并解压。
-2. 将 `skill/travel-os/` 安装为 Agent Skill。
-3. 打开 `templates/TravelOS-Template.xlsx`，先填写 `Travel Overview`、`Preferences`、`Bookings` 和 `Members`。
-4. 上传表格并说：`恢复当前旅行状态，告诉我 Active Version、硬约束、已确认预订和下一步。不要直接改档案。`
-5. 新旅行先生成 Draft；修改现有旅行时先审查变更提案，确认后再生成新版本。
+1. 下载 [Travel OS v0.4.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.0) 并解压。
+2. 将 `skill/travel-os/` 安装到支持 Agent Skill 的客户端。
+3. 打开 `templates/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。
+4. 上传表格，把下面这句话发给 AI：
 
-## 核心约定
+```text
+恢复当前旅行状态。告诉我 Active Version、硬约束、已确认预订、未处理提案和下一步；先不要修改档案。
+```
 
-- `Travel Overview` 中的 Active Version 是当前唯一有效版本。
-- 每次会话先执行恢复协议：读取、校验、总结，再回答。
-- AI 先读取，再提案，再经用户确认写入；写入失败时不得更新 Active Version。
-- 已确认预订、签证、健康、费用等事实不得猜测。
-- 多人意见记录为待处理、接受、拒绝或需要澄清。
-- 执行中的临时变化与正式行程版本分开记录；只有影响后续计划时才创建新版本。
-- 任何公开示例都必须使用虚构数据。
+AI 应先校验档案，再给出当前状态摘要。新旅行从 Draft 开始；修改现有旅行时，它会先展示变更提案，得到确认后再生成新版本。
 
-## 仓库内容
+## 一次真实的使用方式
 
-- `skill/travel-os/`：标准 Skill 目录。
-- `templates/`：Excel 旅行档案模板。
-- `docs/`：普通用户指南和反馈方式。
-- `tests/`：人工回归场景。
-- `.github/ISSUE_TEMPLATE/`：公开反馈模板。
+```text
+我把周六上午的博物馆取消了。请结合下雨、同行者不想早起、酒店不可退这三个条件，给我两个替代方案。先展示影响范围，不要直接写入。
+```
+
+Travel OS 会区分已确认事实、用户偏好和待定建议，说明哪些日程、预订或清单会受影响。你选定方案后，它才会更新档案、记录变更原因并推进版本。
+
+## 一份文件，覆盖完整旅行周期
+
+```mermaid
+flowchart LR
+    A[规划 Draft] --> B[确认并生成版本]
+    B --> C[旅行中执行]
+    C --> D[记录临时变化]
+    D --> E{影响后续计划?}
+    E -- 是 --> F[提出变更并生成新版本]
+    E -- 否 --> C
+    F --> C
+    C --> G[旅行后复盘]
+    G --> H[更新偏好与经验]
+```
+
+Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清单、偏好、变更记录、成员和提案。它既是 AI 的上下文，也是用户随时可以打开检查的源文件。
+
+## 设计原则
+
+- **单一事实来源**：`Travel Overview` 中的 Active Version 是当前唯一有效版本。
+- **先读后写**：每次会话先恢复状态；所有修改先成为提案。
+- **事实不猜测**：预订、签证、健康、费用等关键信息缺失时必须标记未知。
+- **确认后落盘**：写入失败时不得更新 Active Version。
+- **隐私优先**：公开示例只用虚构数据；反馈中不要包含订单、证件或精确住宿信息。
+
+## 仓库里有什么
+
+- [`skill/travel-os/`](skill/travel-os/)：可安装的 Skill 与运行规则
+- [`templates/TravelOS-Template.xlsx`](templates/TravelOS-Template.xlsx)：旅行档案模板
+- [`docs/`](docs/)：用户指南、设计覆盖和反馈说明
+- [`tests/`](tests/)：Excel 与版本一致性的自动检查
+- [Issues](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)：问题反馈和功能建议
 
 ## 当前状态
 
-当前版本是 GitHub Early Access。自动检查会验证 Skill 结构、Excel 表结构、Active Version、行程和版本记录的一致性；AI 行为仍需按回归场景进行客户端验证。
+这是 **Early Access** 版本。自动测试会检查 Skill 结构、8 张工作表、Active Version、预订引用、成员和凭据泄露等关键约束；不同 Agent 客户端对 Skill 的安装和文件写回方式仍可能不同。
 
-产品设计覆盖和明确延期项见 [`docs/design-coverage.md`](docs/design-coverage.md)。
+如果你愿意试用，请从一个短途行程开始。遇到问题时使用 [Bug 报告模板](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)，只需说明你做了什么、预期结果和实际结果。产品设计覆盖与延期项见 [`docs/design-coverage.md`](docs/design-coverage.md)。
 
-## 隐私
+## 参与改进
 
-旅行档案可能包含精确日期、住宿、交通和同行者信息。公开 Issue 仅提交最小复现，删除姓名、订单号、联系方式、证件、精确住宿地址和凭据。
+- 发现错误：提交 [Bug Report](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)
+- 有新想法：提交 [Feature Request](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)
+- 觉得有用：点一个 Star，帮助更多旅行者看到它
 
 ## License
 
-MIT。第三方平台名称和商标归各自权利人所有。
+[MIT](LICENSE)。第三方平台名称和商标归各自权利人所有。
