@@ -10,6 +10,14 @@ Travel OS 是一个以 Excel 为长期旅行档案的 Agent Skill。它让 AI �
 
 > 你负责做决定，AI 负责整理、核对、提案和维护版本。
 
+## 旅行档案长什么样
+
+![Travel Overview：唯一旅行状态与 Active Version](docs/images/travel-overview.png)
+
+![Daily Plan：带版本、订单引用、来源和执行状态的每日计划](docs/images/daily-plan.png)
+
+截图来自仓库中的虚构示例档案，不包含真实用户数据。
+
 ## 它解决什么
 
 普通 AI 对话适合生成一份行程，却很难长期维护它：酒店改了，旧地址还留着；同伴提出意见，不知道是否处理；换个会话，AI 又忘了当前版本。
