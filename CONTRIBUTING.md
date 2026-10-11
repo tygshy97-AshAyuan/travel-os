@@ -22,7 +22,7 @@ Open both workbooks in Excel or a compatible editor after workbook changes. Conf
 
 ## Releases
 
-Prepare the README link, `RELEASE_NOTES.md` and `CHANGELOG.md` in a pull request. After it merges, push the matching `v*` tag. GitHub Actions reruns the contract tests, builds the ZIP and SHA-256 file from that exact commit, and creates the prerelease.
+Prepare the README link, `RELEASE_NOTES.md` and `CHANGELOG.md` in a pull request. After it merges, push the matching `v*` tag. GitHub Actions reruns the contract tests, builds the full source ZIP and direct-install Skill ZIP from that exact commit, verifies the Skill root, writes their SHA-256 values, and creates the prerelease.
 
 ## Pull requests
 

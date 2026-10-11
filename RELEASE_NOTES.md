@@ -1,7 +1,7 @@
-# Travel OS v0.4.5
+# Travel OS v0.4.6
 
-GitHub Early Access safety and presentation update.
+GitHub Early Access installation update.
 
-The project page now shows Travel Overview and Daily Plan rendered directly from the fictional example workbook, so visitors can assess the product before downloading it.
+Each release now includes `Travel-OS-Skill-v0.4.6.zip`, whose archive root contains `SKILL.md`, `agents/`, `assets/`, `references/` and `scripts/`. Users can give this file directly to clients that accept Agent Skill ZIP packages.
 
-The runtime validator now treats uploaded XLSX files as untrusted: it limits ZIP entry count, total uncompressed size and individual XML size, and rejects XML DOCTYPE declarations before parsing. The package passes 23 contract tests. Direct mailbox synchronization and supported-client behavior evaluation remain pending.
+The full repository ZIP remains available for examples, documentation and contribution. The checksum file covers both archives. Client-facing metadata now supplies the Travel OS name, description, icon, brand color and default recovery prompt. The package passes 24 contract tests.
