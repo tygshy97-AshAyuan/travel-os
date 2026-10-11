@@ -1,7 +1,7 @@
-# Travel OS v0.4.14
+# Travel OS v0.4.15
 
-Execution-history integrity update.
+Itinerary time-conflict update.
 
-Every Daily Plan row now requires an item ID, version, date, time zone, activity and execution status. Partially written itinerary rows can no longer pass validation and disappear from recovery.
+Travel OS now validates paired local start and end times on the Active Version. An end before its start requires an explicit overnight marker, so night trains and flights remain supported without accepting accidental reversed times.
 
-When a new version succeeds another, Done and Skipped items must remain present with the same stable ID and status. The release includes a directly installable `Travel-OS-Skill-v0.4.14.zip`, the full repository archive and checksums for both. The package passes 39 contract tests.
+Executable activities in the same time zone cannot overlap. Skipped and Blocked rows are excluded from collision checks. The release includes a directly installable `Travel-OS-Skill-v0.4.15.zip`, the full repository archive and checksums for both. The package passes 42 contract tests.

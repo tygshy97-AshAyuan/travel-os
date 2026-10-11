@@ -148,6 +148,26 @@ def _date(value):
     return parsed.date() if parsed else None
 
 
+def _clock_seconds(value):
+    if not value:
+        return None
+    try:
+        if re.fullmatch(r"\d+(?:\.\d+)?", value):
+            fraction = float(value)
+            if not 0 <= fraction < 1:
+                return None
+            return min(round(fraction * 86400), 86399)
+        match = re.fullmatch(r"(\d{1,2}):(\d{2})(?::(\d{2}))?", value)
+        if not match:
+            return None
+        hour, minute, second = (int(part or 0) for part in match.groups())
+        if hour > 23 or minute > 59 or second > 59:
+            return None
+        return hour * 3600 + minute * 60 + second
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
 def validate_rows(rows):
     errors = []
     missing = REQUIRED_SHEETS - rows.keys()
@@ -299,6 +319,58 @@ def validate_rows(rows):
                 elif not outside_marker and not start <= day <= end:
                     errors.append(
                         f"Daily Plan row {row_number} falls outside the trip date range"
+                    )
+
+        timed_items = []
+        for row_number, row in enumerate(rows["Daily Plan"][2:], start=3):
+            if len(row) <= 1 or row[1] != active:
+                continue
+            start_value = row[3] if len(row) > 3 else ""
+            end_value = row[4] if len(row) > 4 else ""
+            if bool(start_value) != bool(end_value):
+                errors.append(
+                    f"Daily Plan row {row_number} needs both start and end times"
+                )
+                continue
+            if not start_value:
+                continue
+            start_seconds = _clock_seconds(start_value)
+            end_seconds = _clock_seconds(end_value)
+            if start_seconds is None or end_seconds is None:
+                errors.append(f"Daily Plan row {row_number} has an invalid time range")
+                continue
+            day = _date(row[2] if len(row) > 2 else "")
+            if not day:
+                continue
+            note = row[16].lower() if len(row) > 16 else ""
+            overnight = any(
+                marker in note for marker in ("[overnight]", "跨夜", "过夜")
+            )
+            if end_seconds <= start_seconds:
+                if not overnight:
+                    errors.append(
+                        f"Daily Plan row {row_number} ends before it starts without an overnight marker"
+                    )
+                    continue
+                end_seconds += 86400
+            execution_status = row[11] if len(row) > 11 else ""
+            if execution_status in {"Skipped", "Blocked"}:
+                continue
+            base = day.toordinal() * 86400
+            timed_items.append(
+                (
+                    row[5] if len(row) > 5 else "",
+                    base + start_seconds,
+                    base + end_seconds,
+                    row[0],
+                )
+            )
+
+        for index, first in enumerate(timed_items):
+            for second in timed_items[index + 1:]:
+                if first[0] == second[0] and first[1] < second[2] and second[1] < first[2]:
+                    errors.append(
+                        f"Active Daily Plan items {first[3]} and {second[3]} overlap"
                     )
 
     members = rows["Members"]
