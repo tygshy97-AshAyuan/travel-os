@@ -183,6 +183,18 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertIn("Checklist row 3 references missing dependency T-404", errors)
         self.assertIn("Checklist row 3 references missing related item I-404", errors)
 
+    def test_checklist_dependency_cycle_is_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        second_task = broken["Checklist"][2][:]
+        second_task[0] = "T-002"
+        second_task[6] = "T-001"
+        broken["Checklist"][2][6] = "T-002"
+        broken["Checklist"].append(second_task)
+        self.assertIn(
+            "Checklist dependency cycle: T-001 -> T-002 -> T-001",
+            validate_rows(broken),
+        )
+
     def test_accepted_proposal_requires_result_version(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Proposals"][2][6] = "接受"
