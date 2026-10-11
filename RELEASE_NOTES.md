@@ -1,7 +1,7 @@
-# Travel OS v0.4.13
+# Travel OS v0.4.14
 
-Booking and itinerary consistency update.
+Execution-history integrity update.
 
-Travel OS now validates booking time ranges and rejects mixed zoned and unzoned timestamps. A booking cannot end before it starts.
+Every Daily Plan row now requires an item ID, version, date, time zone, activity and execution status. Partially written itinerary rows can no longer pass validation and disappear from recovery.
 
-Current executable itinerary rows cannot rely on cancelled bookings, and a `Ready` row can reference only a confirmed or completed booking. The release includes a directly installable `Travel-OS-Skill-v0.4.13.zip`, the full repository archive and checksums for both. The package passes 36 contract tests.
+When a new version succeeds another, Done and Skipped items must remain present with the same stable ID and status. The release includes a directly installable `Travel-OS-Skill-v0.4.14.zip`, the full repository archive and checksums for both. The package passes 39 contract tests.

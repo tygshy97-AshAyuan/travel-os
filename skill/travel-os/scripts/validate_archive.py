@@ -175,6 +175,26 @@ def validate_rows(rows):
                     f"{sheet_name} row {row_number} is missing {EXPECTED_HEADERS[sheet_name][0]}"
                 )
 
+    for row_number, row in enumerate(rows["Daily Plan"][2:], start=3):
+        if not any(row):
+            continue
+        required = {
+            0: "项目ID",
+            1: "版本",
+            2: "日期",
+            5: "时区",
+            7: "活动",
+            11: "执行状态",
+        }
+        missing_fields = [
+            name for index, name in required.items()
+            if len(row) <= index or not row[index]
+        ]
+        if missing_fields:
+            errors.append(
+                f"Daily Plan row {row_number} is missing: {', '.join(missing_fields)}"
+            )
+
     for sheet_name in REQUIRED_SHEETS - {"Travel Overview", "Daily Plan"}:
         identifiers = [row[0] for row in rows[sheet_name][2:] if row and row[0]]
         duplicates = sorted({value for value in identifiers if identifiers.count(value) > 1})
@@ -378,6 +398,32 @@ def validate_rows(rows):
             errors.append(
                 f"Change Log row {row_number} has invalid predecessor {predecessor}"
             )
+
+    plan_by_version = {}
+    for row in rows["Daily Plan"][2:]:
+        if len(row) > 1 and row[0] and row[1]:
+            plan_by_version.setdefault(row[1], {})[row[0]] = row
+    for version_row in version_rows:
+        version = version_row[0]
+        predecessor = version_row[5] if len(version_row) > 5 else ""
+        if not predecessor or predecessor not in plan_by_version:
+            continue
+        current_items = plan_by_version.get(version, {})
+        for item_id, prior_row in plan_by_version[predecessor].items():
+            prior_status = prior_row[11] if len(prior_row) > 11 else ""
+            if prior_status not in {"Done", "Skipped"}:
+                continue
+            current_row = current_items.get(item_id)
+            if not current_row:
+                errors.append(
+                    f"Version {version} drops completed item {item_id} from {predecessor}"
+                )
+                continue
+            current_status = current_row[11] if len(current_row) > 11 else ""
+            if current_status != prior_status:
+                errors.append(
+                    f"Version {version} regresses completed item {item_id} from {prior_status} to {current_status or 'blank'}"
+                )
 
     plan_ids = {row[0] for row in rows["Daily Plan"][2:] if row and row[0]}
     booking_ids = {row[0] for row in rows["Bookings"][2:] if row and row[0]}
