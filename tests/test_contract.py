@@ -220,6 +220,23 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_filled_rows_require_an_id(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][0] = ""
+        self.assertIn(
+            "Daily Plan row 3 is missing 项目ID",
+            validate_rows(broken),
+        )
+
+    def test_preferences_require_evidence_and_confidence(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Preferences"][2][6] = ""
+        broken["Preferences"][2][7] = ""
+        self.assertIn(
+            "Preferences row 3 is missing: 证据, 置信度",
+            validate_rows(broken),
+        )
+
     def test_map_url_preserves_route_and_mode(self):
         url = build_directions_url(
             "Tokyo Station",

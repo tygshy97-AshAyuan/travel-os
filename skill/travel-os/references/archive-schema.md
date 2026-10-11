@@ -16,6 +16,8 @@ Active Version is required for Active or Completed trips. It must exist in both 
 
 One row per durable preference or trip-specific constraint: ID, scope, category, priority, traveler, statement, evidence, confidence, valid from/to and notes. Scope is Long term or This trip. Priority distinguishes hard constraints from preferences. Explicit user statements outrank inferred patterns; MBTI and astrology may be recorded only as optional entertainment context, never as factual decision rules.
 
+Every preference row requires its ID, scope, category, priority, subject, statement, evidence and confidence. Evidence must say whether the preference came from an explicit statement or a repeated observed choice; a guess from one event is not a durable preference.
+
 ## Bookings
 
 One row per booking: ID, category, provider, start/end, city, status, refundable, amount, currency, reference location, source, checked time and notes. Store where a booking reference can be found, not the credential or full sensitive document.
@@ -49,6 +51,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 ## Required integrity checks
 
 - Exactly one trip overview data row exists in a workbook.
+- Every filled row in the other seven sheets has its sheet-specific ID.
 - Active and Completed trips have a non-empty Active Version.
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
@@ -58,6 +61,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
+- Preference rows include the decision-driving statement, evidence and confidence instead of an unsupported profile label.
 - Confirmed facts include a source and checked time when time-sensitive.
 - A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and Checked Time.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.

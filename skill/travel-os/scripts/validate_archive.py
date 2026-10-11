@@ -163,6 +163,13 @@ def validate_rows(rows):
                         f"{sheet_name} row {row_number} has invalid {EXPECTED_HEADERS[sheet_name][index]}: {value}"
                     )
 
+    for sheet_name in REQUIRED_SHEETS - {"Travel Overview"}:
+        for row_number, row in enumerate(rows[sheet_name][2:], start=3):
+            if any(row) and not row[0]:
+                errors.append(
+                    f"{sheet_name} row {row_number} is missing {EXPECTED_HEADERS[sheet_name][0]}"
+                )
+
     for sheet_name in REQUIRED_SHEETS - {"Travel Overview", "Daily Plan"}:
         identifiers = [row[0] for row in rows[sheet_name][2:] if row and row[0]]
         duplicates = sorted({value for value in identifiers if identifiers.count(value) > 1})
@@ -275,6 +282,24 @@ def validate_rows(rows):
         )
 
     for row_number, row in enumerate(rows["Preferences"][2:], start=3):
+        if row and row[0]:
+            required = {
+                1: "范围",
+                2: "类别",
+                3: "优先级",
+                4: "适用人",
+                5: "偏好或约束",
+                6: "证据",
+                7: "置信度",
+            }
+            missing_fields = [
+                name for index, name in required.items()
+                if len(row) <= index or not row[index]
+            ]
+            if missing_fields:
+                errors.append(
+                    f"Preferences row {row_number} is missing: {', '.join(missing_fields)}"
+                )
         traveler = row[4] if len(row) > 4 else ""
         if traveler and traveler != "所有人" and traveler not in member_ids:
             errors.append(

@@ -19,3 +19,7 @@ When reality changes, record what happened. Re-plan only the affected remainder,
 ## Collaboration
 
 Every suggestion has an author, affected item/day, reason, status and decision owner. Pending suggestions do not alter the plan. Accepted suggestions that alter the plan name the new version. The owner resolves incompatible preferences and can define a voting rule explicitly.
+
+## Post-trip learning
+
+Record a durable preference only when the traveler states it explicitly or the archive contains repeated observed choices. Name the traveler, concrete preference, evidence and confidence. Keep one-off choices scoped to the trip, and never turn health, identity or other sensitive details into inferred profile labels.

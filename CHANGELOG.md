@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.9 - 2026-10-12
+
+### Fixed
+
+- Rejected filled workbook rows that omit their sheet-specific ID.
+- Required every preference to name its scope, category, priority, subject, statement, evidence and confidence.
+- Added explicit post-trip rules for evidence-backed durable preferences.
+
 ## v0.4.8 - 2026-10-12
 
 ### Fixed
