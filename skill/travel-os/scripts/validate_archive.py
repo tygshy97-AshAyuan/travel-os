@@ -2,6 +2,7 @@
 """Validate a Travel OS workbook without third-party packages."""
 
 import argparse
+from datetime import datetime, timedelta
 import re
 import sys
 import zipfile
@@ -86,6 +87,17 @@ def workbook_rows(path):
         return result
 
 
+def _date(value):
+    if not value:
+        return None
+    try:
+        if re.fullmatch(r"\d+(?:\.\d+)?", value):
+            return (datetime(1899, 12, 30) + timedelta(days=float(value))).date()
+        return datetime.fromisoformat(value.replace("Z", "+00:00")).date()
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
 def validate_rows(rows):
     errors = []
     missing = REQUIRED_SHEETS - rows.keys()
@@ -109,10 +121,18 @@ def validate_rows(rows):
 
     overview_header = rows["Travel Overview"][1]
     trip = trips[0]
+    for field in ("Trip ID", "开始日期", "结束日期", "负责人", "状态", "主时区"):
+        if not trip[overview_header.index(field)]:
+            errors.append(f"Travel Overview is missing {field}")
+
     active = trip[overview_header.index("Active Version")]
     status = trip[overview_header.index("状态")]
     if status in {"Active", "Completed"} and not active:
         errors.append(f"{status} trip has no Active Version")
+    start = _date(trip[overview_header.index("开始日期")])
+    end = _date(trip[overview_header.index("结束日期")])
+    if not start or not end or start > end:
+        errors.append("Travel Overview has an invalid date range")
 
     if active:
         active_rows = [
@@ -142,6 +162,21 @@ def validate_rows(rows):
                 f"Missing booking references: {', '.join(sorted(missing_bookings))}"
             )
 
+        if start and end and start <= end:
+            for row_number, row in enumerate(active_rows, start=3):
+                day = _date(row[2] if len(row) > 2 else "")
+                note = row[16].lower() if len(row) > 16 else ""
+                outside_marker = any(
+                    marker in note
+                    for marker in ("[pre-trip]", "[post-trip]", "行前", "行后")
+                )
+                if not day:
+                    errors.append(f"Daily Plan row {row_number} has an invalid date")
+                elif not outside_marker and not start <= day <= end:
+                    errors.append(
+                        f"Daily Plan row {row_number} falls outside the trip date range"
+                    )
+
     members = rows["Members"]
     member_ids = {row[0] for row in members[2:] if row and row[0]}
     roles = {row[2] for row in members[2:] if len(row) > 2}
@@ -158,7 +193,34 @@ def validate_rows(rows):
                         f"{sheet_name} row {row_number} references missing member {row[index]}"
                     )
 
-    versions = {row[0] for row in rows["Change Log"][2:] if row and row[0]}
+    version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
+    versions = {row[0] for row in version_rows}
+    version_order = {row[0]: index for index, row in enumerate(version_rows)}
+    for row_number, row in enumerate(rows["Change Log"][2:], start=3):
+        predecessor = row[5] if len(row) > 5 else ""
+        if predecessor and (
+            predecessor not in versions
+            or version_order[predecessor] >= version_order[row[0]]
+        ):
+            errors.append(
+                f"Change Log row {row_number} has invalid predecessor {predecessor}"
+            )
+
+    plan_ids = {row[0] for row in rows["Daily Plan"][2:] if row and row[0]}
+    booking_ids = {row[0] for row in rows["Bookings"][2:] if row and row[0]}
+    task_ids = {row[0] for row in rows["Checklist"][2:] if row and row[0]}
+    for row_number, row in enumerate(rows["Checklist"][2:], start=3):
+        dependency = row[6] if len(row) > 6 else ""
+        related = row[7] if len(row) > 7 else ""
+        if dependency and dependency not in task_ids:
+            errors.append(
+                f"Checklist row {row_number} references missing dependency {dependency}"
+            )
+        if related and related not in plan_ids | booking_ids:
+            errors.append(
+                f"Checklist row {row_number} references missing related item {related}"
+            )
+
     for row_number, row in enumerate(rows["Proposals"][2:], start=3):
         if len(row) > 6 and row[6] in {"Accepted", "已接受", "接受"}:
             result_version = row[9] if len(row) > 9 else ""

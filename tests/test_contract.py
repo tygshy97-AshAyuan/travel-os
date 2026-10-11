@@ -100,6 +100,32 @@ class TravelOSContractTests(unittest.TestCase):
         broken["Daily Plan"].append(broken["Daily Plan"][2][:])
         self.assertIn("Daily Plan has duplicate IDs: I-001", validate_rows(broken))
 
+    def test_out_of_range_plan_date_is_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][2] = "2040-01-01T00:00:00.000Z"
+        self.assertIn(
+            "Daily Plan row 3 falls outside the trip date range",
+            validate_rows(broken),
+        )
+
+    def test_broken_version_and_checklist_links_are_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Change Log"][2][5] = "v9.9.9"
+        broken["Checklist"][2][6] = "T-404"
+        broken["Checklist"][2][7] = "I-404"
+        errors = validate_rows(broken)
+        self.assertIn("Change Log row 3 has invalid predecessor v9.9.9", errors)
+        self.assertIn("Checklist row 3 references missing dependency T-404", errors)
+        self.assertIn("Checklist row 3 references missing related item I-404", errors)
+
+    def test_accepted_proposal_requires_result_version(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Proposals"][2][6] = "已接受"
+        self.assertIn(
+            "Accepted proposal on row 3 has no valid result version",
+            validate_rows(broken),
+        )
+
     def test_member_references_and_owner(self):
         members = self.rows["Members"]
         member_ids = {row[0] for row in members[2:] if row and row[0]}

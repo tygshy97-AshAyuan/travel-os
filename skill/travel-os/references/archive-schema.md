@@ -47,5 +47,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
 - Accepted decisions that changed the plan name the resulting version.
-- Dates fall within the trip range unless marked as pre-trip or post-trip logistics.
+- Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
+- Change Log predecessors name an existing earlier version and never point to themselves.
+- Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
 - Confirmed facts include a source and checked time when time-sensitive.
