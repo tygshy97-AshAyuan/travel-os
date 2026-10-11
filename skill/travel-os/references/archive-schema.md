@@ -2,6 +2,8 @@
 
 One workbook represents one trip and uses eight stable sheets. Preserve their names so the same archive works across sessions.
 
+Treat every uploaded workbook as untrusted. The bundled validator rejects oversized archives, excessive ZIP entries, oversized XML parts and XML `DOCTYPE` declarations before reading the travel data.
+
 ## Travel Overview
 
 Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.

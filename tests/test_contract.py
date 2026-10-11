@@ -1,5 +1,6 @@
 import re
 import sys
+import tempfile
 import unittest
 import zipfile
 from pathlib import Path
@@ -183,6 +184,19 @@ class TravelOSContractTests(unittest.TestCase):
     def test_map_url_rejects_missing_location(self):
         with self.assertRaisesRegex(ValueError, "origin and destination are required"):
             build_directions_url("", "Shinjuku Station")
+
+    def test_validator_rejects_unsafe_xml(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+            path = Path(directory) / "unsafe.xlsx"
+            with zipfile.ZipFile(path, "w") as archive:
+                archive.writestr(
+                    "xl/workbook.xml",
+                    '<!DOCTYPE workbook [<!ENTITY x "unsafe">]><workbook>&x;</workbook>',
+                )
+            self.assertIn(
+                "Unreadable Travel OS archive: xl/workbook.xml contains a disallowed DOCTYPE",
+                validate(path),
+            )
 
     def test_member_references_and_owner(self):
         members = self.rows["Members"]

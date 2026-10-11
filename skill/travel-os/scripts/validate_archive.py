@@ -35,6 +35,9 @@ EXPECTED_HEADERS = {
     "Members": ["成员ID", "显示名", "角色", "同行关系", "本次需求", "权限", "备注"],
     "Proposals": ["提案ID", "提交人", "日期", "影响项目或日期", "提案", "原因", "状态", "决策人", "处理结果", "结果版本"],
 }
+MAX_ARCHIVE_ENTRIES = 1000
+MAX_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
+MAX_XML_BYTES = 8 * 1024 * 1024
 ENUM_FIELDS = {
     "Travel Overview": {
         8: {"行前规划", "旅行中", "旅行后"},
@@ -62,18 +65,34 @@ def _column_index(reference):
     return index - 1
 
 
+def _xml_root(archive, name):
+    info = archive.getinfo(name)
+    if info.file_size > MAX_XML_BYTES:
+        raise ValueError(f"{name} exceeds the XML size limit")
+    data = archive.read(info)
+    if b"<!DOCTYPE" in data.upper():
+        raise ValueError(f"{name} contains a disallowed DOCTYPE")
+    return ET.fromstring(data)
+
+
 def workbook_rows(path):
     with zipfile.ZipFile(path) as archive:
+        entries = archive.infolist()
+        if len(entries) > MAX_ARCHIVE_ENTRIES:
+            raise ValueError("workbook contains too many ZIP entries")
+        if sum(entry.file_size for entry in entries) > MAX_UNCOMPRESSED_BYTES:
+            raise ValueError("workbook exceeds the uncompressed size limit")
+
         strings = []
         if "xl/sharedStrings.xml" in archive.namelist():
-            root = ET.fromstring(archive.read("xl/sharedStrings.xml"))
+            root = _xml_root(archive, "xl/sharedStrings.xml")
             strings = [
                 "".join(node.text or "" for node in item.iterfind(".//m:t", NS))
                 for item in root.findall("m:si", NS)
             ]
 
-        book = ET.fromstring(archive.read("xl/workbook.xml"))
-        rels = ET.fromstring(archive.read("xl/_rels/workbook.xml.rels"))
+        book = _xml_root(archive, "xl/workbook.xml")
+        rels = _xml_root(archive, "xl/_rels/workbook.xml.rels")
         targets = {
             rel.attrib["Id"]: rel.attrib["Target"]
             for rel in rels.findall("p:Relationship", REL_NS)
@@ -81,8 +100,9 @@ def workbook_rows(path):
         result = {}
         for sheet in book.findall("m:sheets/m:sheet", NS):
             target = targets[sheet.attrib[f"{{{NS['r']}}}id"]].lstrip("/")
-            xml = ET.fromstring(
-                archive.read(target if target.startswith("xl/") else f"xl/{target}")
+            xml = _xml_root(
+                archive,
+                target if target.startswith("xl/") else f"xl/{target}",
             )
             rows = []
             for row in xml.findall("m:sheetData/m:row", NS):
@@ -295,7 +315,14 @@ def validate_rows(rows):
 def validate(path):
     try:
         return validate_rows(workbook_rows(path))
-    except (KeyError, IndexError, ET.ParseError, zipfile.BadZipFile) as error:
+    except (
+        KeyError,
+        IndexError,
+        OSError,
+        ValueError,
+        ET.ParseError,
+        zipfile.BadZipFile,
+    ) as error:
         return [f"Unreadable Travel OS archive: {error}"]
 
 
