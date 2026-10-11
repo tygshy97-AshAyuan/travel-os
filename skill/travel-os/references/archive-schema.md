@@ -22,7 +22,7 @@ One row per booking: ID, category, provider, start/end, city, status, refundable
 
 One row per itinerary item: item ID, version, date, start/end time, time zone, city, activity, location, transport, booking ID, execution status, cost, currency, source, checked time and notes. Rows whose version does not match Active Version are historical.
 
-Item IDs remain stable when an item is copied into a new version. Execution status is Planned, Ready, In progress, Done, Skipped or Blocked.
+Item IDs remain stable when an item is copied into a new version. The unique key is Version plus Item ID, so the same Item ID may appear once in every version. Every Daily Plan version must exist in Change Log. Execution status is Planned, Ready, In progress, Done, Skipped or Blocked.
 
 Execution status and notes may be updated in place because they record what happened rather than changing the plan. If reality changes any remaining itinerary item, use the version workflow.
 
@@ -49,6 +49,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Exactly one trip overview data row exists in a workbook.
 - Active and Completed trips have a non-empty Active Version.
 - Active Version has Daily Plan rows and exactly one Change Log row.
+- Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
 - Accepted decisions that changed the plan name the resulting version.
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
