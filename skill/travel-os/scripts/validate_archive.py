@@ -358,7 +358,19 @@ def validate_rows(rows):
             )
 
     for row_number, row in enumerate(rows["Proposals"][2:], start=3):
-        if len(row) > 6 and row[6] in {"Accepted", "已接受", "接受"}:
+        status = row[6] if len(row) > 6 else ""
+        if status in {"接受", "拒绝"}:
+            decision_owner = row[7] if len(row) > 7 else ""
+            resolution = row[8] if len(row) > 8 else ""
+            if decision_owner != owner:
+                errors.append(
+                    f"Resolved proposal on row {row_number} must be decided by trip Owner {owner}"
+                )
+            if not resolution:
+                errors.append(
+                    f"Resolved proposal on row {row_number} needs a resolution"
+                )
+        if status == "接受":
             result_version = row[9] if len(row) > 9 else ""
             if not result_version or result_version not in versions:
                 errors.append(

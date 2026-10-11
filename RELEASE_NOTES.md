@@ -1,7 +1,7 @@
-# Travel OS v0.4.9
+# Travel OS v0.4.10
 
-Preference and row integrity update.
+Collaboration approval integrity update.
 
-Travel OS now rejects any filled data row that omits its sheet-specific ID, preventing partially written rows from silently escaping relationship and version checks.
+Travel OS now requires the trip Owner to be the decision maker on every accepted or rejected proposal. Resolved proposals must retain a written outcome, and accepted proposals must continue to point to a valid resulting version.
 
-Every preference must include its scope, category, priority, subject, concrete statement, evidence and confidence. Post-trip learning rules now distinguish explicit or repeatedly observed preferences from one-off choices and unsupported profile labels. The release includes a directly installable `Travel-OS-Skill-v0.4.9.zip`, the full repository archive and checksums for both. The package passes 30 contract tests.
+This prevents an Editor, Member or Viewer from changing the formal plan merely by editing proposal status fields. The release includes a directly installable `Travel-OS-Skill-v0.4.10.zip`, the full repository archive and checksums for both. The package passes 31 contract tests.

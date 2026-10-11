@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.10 - 2026-10-12
+
+### Fixed
+
+- Required the trip Owner to decide every accepted or rejected proposal.
+- Required resolved proposals to retain a written resolution.
+- Kept accepted proposals linked to a valid resulting version.
+
 ## v0.4.9 - 2026-10-12
 
 ### Fixed
