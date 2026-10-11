@@ -32,6 +32,8 @@ One row per action: ID, category, task, owner, due date, status, dependency, rel
 
 One row per traveler: member ID, display name, role, relationship, trip-specific needs, permissions and notes. Roles are Owner, Editor, Member and Viewer. Only Owner gives final approval unless the archive explicitly names another rule.
 
+Exactly one member has the Owner role, that member matches Travel Overview's owner, and the overview traveler count matches the number of member rows. A preference applies to `所有人` or an existing member ID.
+
 ## Proposals
 
 One row per suggestion or decision: ID, submitted by, date, affected item/day, proposal, reason, status, decision owner, resolution and resulting version.
@@ -50,6 +52,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
+- Travel Overview traveler count, owner and preference subjects reconcile with Members.
 - Confirmed facts include a source and checked time when time-sensitive.
 - A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and Checked Time.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.
