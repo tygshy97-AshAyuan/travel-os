@@ -5,7 +5,7 @@ Travel OS is currently in Early Access. Work is ordered by whether it makes a re
 ## Now
 
 - Validate the complete planning, change, execution and review flow in supported Agent clients.
-- Expand archive checks for time ranges and booking consistency.
+- Expand archive checks for itinerary time ranges and execution transitions.
 - Improve first-run instructions from real user reports.
 - Validate weather-driven changes in supported Agent clients.
 

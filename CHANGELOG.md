@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.13 - 2026-10-12
+
+### Fixed
+
+- Validated booking start/end order and consistent time-zone notation.
+- Rejected current executable itinerary rows that reference cancelled bookings.
+- Required `Ready` itinerary rows to use confirmed or completed bookings.
+
 ## v0.4.12 - 2026-10-12
 
 ### Fixed

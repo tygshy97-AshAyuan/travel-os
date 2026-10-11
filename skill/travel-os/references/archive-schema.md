@@ -22,6 +22,8 @@ Every preference row requires its ID, scope, category, priority, subject, statem
 
 One row per booking: ID, category, provider, start/end, city, status, refundable, amount, currency, reference location, source, checked time and notes. Store where a booking reference can be found, not the credential or full sensitive document.
 
+When both booking times are present, use consistent time-zone notation and ensure the end does not precede the start. A current itinerary row cannot rely on a cancelled booking unless the row is Skipped or Blocked. A `Ready` itinerary row may reference only a confirmed or completed booking.
+
 ## Daily Plan
 
 One row per itinerary item: item ID, version, date, start/end time, time zone, city, activity, location, transport, booking ID, execution status, cost, currency, source, checked time and notes. Rows whose version does not match Active Version are historical.
@@ -60,6 +62,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
+- Booking time ranges are valid, cancelled bookings do not support executable current items, and `Ready` items use confirmed or completed bookings.
 - Accepted decisions that changed the plan name the resulting version.
 - Accepted and rejected proposals are resolved by the trip Owner and include the resolution.
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.

@@ -132,15 +132,20 @@ def workbook_rows(path):
         return result
 
 
-def _date(value):
+def _datetime(value):
     if not value:
         return None
     try:
         if re.fullmatch(r"\d+(?:\.\d+)?", value):
-            return (datetime(1899, 12, 30) + timedelta(days=float(value))).date()
-        return datetime.fromisoformat(value.replace("Z", "+00:00")).date()
+            return datetime(1899, 12, 30) + timedelta(days=float(value))
+        return datetime.fromisoformat(value.replace("Z", "+00:00"))
     except (TypeError, ValueError, OverflowError):
         return None
+
+
+def _date(value):
+    parsed = _datetime(value)
+    return parsed.date() if parsed else None
 
 
 def validate_rows(rows):
@@ -224,9 +229,10 @@ def validate_rows(rows):
                 f"Active Version {active} must have exactly one Change Log row; found {len(version_rows)}"
             )
 
-        booking_ids = {
-            row[0] for row in rows["Bookings"][2:] if row and row[0]
+        booking_by_id = {
+            row[0]: row for row in rows["Bookings"][2:] if row and row[0]
         }
+        booking_ids = set(booking_by_id)
         missing_bookings = {
             row[10]
             for row in active_rows
@@ -236,6 +242,22 @@ def validate_rows(rows):
             errors.append(
                 f"Missing booking references: {', '.join(sorted(missing_bookings))}"
             )
+
+        for row_number, row in enumerate(active_rows, start=3):
+            booking_id = row[10] if len(row) > 10 else ""
+            execution_status = row[11] if len(row) > 11 else ""
+            booking = booking_by_id.get(booking_id)
+            if not booking:
+                continue
+            booking_status = booking[6] if len(booking) > 6 else ""
+            if booking_status == "已取消" and execution_status not in {"Skipped", "Blocked"}:
+                errors.append(
+                    f"Daily Plan row {row_number} references cancelled booking {booking_id}"
+                )
+            if execution_status == "Ready" and booking_status not in {"已确认", "已完成"}:
+                errors.append(
+                    f"Ready Daily Plan row {row_number} requires confirmed booking {booking_id}"
+                )
 
         for row_number, row in enumerate(active_rows, start=3):
             if len(row) > 11 and row[11] == "Ready":
@@ -315,6 +337,21 @@ def validate_rows(rows):
                     )
 
     for row_number, row in enumerate(rows["Bookings"][2:], start=3):
+        start_time = _datetime(row[3] if len(row) > 3 else "")
+        end_time = _datetime(row[4] if len(row) > 4 else "")
+        if len(row) > 3 and row[3] and not start_time:
+            errors.append(f"Bookings row {row_number} has an invalid start time")
+        if len(row) > 4 and row[4] and not end_time:
+            errors.append(f"Bookings row {row_number} has an invalid end time")
+        if start_time and end_time:
+            start_is_zoned = start_time.utcoffset() is not None
+            end_is_zoned = end_time.utcoffset() is not None
+            if start_is_zoned != end_is_zoned:
+                errors.append(
+                    f"Bookings row {row_number} mixes zoned and unzoned times"
+                )
+            elif end_time < start_time:
+                errors.append(f"Bookings row {row_number} ends before it starts")
         if len(row) > 6 and row[6] == "已确认":
             if len(row) <= 12 or not row[11] or not row[12]:
                 errors.append(
