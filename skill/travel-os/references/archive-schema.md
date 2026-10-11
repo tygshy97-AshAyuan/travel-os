@@ -34,6 +34,8 @@ Execution status and notes may be updated in place because they record what happ
 
 One row per action: ID, category, task, owner, due date, status, dependency, related booking or plan item and notes. Typical categories include visa, transport, accommodation, packing, payment, insurance and confirmation.
 
+Dependencies must form an acyclic chain: a task cannot depend on itself, directly or through other tasks. Resolve a dependency cycle before using the checklist for execution.
+
 ## Members
 
 One row per traveler: member ID, display name, role, relationship, trip-specific needs, permissions and notes. Roles are Owner, Editor, Member and Viewer. Only Owner gives final approval unless the archive explicitly names another rule.
@@ -63,6 +65,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
+- Checklist dependencies contain no direct or indirect cycles.
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
 - Preference rows include the decision-driving statement, evidence and confidence instead of an unsupported profile label.
 - Confirmed facts include a source and checked time when time-sensitive.

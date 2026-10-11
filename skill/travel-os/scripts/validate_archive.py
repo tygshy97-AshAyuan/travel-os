@@ -345,9 +345,13 @@ def validate_rows(rows):
     plan_ids = {row[0] for row in rows["Daily Plan"][2:] if row and row[0]}
     booking_ids = {row[0] for row in rows["Bookings"][2:] if row and row[0]}
     task_ids = {row[0] for row in rows["Checklist"][2:] if row and row[0]}
+    dependencies = {}
     for row_number, row in enumerate(rows["Checklist"][2:], start=3):
+        task_id = row[0] if row else ""
         dependency = row[6] if len(row) > 6 else ""
         related = row[7] if len(row) > 7 else ""
+        if task_id and dependency:
+            dependencies[task_id] = dependency
         if dependency and dependency not in task_ids:
             errors.append(
                 f"Checklist row {row_number} references missing dependency {dependency}"
@@ -356,6 +360,26 @@ def validate_rows(rows):
             errors.append(
                 f"Checklist row {row_number} references missing related item {related}"
             )
+
+    processed = set()
+    for start_task in sorted(task_ids):
+        if start_task in processed:
+            continue
+        trail = []
+        positions = {}
+        task = start_task
+        while task in dependencies and task not in processed:
+            if task in positions:
+                cycle = trail[positions[task]:]
+                errors.append(
+                    "Checklist dependency cycle: "
+                    + " -> ".join(cycle + [cycle[0]])
+                )
+                break
+            positions[task] = len(trail)
+            trail.append(task)
+            task = dependencies[task]
+        processed.update(trail)
 
     for row_number, row in enumerate(rows["Proposals"][2:], start=3):
         status = row[6] if len(row) > 6 else ""

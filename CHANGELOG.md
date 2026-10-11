@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.12 - 2026-10-12
+
+### Fixed
+
+- Rejected direct and indirect dependency cycles in Checklist tasks.
+- Added a regression test for two tasks waiting on each other.
+
 ## v0.4.11 - 2026-10-12
 
 ### Added
