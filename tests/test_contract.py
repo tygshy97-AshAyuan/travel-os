@@ -110,7 +110,29 @@ class TravelOSContractTests(unittest.TestCase):
     def test_duplicate_ids_are_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"].append(broken["Daily Plan"][2][:])
-        self.assertIn("Daily Plan has duplicate IDs: I-001", validate_rows(broken))
+        self.assertIn(
+            "Daily Plan has duplicate version/item IDs: v0.1.0/I-001",
+            validate_rows(broken),
+        )
+
+    def test_stable_plan_ids_can_be_copied_to_a_new_version(self):
+        copied = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior = copied["Daily Plan"][2][:]
+        prior[1] = "v0.3.0"
+        copied["Daily Plan"].append(prior)
+        history = copied["Change Log"][2][:]
+        history[0] = "v0.3.0"
+        history[5] = ""
+        copied["Change Log"].insert(2, history)
+        self.assertEqual([], validate_rows(copied))
+
+    def test_plan_version_must_exist_in_change_log(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][1] = "v9.9.9"
+        self.assertIn(
+            "Daily Plan references missing versions: v9.9.9",
+            validate_rows(broken),
+        )
 
     def test_out_of_range_plan_date_is_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}

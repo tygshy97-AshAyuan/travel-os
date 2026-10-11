@@ -1,7 +1,7 @@
-# Travel OS v0.4.6
+# Travel OS v0.4.7
 
-GitHub Early Access installation update.
+Version integrity fix.
 
-Each release now includes `Travel-OS-Skill-v0.4.6.zip`, whose archive root contains `SKILL.md`, `agents/`, `assets/`, `references/` and `scripts/`. Users can give this file directly to clients that accept Agent Skill ZIP packages.
+Travel OS now treats Version plus Item ID as the Daily Plan identity. An itinerary item can keep the same stable ID when copied from one version to the next, while duplicate items inside the same version are still rejected. Daily Plan rows must also reference a version recorded in Change Log.
 
-The full repository ZIP remains available for examples, documentation and contribution. The checksum file covers both archives. Client-facing metadata now supplies the Travel OS name, description, icon, brand color and default recovery prompt. The package passes 24 contract tests.
+The release includes a directly installable `Travel-OS-Skill-v0.4.7.zip`, the full repository archive and checksums for both. The package passes 26 contract tests.

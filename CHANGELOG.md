@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.7 - 2026-10-12
+
+### Fixed
+
+- Allowed a stable Daily Plan item ID to be carried across plan versions.
+- Enforced uniqueness by Version plus Item ID within Daily Plan.
+- Rejected Daily Plan rows whose version is missing from Change Log.
+
 ## v0.4.6 - 2026-10-11
 
 ### Added

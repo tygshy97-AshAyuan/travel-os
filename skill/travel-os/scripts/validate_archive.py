@@ -155,11 +155,25 @@ def validate_rows(rows):
                         f"{sheet_name} row {row_number} has invalid {EXPECTED_HEADERS[sheet_name][index]}: {value}"
                     )
 
-    for sheet_name in REQUIRED_SHEETS - {"Travel Overview"}:
+    for sheet_name in REQUIRED_SHEETS - {"Travel Overview", "Daily Plan"}:
         identifiers = [row[0] for row in rows[sheet_name][2:] if row and row[0]]
         duplicates = sorted({value for value in identifiers if identifiers.count(value) > 1})
         if duplicates:
             errors.append(f"{sheet_name} has duplicate IDs: {', '.join(duplicates)}")
+
+    plan_keys = [
+        (row[1], row[0])
+        for row in rows["Daily Plan"][2:]
+        if len(row) > 1 and row[0] and row[1]
+    ]
+    duplicate_plan_keys = sorted(
+        {key for key in plan_keys if plan_keys.count(key) > 1}
+    )
+    if duplicate_plan_keys:
+        errors.append(
+            "Daily Plan has duplicate version/item IDs: "
+            + ", ".join(f"{version}/{item}" for version, item in duplicate_plan_keys)
+        )
 
     trips = [row for row in rows["Travel Overview"][2:] if any(row)]
     if len(trips) != 1:
@@ -276,6 +290,14 @@ def validate_rows(rows):
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
+    plan_versions = {
+        row[1] for row in rows["Daily Plan"][2:] if len(row) > 1 and row[1]
+    }
+    missing_versions = sorted(plan_versions - versions)
+    if missing_versions:
+        errors.append(
+            f"Daily Plan references missing versions: {', '.join(missing_versions)}"
+        )
     version_order = {row[0]: index for index, row in enumerate(version_rows)}
     for row_number, row in enumerate(rows["Change Log"][2:], start=3):
         predecessor = row[5] if len(row) > 5 else ""
