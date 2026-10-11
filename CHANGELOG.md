@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.2 - 2026-10-11
+
+### Added
+
+- Added a standard-library archive validator inside the installable Skill.
+- Validated sheet names, headers, trip ownership, Active Version, version history, references, duplicate IDs and accepted proposal results.
+- Added a public roadmap, contribution guide, pull-request checklist and security policy.
+- Enabled private vulnerability reporting.
+- Protected main with required pull requests, passing validation and resolved conversations.
+
 ## v0.4.1 - 2026-10-11
 
 ### Fixed
