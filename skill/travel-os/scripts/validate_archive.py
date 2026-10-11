@@ -35,6 +35,23 @@ EXPECTED_HEADERS = {
     "Members": ["成员ID", "显示名", "角色", "同行关系", "本次需求", "权限", "备注"],
     "Proposals": ["提案ID", "提交人", "日期", "影响项目或日期", "提案", "原因", "状态", "决策人", "处理结果", "结果版本"],
 }
+ENUM_FIELDS = {
+    "Travel Overview": {
+        8: {"行前规划", "旅行中", "旅行后"},
+        9: {"Draft", "Active", "Completed", "Cancelled"},
+    },
+    "Daily Plan": {
+        11: {"Planned", "Ready", "In progress", "Done", "Skipped", "Blocked"},
+    },
+    "Bookings": {6: {"待确认", "已确认", "已取消", "已完成"}},
+    "Checklist": {5: {"待处理", "进行中", "已完成", "已取消", "阻塞"}},
+    "Preferences": {
+        1: {"长期", "本次旅行"},
+        3: {"硬约束", "强偏好", "一般偏好", "可选"},
+    },
+    "Members": {2: {"Owner", "Editor", "Member", "Viewer"}},
+    "Proposals": {6: {"待处理", "接受", "拒绝", "需澄清"}},
+}
 
 
 def _column_index(reference):
@@ -109,6 +126,15 @@ def validate_rows(rows):
         if actual != expected:
             errors.append(f"{sheet_name} headers do not match the Travel OS schema")
 
+    for sheet_name, fields in ENUM_FIELDS.items():
+        for row_number, row in enumerate(rows[sheet_name][2:], start=3):
+            for index, allowed in fields.items():
+                value = row[index] if len(row) > index else ""
+                if value and value not in allowed:
+                    errors.append(
+                        f"{sheet_name} row {row_number} has invalid {EXPECTED_HEADERS[sheet_name][index]}: {value}"
+                    )
+
     for sheet_name in REQUIRED_SHEETS - {"Travel Overview"}:
         identifiers = [row[0] for row in rows[sheet_name][2:] if row and row[0]]
         duplicates = sorted({value for value in identifiers if identifiers.count(value) > 1})
@@ -162,6 +188,13 @@ def validate_rows(rows):
                 f"Missing booking references: {', '.join(sorted(missing_bookings))}"
             )
 
+        for row_number, row in enumerate(active_rows, start=3):
+            if len(row) > 11 and row[11] == "Ready":
+                if len(row) <= 15 or not row[14] or not row[15]:
+                    errors.append(
+                        f"Ready Daily Plan row {row_number} needs source and checked time"
+                    )
+
         if start and end and start <= end:
             for row_number, row in enumerate(active_rows, start=3):
                 day = _date(row[2] if len(row) > 2 else "")
@@ -192,6 +225,13 @@ def validate_rows(rows):
                     errors.append(
                         f"{sheet_name} row {row_number} references missing member {row[index]}"
                     )
+
+    for row_number, row in enumerate(rows["Bookings"][2:], start=3):
+        if len(row) > 6 and row[6] == "已确认":
+            if len(row) <= 12 or not row[11] or not row[12]:
+                errors.append(
+                    f"Confirmed booking on row {row_number} needs source and checked time"
+                )
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
