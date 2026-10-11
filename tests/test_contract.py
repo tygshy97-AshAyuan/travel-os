@@ -173,10 +173,24 @@ class TravelOSContractTests(unittest.TestCase):
 
     def test_accepted_proposal_requires_result_version(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
-        broken["Proposals"][2][6] = "已接受"
+        broken["Proposals"][2][6] = "接受"
         self.assertIn(
             "Accepted proposal on row 3 has no valid result version",
             validate_rows(broken),
+        )
+
+    def test_resolved_proposal_requires_owner_and_resolution(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Proposals"][2][6] = "拒绝"
+        broken["Proposals"][2][7] = "M-002"
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Resolved proposal on row 3 must be decided by trip Owner M-001",
+            errors,
+        )
+        self.assertIn(
+            "Resolved proposal on row 3 needs a resolution",
+            errors,
         )
 
     def test_invalid_status_is_detected(self):

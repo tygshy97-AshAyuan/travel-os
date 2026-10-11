@@ -44,6 +44,8 @@ Exactly one member has the Owner role, that member matches Travel Overview's own
 
 One row per suggestion or decision: ID, submitted by, date, affected item/day, proposal, reason, status, decision owner, resolution and resulting version.
 
+A proposal marked Accepted or Rejected must name the trip Owner as decision owner and record the resolution. An accepted proposal must also name the resulting valid version. Pending or Needs clarification proposals never change the itinerary.
+
 ## Change Log
 
 One row per version: version, created time, author, reason, summary, predecessor and archive hash when available. Never reuse or silently overwrite a version number.
@@ -57,6 +59,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
 - Accepted decisions that changed the plan name the resulting version.
+- Accepted and rejected proposals are resolved by the trip Owner and include the resolution.
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.

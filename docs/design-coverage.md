@@ -12,7 +12,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Manual behavior scenario | Implemented in Skill |
 | Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
 | Active Version recovery | Recovery protocol, `Daily Plan`, `Change Log` | Automated Active Version test | Implemented |
-| Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference test | Implemented |
+| Collaboration roles | `Members`, `Proposals`, owner approval | Automated member-reference and Owner-decision tests | Implemented |
 | Post-trip learning | Review workflow and durable preference rules | Automated preference integrity tests; manual behavior scenario | Implemented in Skill |
 | Weather re-planning | Fact states and change workflow | Manual behavior scenario | Partial: requires a current weather source at runtime |
 | Email booking parsing | Review-first import rules for pasted or exported confirmations | Skill reference-link test; manual behavior scenario | Partial: direct mailbox sync is deferred |
