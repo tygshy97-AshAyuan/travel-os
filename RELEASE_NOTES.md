@@ -1,7 +1,7 @@
-# Travel OS v0.4.1
+# Travel OS v0.4.2
 
-GitHub Early Access reliability update.
+GitHub Early Access archive-safety update.
 
-This release makes the installed Skill self-contained, separates the blank workbook from the fictional example, and adds native filters across all eight sheets.
+This release adds a zero-dependency validator that an Agent can run before reading and after writing a Travel OS workbook. It checks the eight-sheet schema, exact headers, trip ownership, Active Version, version history, booking and member references, duplicate IDs, and accepted proposal results.
 
-Contract tests now preserve empty Excel columns correctly and scan workbook XML for common credentials. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.
+The repository now also publishes a roadmap, contribution guide and security policy. Private vulnerability reporting is enabled, and main requires a pull request plus a passing validation check. AI behavior still requires supported-client evaluation because the repository does not call a paid model during CI.
