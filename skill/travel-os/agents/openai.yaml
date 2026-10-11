@@ -1,0 +1,10 @@
+interface:
+  display_name: "Travel OS"
+  short_description: "Versioned trip planning and travel memory"
+  icon_small: "./assets/travel-os.svg"
+  icon_large: "./assets/travel-os.svg"
+  brand_color: "#1F4E78"
+  default_prompt: "Use $travel-os to recover this trip archive and show the current version, conflicts, and next action before making changes."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Travel OS</title>
+  <rect width="512" height="512" rx="112" fill="#1F4E78"/>
+  <path d="M104 360c72-8 80-96 152-88 56 6 64 64 120 48" fill="none" stroke="#9ED8F0" stroke-width="32" stroke-linecap="round"/>
+  <circle cx="104" cy="360" r="34" fill="#fff"/>
+  <path d="M376 92c-62 0-108 46-108 104 0 82 108 180 108 180s108-98 108-180c0-58-46-104-108-104zm0 144a44 44 0 1 1 0-88 44 44 0 0 1 0 88z" fill="#fff"/>
+</svg>
