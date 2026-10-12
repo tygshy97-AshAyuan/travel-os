@@ -45,6 +45,23 @@ Environment: Codex desktop on Chinese Windows, using the standard `skill-install
 
 This repeat confirms that the accumulated schema and validator changes through v0.4.31 remain installable and accept the retained full-lifecycle evidence. It does not claim a new model-behavior run because this release series did not change `SKILL.md` workflow instructions.
 
+## Codex on Windows package regression - v0.4.40
+
+Environment: Codex desktop on Chinese Windows, using the standard `skill-installer` against the public GitHub tag in an isolated local destination.
+
+| Check | Evidence | Result |
+|---|---|---|
+| Install from current GitHub tag | `install-skill-from-github.py --repo tygshy97-AshAyuan/travel-os --path skill/travel-os --ref v0.4.40` | Passed |
+| Published checksums | The public SHA-256 manifest matched both downloaded ZIP assets | Passed |
+| Published source identity | All 37 files in the source ZIP and all 12 files in the Skill ZIP exactly matched their tagged Git blobs | Passed |
+| Installed content identity | All 12 installed files exactly matched the public Skill ZIP | Passed |
+| Official Skill format validation | `quick_validate.py` against the isolated installed Skill | Passed |
+| Installed template bootstrap | Installed validator returned `READY` for the installed blank workbook | Passed |
+| Canonical example archive | Installed validator returned `PASS` for `TravelOS-Example.xlsx` | Passed |
+| Retained end-to-end archive | Installed validator returned `PASS` for the fictional planning, change, execution, weather-fallback and review workbook | Passed |
+
+This repeat confirms that the published v0.4.40 assets match the tagged source, install without modification, and preserve the current workbook contract. It does not claim a new model-behavior run because the release did not change `SKILL.md` workflow instructions.
+
 ## Remaining client evidence
 
-The original run proves one complete supported-client behavior path, and the v0.4.31 regression proves the latest package and workbook contract. Neither proves universal model compliance. Repeat the full model-behavior scenario after changes to `SKILL.md` workflow instructions or spreadsheet write tooling; repeat package and archive validation after schema or validator changes.
+The original run proves one complete supported-client behavior path, and the v0.4.40 regression proves the latest package and workbook contract. Neither proves universal model compliance. Repeat the full model-behavior scenario after changes to `SKILL.md` workflow instructions or spreadsheet write tooling; repeat package and archive validation after schema or validator changes.

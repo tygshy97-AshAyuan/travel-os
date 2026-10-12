@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Documentation
+
+- Recorded public v0.4.40 checksum, tagged-content, isolated-install and workbook regression evidence.
+
 ## v0.4.40 - 2026-10-12
 
 ### Fixed
