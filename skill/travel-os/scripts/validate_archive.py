@@ -496,6 +496,19 @@ def validate_rows(rows):
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
     version_by_id = {row[0]: row for row in version_rows}
+    root_versions = [
+        row[0] for row in version_rows if len(row) <= 5 or not row[5]
+    ]
+    if version_rows and len(root_versions) != 1:
+        errors.append(
+            f"Change Log must contain exactly one root version; found {len(root_versions)}"
+        )
+    if active and status in {"Active", "Completed"} and version_rows:
+        latest = version_rows[-1][0]
+        if active != latest:
+            errors.append(
+                f"Active Version {active} is not latest Change Log version {latest}"
+            )
     plan_versions = {
         row[1] for row in rows["Daily Plan"][2:] if len(row) > 1 and row[1]
     }
@@ -505,7 +518,8 @@ def validate_rows(rows):
             f"Daily Plan references missing versions: {', '.join(missing_versions)}"
         )
     version_order = {row[0]: index for index, row in enumerate(version_rows)}
-    for row_number, row in enumerate(rows["Change Log"][2:], start=3):
+    for index, row in enumerate(version_rows):
+        row_number = index + 3
         author = row[2] if len(row) > 2 else ""
         if author and author not in member_ids:
             errors.append(
@@ -516,6 +530,10 @@ def validate_rows(rows):
                 f"Change Log row {row_number} author {author} must be Owner or Editor"
             )
         predecessor = row[5] if len(row) > 5 else ""
+        if index and predecessor != version_rows[index - 1][0]:
+            errors.append(
+                f"Change Log row {row_number} must follow previous version {version_rows[index - 1][0]}"
+            )
         if predecessor and (
             predecessor not in versions
             or version_order[predecessor] >= version_order[row[0]]

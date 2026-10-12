@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.23 - 2026-10-12
+
+### Fixed
+
+- Required one root and a linear predecessor chain in Change Log.
+- Required Active and Completed trips to point Active Version at the final Change Log version.
+- Rejected branched histories and stale active-version pointers.
+
 ## v0.4.22 - 2026-10-12
 
 ### Fixed

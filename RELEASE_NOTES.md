@@ -1,7 +1,7 @@
-# Travel OS v0.4.22
+# Travel OS v0.4.23
 
-This release turns collaboration roles into enforced archive permissions.
+This release prevents recovery from selecting a stale or ambiguous plan history.
 
-Viewer members are now read-only: they cannot submit proposals, own checklist tasks or author versions. Change Log authors must be Owner or Editor, while Owner, Editor and Member may submit proposals and own work. Member rows must also retain a display name and role.
+Change Log must now contain exactly one root followed by a linear predecessor chain. For Active and Completed trips, Active Version must point to the final version in that chain. Branched histories, multiple roots and stale active pointers are rejected before planning or edits continue.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 49 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 50 contract tests.
