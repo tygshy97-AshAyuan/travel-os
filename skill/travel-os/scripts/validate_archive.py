@@ -38,6 +38,7 @@ EXPECTED_HEADERS = {
 MAX_ARCHIVE_ENTRIES = 1000
 MAX_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
 MAX_XML_BYTES = 8 * 1024 * 1024
+VERSION_PATTERN = re.compile(r"v\d+\.\d+\.\d+(?:-[0-9A-Za-z][0-9A-Za-z.-]*)?")
 ARCHIVE_ERRORS = (
     KeyError,
     IndexError,
@@ -516,6 +517,13 @@ def validate_rows(rows):
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
+    invalid_versions = sorted(
+        version for version in versions if not VERSION_PATTERN.fullmatch(version)
+    )
+    if invalid_versions:
+        errors.append(
+            "Change Log has invalid version labels: " + ", ".join(invalid_versions)
+        )
     version_by_id = {row[0]: row for row in version_rows}
     accepted_result_versions = {
         row[9]

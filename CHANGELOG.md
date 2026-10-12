@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.29 - 2026-10-12
+
+### Fixed
+
+- Enforced documented `vMAJOR.MINOR.PATCH` labels for itinerary versions.
+- Allowed an optional hyphenated timestamp suffix for simple personal-trip versioning.
+
 ## v0.4.28 - 2026-10-12
 
 ### Fixed

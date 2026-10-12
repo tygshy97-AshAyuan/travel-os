@@ -129,6 +129,30 @@ class TravelOSContractTests(unittest.TestCase):
             self.assertIn(active, [row[1] for row in itinerary[2:] if len(row) > 1])
             self.assertEqual(1, sum(1 for row in versions[2:] if row and row[0] == active))
 
+    def test_version_labels_follow_the_documented_format(self):
+        for label, expected_error in (
+            ("latest", "Change Log has invalid version labels: latest"),
+            ("v0.1.0-20300401T020000Z", None),
+        ):
+            candidate = {
+                name: [row[:] for row in rows] for name, rows in self.rows.items()
+            }
+            overview_header = candidate["Travel Overview"][1]
+            candidate["Travel Overview"][2][
+                overview_header.index("Active Version")
+            ] = label
+            candidate["Change Log"][2][0] = label
+            for row in candidate["Daily Plan"][2:]:
+                if row and row[0]:
+                    row[1] = label
+            errors = validate_rows(candidate)
+            if expected_error:
+                self.assertIn(expected_error, errors)
+            else:
+                self.assertFalse(
+                    any("invalid version labels" in error for error in errors)
+                )
+
     def test_draft_cannot_claim_an_active_version(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         overview_header = broken["Travel Overview"][1]
