@@ -590,6 +590,30 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_preferences_have_a_valid_lifecycle(self):
+        missing = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        missing["Preferences"][2][8] = ""
+        self.assertIn(
+            "Preferences row 3 is missing: 生效日期",
+            validate_rows(missing),
+        )
+
+        invalid = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        invalid["Preferences"][2][8] = "not-a-date"
+        self.assertIn(
+            "Preferences row 3 has an invalid effective date",
+            validate_rows(invalid),
+        )
+
+        reversed_range = {
+            name: [row[:] for row in rows] for name, rows in self.rows.items()
+        }
+        reversed_range["Preferences"][2][9] = "2030-04-30"
+        self.assertIn(
+            "Preferences row 3 expires before its effective date",
+            validate_rows(reversed_range),
+        )
+
     def test_map_url_preserves_route_and_mode(self):
         url = build_directions_url(
             "Tokyo Station",

@@ -22,4 +22,4 @@ Every suggestion has an author, affected item/day, reason, status and decision o
 
 ## Post-trip learning
 
-Record a durable preference only when the traveler states it explicitly or the archive contains repeated observed choices. Name the traveler, concrete preference, evidence and confidence. Keep one-off choices scoped to the trip, and never turn health, identity or other sensitive details into inferred profile labels.
+Record a durable preference only when the traveler states it explicitly or the archive contains repeated observed choices. Name the traveler, concrete preference, evidence, confidence and effective date; set an expiry when the preference is temporary. Keep one-off choices scoped to the trip, and never turn health, identity or other sensitive details into inferred profile labels.

@@ -16,7 +16,7 @@ Active Version is required for Active or Completed trips. It must exist in both 
 
 One row per durable preference or trip-specific constraint: ID, scope, category, priority, traveler, statement, evidence, confidence, valid from/to and notes. Scope is Long term or This trip. Priority distinguishes hard constraints from preferences. Explicit user statements outrank inferred patterns; MBTI and astrology may be recorded only as optional entertainment context, never as factual decision rules.
 
-Every preference row requires its ID, scope, category, priority, subject, statement, evidence and confidence. Evidence must say whether the preference came from an explicit statement or a repeated observed choice; a guess from one event is not a durable preference.
+Every preference row requires its ID, scope, category, priority, subject, statement, evidence, confidence and a valid effective date. An optional expiry date must be valid and cannot precede the effective date. Evidence must say whether the preference came from an explicit statement or a repeated observed choice; a guess from one event is not a durable preference.
 
 ## Bookings
 
@@ -85,7 +85,7 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Checklist dependencies contain no direct or indirect cycles.
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
 - Change Log authors, Proposal submitters and Checklist assignees obey their member roles; Viewer remains read-only.
-- Preference rows include the decision-driving statement, evidence and confidence instead of an unsupported profile label.
+- Preference rows include the decision-driving statement, evidence, confidence and a valid lifecycle instead of an unsupported or timeless profile label.
 - Confirmed facts include a source and checked time when time-sensitive.
 - A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and a valid Checked Time.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.

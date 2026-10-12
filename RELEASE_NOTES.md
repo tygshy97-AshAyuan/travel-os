@@ -1,7 +1,7 @@
-# Travel OS v0.4.30
+# Travel OS v0.4.31
 
-This release prevents invalid timestamps from masquerading as verified travel facts.
+This release gives durable preferences a verifiable lifecycle.
 
-Confirmed bookings and Ready itinerary items must now pair their source with a valid checked timestamp. Values such as `unknown` or `not-a-time` no longer satisfy the evidence requirement used for recovery and stale-fact review.
+Every preference or constraint now requires a valid effective date. Optional expiry dates must also be valid and cannot precede the effective date, so recovery can distinguish current memory from expired trip context.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 57 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 58 contract tests.

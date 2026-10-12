@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.31 - 2026-10-12
+
+### Fixed
+
+- Required every preference or constraint to have a valid effective date.
+- Validated optional expiry dates and rejected preference lifecycles that end before they begin.
+
 ## v0.4.30 - 2026-10-12
 
 ### Fixed

@@ -456,6 +456,7 @@ def validate_rows(rows):
                 5: "偏好或约束",
                 6: "证据",
                 7: "置信度",
+                8: "生效日期",
             }
             missing_fields = [
                 name for index, name in required.items()
@@ -464,6 +465,20 @@ def validate_rows(rows):
             if missing_fields:
                 errors.append(
                     f"Preferences row {row_number} is missing: {', '.join(missing_fields)}"
+                )
+            effective_value = row[8] if len(row) > 8 else ""
+            expiry_value = row[9] if len(row) > 9 else ""
+            effective = _date(effective_value)
+            expiry = _date(expiry_value)
+            if effective_value and not effective:
+                errors.append(
+                    f"Preferences row {row_number} has an invalid effective date"
+                )
+            if expiry_value and not expiry:
+                errors.append(f"Preferences row {row_number} has an invalid expiry date")
+            elif effective and expiry and expiry < effective:
+                errors.append(
+                    f"Preferences row {row_number} expires before its effective date"
                 )
         traveler = row[4] if len(row) > 4 else ""
         if traveler and traveler != "所有人" and traveler not in member_ids:
