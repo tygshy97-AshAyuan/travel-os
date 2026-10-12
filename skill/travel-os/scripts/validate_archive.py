@@ -280,6 +280,15 @@ def validate_rows(rows):
             errors.append(
                 f"Daily Plan row {row_number} has an invalid time zone: {time_zone}"
             )
+        if len(row) > 11 and row[11] == "Ready":
+            if len(row) <= 15 or not row[14] or not row[15]:
+                errors.append(
+                    f"Ready Daily Plan row {row_number} needs source and checked time"
+                )
+            elif not _datetime(row[15]):
+                errors.append(
+                    f"Ready Daily Plan row {row_number} has an invalid checked time"
+                )
         cost = row[12] if len(row) > 12 else ""
         currency = row[13] if len(row) > 13 else ""
         if bool(cost) != bool(currency):
@@ -408,17 +417,6 @@ def validate_rows(rows):
                 errors.append(
                     f"Ready Daily Plan row {row_number} requires confirmed booking {booking_id}"
                 )
-
-        for row_number, row in enumerate(active_rows, start=3):
-            if len(row) > 11 and row[11] == "Ready":
-                if len(row) <= 15 or not row[14] or not row[15]:
-                    errors.append(
-                        f"Ready Daily Plan row {row_number} needs source and checked time"
-                    )
-                elif not _datetime(row[15]):
-                    errors.append(
-                        f"Ready Daily Plan row {row_number} has an invalid checked time"
-                    )
 
         if start and end and start <= end:
             for row_number, row in enumerate(active_rows, start=3):

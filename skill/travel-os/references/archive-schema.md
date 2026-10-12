@@ -88,6 +88,6 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
 - Change Log authors, Proposal submitters and Checklist assignees obey their member roles; Viewer remains read-only.
 - Preference rows include the decision-driving statement, evidence, confidence and a valid lifecycle instead of an unsupported or timeless profile label.
-- Confirmed facts include a source and checked time when time-sensitive.
-- A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and a valid Checked Time.
+- Confirmed facts include a source and checked time when time-sensitive, including facts retained in historical plan snapshots.
+- A booking marked `已确认` and a Daily Plan item marked `Ready` in any version both require Source and a valid Checked Time.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.
