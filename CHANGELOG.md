@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.19 - 2026-10-12
+
+### Fixed
+
+- Required every accepted Proposal ID to appear in the reason or summary of its result version's Change Log row.
+- Rejected accepted proposals that point at an unrelated existing version.
+
 ## v0.4.18 - 2026-10-12
 
 ### Fixed

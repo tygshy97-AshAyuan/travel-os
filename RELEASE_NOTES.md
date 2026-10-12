@@ -1,7 +1,7 @@
-# Travel OS v0.4.18
+# Travel OS v0.4.19
 
-This release prevents a trip from being closed while its operational state is still unfinished.
+This release makes accepted collaboration decisions traceable to the plan version that implements them.
 
-An archive marked `Completed` must now be in the post-trip phase, every active itinerary item must be `Done` or `Skipped`, and every checklist task must be completed or cancelled. This keeps recovery and post-trip learning from treating unresolved plans as finished history.
+An accepted proposal can no longer point at any existing version and appear valid. Its Proposal ID must be retained in the reason or summary of the result version's Change Log row, so the Owner decision and the resulting itinerary edit can be audited together.
 
-The stricter validator accepts the previously generated end-to-end fictional workbook. The package passes 44 contract tests.
+The stricter validator accepts the previously generated end-to-end fictional workbook. The package passes 45 contract tests.

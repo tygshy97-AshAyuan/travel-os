@@ -52,7 +52,7 @@ Exactly one member has the Owner role, that member matches Travel Overview's own
 
 One row per suggestion or decision: ID, submitted by, date, affected item/day, proposal, reason, status, decision owner, resolution and resulting version.
 
-A proposal marked Accepted or Rejected must name the trip Owner as decision owner and record the resolution. An accepted proposal must also name the resulting valid version. Pending or Needs clarification proposals never change the itinerary.
+A proposal marked Accepted or Rejected must name the trip Owner as decision owner and record the resolution. An accepted proposal must also name the resulting valid version, whose Change Log reason or summary includes the Proposal ID. Pending or Needs clarification proposals never change the itinerary.
 
 ## Change Log
 
