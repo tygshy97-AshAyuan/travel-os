@@ -247,6 +247,28 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_change_log_requires_auditable_fields(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        history = broken["Change Log"][2]
+        history[1] = ""
+        history[2] = ""
+        history[3] = ""
+        history[4] = ""
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Change Log row 3 is missing: 创建时间, 作者, 原因, 变更摘要",
+            errors,
+        )
+
+        invalid_time = {
+            name: [row[:] for row in rows] for name, rows in self.rows.items()
+        }
+        invalid_time["Change Log"][2][1] = "not-a-time"
+        self.assertIn(
+            "Change Log row 3 has an invalid creation time",
+            validate_rows(invalid_time),
+        )
+
     def test_version_history_has_one_root_and_latest_active_version(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         history = broken["Change Log"][2][:]

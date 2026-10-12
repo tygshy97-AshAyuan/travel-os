@@ -1,7 +1,7 @@
-# Travel OS v0.4.26
+# Travel OS v0.4.27
 
-This release prevents incomplete trip archives from passing validation and failing later during recovery or execution.
+This release keeps version history useful for recovery and audit.
 
-Travel Overview now retains the trip title, destination, traveler count and phase. Bookings retain their category, provider and status. Checklist tasks retain their category, task, owner, valid due date and status.
+Every Change Log row now requires a valid creation time, author, reason and change summary. An archive with an incomplete or invalid version record is rejected before Travel OS reads it as current or writes another change.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 53 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 54 contract tests.

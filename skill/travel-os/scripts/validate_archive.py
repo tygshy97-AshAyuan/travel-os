@@ -546,6 +546,22 @@ def validate_rows(rows):
     version_order = {row[0]: index for index, row in enumerate(version_rows)}
     for index, row in enumerate(version_rows):
         row_number = index + 3
+        missing_fields = [
+            name
+            for field_index, name in {
+                1: "创建时间",
+                2: "作者",
+                3: "原因",
+                4: "变更摘要",
+            }.items()
+            if len(row) <= field_index or not row[field_index]
+        ]
+        if missing_fields:
+            errors.append(
+                f"Change Log row {row_number} is missing: {', '.join(missing_fields)}"
+            )
+        if len(row) > 1 and row[1] and not _datetime(row[1]):
+            errors.append(f"Change Log row {row_number} has an invalid creation time")
         author = row[2] if len(row) > 2 else ""
         if author and author not in member_ids:
             errors.append(
