@@ -63,6 +63,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Exactly one trip overview data row exists in a workbook.
 - Every filled row in the other seven sheets has its sheet-specific ID.
 - Active and Completed trips have a non-empty Active Version.
+- A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Daily Plan rows contain the minimum executable fields, and successor versions never drop or regress Done or Skipped items.

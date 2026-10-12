@@ -141,6 +141,19 @@ class TravelOSContractTests(unittest.TestCase):
     def test_example_passes_runtime_validator(self):
         self.assertEqual([], validate(EXAMPLE_XLSX))
 
+    def test_completed_trip_requires_closed_execution_state(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        overview_header = broken["Travel Overview"][1]
+        trip = broken["Travel Overview"][2]
+        trip[overview_header.index("状态")] = "Completed"
+        errors = validate_rows(broken)
+        self.assertIn("Completed trip must be in 旅行后 phase", errors)
+        self.assertIn(
+            "Completed trip has unfinished active items: I-001, I-002",
+            errors,
+        )
+        self.assertIn("Completed trip has open checklist tasks: T-001", errors)
+
     def test_duplicate_ids_are_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"].append(broken["Daily Plan"][2][:])

@@ -29,7 +29,7 @@ For a new trip, copy [assets/TravelOS-Template.xlsx](assets/TravelOS-Template.xl
 - **Execute:** return the next actionable block, local time, transport buffer, booking reference location, current verification state and fallback. Record actual progress in the active `Daily Plan` row's execution status and notes; version only changes that affect the remaining plan.
 - **Collaborate:** record each suggestion and its owner-visible status. Never treat silence or a vote as authority unless the trip owner defined that rule.
 - **Resume:** run recovery again even if the chat claims to remember the trip.
-- **Review:** after the trip, compare planned and actual outcomes, close tasks, record reusable lessons, and update Preferences only from explicit feedback or repeated observed choices. Never infer sensitive traits.
+- **Review:** after the trip, compare planned and actual outcomes, mark every active item `Done` or `Skipped`, close or cancel every checklist task, then set the trip to `Completed`; record reusable lessons and update Preferences only from explicit feedback or repeated observed choices. Never infer sensitive traits.
 
 Read [references/operating-rules.md](references/operating-rules.md) for planning, verification and execution rules.
 Read [references/planning-rules.md](references/planning-rules.md) before researching destinations or building a route.

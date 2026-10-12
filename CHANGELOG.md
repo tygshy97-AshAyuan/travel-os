@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.18 - 2026-10-12
+
+### Fixed
+
+- Rejected Completed trips that are not in the post-trip phase.
+- Rejected Completed trips with unfinished active itinerary items or open checklist tasks.
+- Made the Review workflow close execution state before marking the archive Completed.
+
 ## v0.4.17 - 2026-10-12
 
 ### Verified

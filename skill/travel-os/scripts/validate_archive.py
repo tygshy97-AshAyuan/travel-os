@@ -246,9 +246,12 @@ def validate_rows(rows):
             errors.append(f"Travel Overview is missing {field}")
 
     active = trip[overview_header.index("Active Version")]
+    phase = trip[overview_header.index("旅行阶段")]
     status = trip[overview_header.index("状态")]
     if status in {"Active", "Completed"} and not active:
         errors.append(f"{status} trip has no Active Version")
+    if status == "Completed" and phase != "旅行后":
+        errors.append("Completed trip must be in 旅行后 phase")
     start = _date(trip[overview_header.index("开始日期")])
     end = _date(trip[overview_header.index("结束日期")])
     if not start or not end or start > end:
@@ -268,6 +271,18 @@ def validate_rows(rows):
             errors.append(
                 f"Active Version {active} must have exactly one Change Log row; found {len(version_rows)}"
             )
+
+        if status == "Completed":
+            unfinished_items = sorted(
+                row[0]
+                for row in active_rows
+                if len(row) <= 11 or row[11] not in {"Done", "Skipped"}
+            )
+            if unfinished_items:
+                errors.append(
+                    "Completed trip has unfinished active items: "
+                    + ", ".join(unfinished_items)
+                )
 
         booking_by_id = {
             row[0]: row for row in rows["Bookings"][2:] if row and row[0]
@@ -500,6 +515,16 @@ def validate_rows(rows):
     plan_ids = {row[0] for row in rows["Daily Plan"][2:] if row and row[0]}
     booking_ids = {row[0] for row in rows["Bookings"][2:] if row and row[0]}
     task_ids = {row[0] for row in rows["Checklist"][2:] if row and row[0]}
+    if status == "Completed":
+        open_tasks = sorted(
+            row[0]
+            for row in rows["Checklist"][2:]
+            if row and row[0] and (len(row) <= 5 or row[5] not in {"已完成", "已取消"})
+        )
+        if open_tasks:
+            errors.append(
+                "Completed trip has open checklist tasks: " + ", ".join(open_tasks)
+            )
     dependencies = {}
     for row_number, row in enumerate(rows["Checklist"][2:], start=3):
         task_id = row[0] if row else ""
