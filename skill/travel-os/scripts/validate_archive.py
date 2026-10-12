@@ -245,7 +245,18 @@ def validate_rows(rows):
 
     overview_header = rows["Travel Overview"][1]
     trip = trips[0]
-    for field in ("Trip ID", "开始日期", "结束日期", "负责人", "状态", "主时区"):
+    for field in (
+        "Trip ID",
+        "旅行标题",
+        "目的地",
+        "开始日期",
+        "结束日期",
+        "人数",
+        "负责人",
+        "旅行阶段",
+        "状态",
+        "主时区",
+    ):
         if not trip[overview_header.index(field)]:
             errors.append(f"Travel Overview is missing {field}")
 
@@ -472,6 +483,16 @@ def validate_rows(rows):
             )
 
     for row_number, row in enumerate(rows["Bookings"][2:], start=3):
+        if row and row[0]:
+            missing_fields = [
+                name
+                for index, name in {1: "类别", 2: "供应方", 6: "状态"}.items()
+                if len(row) <= index or not row[index]
+            ]
+            if missing_fields:
+                errors.append(
+                    f"Bookings row {row_number} is missing: {', '.join(missing_fields)}"
+                )
         start_time = _datetime(row[3] if len(row) > 3 else "")
         end_time = _datetime(row[4] if len(row) > 4 else "")
         if len(row) > 3 and row[3] and not start_time:
@@ -595,6 +616,24 @@ def validate_rows(rows):
     dependencies = {}
     for row_number, row in enumerate(rows["Checklist"][2:], start=3):
         task_id = row[0] if row else ""
+        if task_id:
+            missing_fields = [
+                name
+                for index, name in {
+                    1: "类别",
+                    2: "任务",
+                    3: "负责人",
+                    4: "截止日期",
+                    5: "状态",
+                }.items()
+                if len(row) <= index or not row[index]
+            ]
+            if missing_fields:
+                errors.append(
+                    f"Checklist row {row_number} is missing: {', '.join(missing_fields)}"
+                )
+            if len(row) > 4 and row[4] and not _date(row[4]):
+                errors.append(f"Checklist row {row_number} has an invalid due date")
         dependency = row[6] if len(row) > 6 else ""
         related = row[7] if len(row) > 7 else ""
         if task_id and dependency:

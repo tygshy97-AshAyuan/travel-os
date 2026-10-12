@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.26 - 2026-10-12
+
+### Fixed
+
+- Required the trip title, destination, traveler count and phase so a recovered archive retains its operating context.
+- Required booking category, provider and status so itinerary dependencies can be evaluated safely.
+- Required checklist category, task, owner, valid due date and status so action lists remain executable.
+
 ## v0.4.25 - 2026-10-12
 
 ### Fixed
