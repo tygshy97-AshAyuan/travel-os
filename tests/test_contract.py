@@ -646,6 +646,16 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertIn("Bookings row 3 has an invalid checked time", errors)
         self.assertIn("Ready Daily Plan row 3 has an invalid checked time", errors)
 
+    def test_audit_timestamps_include_a_time(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Bookings"][2][12] = "2030-05-01"
+        broken["Daily Plan"][2][15] = "2030-05-01"
+        broken["Change Log"][2][1] = "2030-05-01"
+        errors = validate_rows(broken)
+        self.assertIn("Bookings row 3 has an invalid checked time", errors)
+        self.assertIn("Ready Daily Plan row 3 has an invalid checked time", errors)
+        self.assertIn("Change Log row 3 has an invalid creation time", errors)
+
     def test_historical_ready_plan_keeps_fact_evidence(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         prior_plan = broken["Daily Plan"][2][:]

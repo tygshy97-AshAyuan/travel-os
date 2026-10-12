@@ -167,6 +167,15 @@ def _date(value):
     return parsed.date() if parsed else None
 
 
+def _timestamp(value):
+    parsed = _datetime(value)
+    if not parsed:
+        return None
+    if re.fullmatch(r"\d+(?:\.\d+)?", value):
+        return parsed
+    return parsed if re.search(r"[T ]\d{2}:\d{2}", value) else None
+
+
 def _amount(value):
     try:
         amount = Decimal(str(value))
@@ -285,7 +294,7 @@ def validate_rows(rows):
                 errors.append(
                     f"Ready Daily Plan row {row_number} needs source and checked time"
                 )
-            elif not _datetime(row[15]):
+            elif not _timestamp(row[15]):
                 errors.append(
                     f"Ready Daily Plan row {row_number} has an invalid checked time"
                 )
@@ -620,7 +629,7 @@ def validate_rows(rows):
                 errors.append(
                     f"Confirmed booking on row {row_number} needs source and checked time"
                 )
-            elif not _datetime(row[12]):
+            elif not _timestamp(row[12]):
                 errors.append(f"Bookings row {row_number} has an invalid checked time")
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
@@ -682,7 +691,7 @@ def validate_rows(rows):
             errors.append(
                 f"Change Log row {row_number} is missing: {', '.join(missing_fields)}"
             )
-        created_time = _datetime(row[1] if len(row) > 1 else "")
+        created_time = _timestamp(row[1] if len(row) > 1 else "")
         if len(row) > 1 and row[1] and not created_time:
             errors.append(f"Change Log row {row_number} has an invalid creation time")
         author = row[2] if len(row) > 2 else ""
@@ -706,7 +715,7 @@ def validate_rows(rows):
                 f"Change Log row {row_number} must follow previous version {version_rows[index - 1][0]}"
             )
         if index and predecessor and created_time:
-            previous_created = _datetime(version_rows[index - 1][1])
+            previous_created = _timestamp(version_rows[index - 1][1])
             if previous_created:
                 created_is_zoned = created_time.utcoffset() is not None
                 previous_is_zoned = previous_created.utcoffset() is not None
@@ -879,7 +888,7 @@ def validate_rows(rows):
             else:
                 proposal_date = _date(row[2] if len(row) > 2 else "")
                 result_row = version_by_id[result_version]
-                result_created = _datetime(result_row[1] if len(result_row) > 1 else "")
+                result_created = _timestamp(result_row[1] if len(result_row) > 1 else "")
                 if (
                     proposal_date
                     and result_created
