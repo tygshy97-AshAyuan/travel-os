@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.22 - 2026-10-12
+
+### Fixed
+
+- Enforced collaboration permissions for Change Log authors, Proposal submitters and Checklist assignees.
+- Kept Viewer members read-only and limited version authorship to Owner or Editor.
+- Required every member row to retain a display name and role.
+
 ## v0.4.21 - 2026-10-12
 
 ### Fixed

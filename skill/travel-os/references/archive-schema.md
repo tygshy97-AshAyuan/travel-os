@@ -44,7 +44,7 @@ Dependencies must form an acyclic chain: a task cannot depend on itself, directl
 
 ## Members
 
-One row per traveler: member ID, display name, role, relationship, trip-specific needs, permissions and notes. Roles are Owner, Editor, Member and Viewer. Only Owner gives final approval unless the archive explicitly names another rule.
+One row per traveler: member ID, display name, role, relationship, trip-specific needs, permissions and notes. Roles are Owner, Editor, Member and Viewer. Owner and Editor may author versions; Owner, Editor and Member may submit proposals or own tasks; Viewer is read-only. Only Owner gives final approval unless the archive explicitly names another rule.
 
 Exactly one member has the Owner role, that member matches Travel Overview's owner, and the overview traveler count matches the number of member rows. A preference applies to `所有人` or an existing member ID.
 
@@ -79,6 +79,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
 - Checklist dependencies contain no direct or indirect cycles.
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
+- Change Log authors, Proposal submitters and Checklist assignees obey their member roles; Viewer remains read-only.
 - Preference rows include the decision-driving statement, evidence and confidence instead of an unsupported profile label.
 - Confirmed facts include a source and checked time when time-sensitive.
 - A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and Checked Time.

@@ -397,6 +397,20 @@ def validate_rows(rows):
     members = rows["Members"]
     member_rows = [row for row in members[2:] if row and row[0]]
     member_ids = {row[0] for row in member_rows}
+    member_roles = {
+        row[0]: row[2] if len(row) > 2 else "" for row in member_rows
+    }
+    for row_number, row in enumerate(members[2:], start=3):
+        if row and row[0]:
+            missing_fields = [
+                name
+                for index, name in {1: "显示名", 2: "角色"}.items()
+                if len(row) <= index or not row[index]
+            ]
+            if missing_fields:
+                errors.append(
+                    f"Members row {row_number} is missing: {', '.join(missing_fields)}"
+                )
     owners = [row[0] for row in member_rows if len(row) > 2 and row[2] == "Owner"]
     if len(owners) != 1:
         errors.append(f"Members must contain exactly one Owner; found {len(owners)}")
@@ -449,6 +463,14 @@ def validate_rows(rows):
                         f"{sheet_name} row {row_number} references missing member {row[index]}"
                     )
 
+    for row_number, row in enumerate(rows["Checklist"][2:], start=3):
+        assignee = row[3] if len(row) > 3 else ""
+        role = member_roles.get(assignee)
+        if assignee in member_roles and role not in {"Owner", "Editor", "Member"}:
+            errors.append(
+                f"Checklist row {row_number} assignee {assignee} with role {role or 'blank'} cannot own tasks"
+            )
+
     for row_number, row in enumerate(rows["Bookings"][2:], start=3):
         start_time = _datetime(row[3] if len(row) > 3 else "")
         end_time = _datetime(row[4] if len(row) > 4 else "")
@@ -484,6 +506,15 @@ def validate_rows(rows):
         )
     version_order = {row[0]: index for index, row in enumerate(version_rows)}
     for row_number, row in enumerate(rows["Change Log"][2:], start=3):
+        author = row[2] if len(row) > 2 else ""
+        if author and author not in member_ids:
+            errors.append(
+                f"Change Log row {row_number} references missing author {author}"
+            )
+        elif author and member_roles.get(author) not in {"Owner", "Editor"}:
+            errors.append(
+                f"Change Log row {row_number} author {author} must be Owner or Editor"
+            )
         predecessor = row[5] if len(row) > 5 else ""
         if predecessor and (
             predecessor not in versions
@@ -569,6 +600,12 @@ def validate_rows(rows):
         processed.update(trail)
 
     for row_number, row in enumerate(rows["Proposals"][2:], start=3):
+        submitter = row[1] if len(row) > 1 else ""
+        role = member_roles.get(submitter)
+        if submitter in member_roles and role not in {"Owner", "Editor", "Member"}:
+            errors.append(
+                f"Proposals row {row_number} submitter {submitter} with role {role or 'blank'} cannot submit proposals"
+            )
         status = row[6] if len(row) > 6 else ""
         if status in {"接受", "拒绝"}:
             decision_owner = row[7] if len(row) > 7 else ""
