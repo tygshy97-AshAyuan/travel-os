@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.4.16 - 2026-10-12
+
+### Fixed
+
+- Replaced non-ASCII arrows that broke a legacy Windows Skill validator using the GBK locale.
+- Added an automated ASCII compatibility check for `SKILL.md`.
+
+### Added
+
+- Recorded Codex GitHub installation and official Skill validation evidence.
+
 ## v0.4.15 - 2026-10-12
 
 ### Fixed
