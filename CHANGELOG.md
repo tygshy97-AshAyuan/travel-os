@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Documentation
+
+- Replaced manual spreadsheet setup in the five-minute quickstart with an AI-guided blank-template flow and separate recovery prompt.
+
 ## v0.4.41 - 2026-10-12
 
 ### Fixed
