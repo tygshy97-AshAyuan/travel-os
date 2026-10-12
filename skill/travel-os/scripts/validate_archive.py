@@ -543,6 +543,12 @@ def validate_rows(rows):
         errors.append(
             f"Daily Plan references missing versions: {', '.join(missing_versions)}"
         )
+    missing_snapshots = sorted(versions - plan_versions)
+    if missing_snapshots:
+        errors.append(
+            "Change Log versions have no Daily Plan snapshot: "
+            + ", ".join(missing_snapshots)
+        )
     version_order = {row[0]: index for index, row in enumerate(version_rows)}
     for index, row in enumerate(version_rows):
         row_number = index + 3

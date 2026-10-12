@@ -2,7 +2,7 @@
 
 Use `vMAJOR.MINOR.PATCH` labels. Increment PATCH for ordinary itinerary edits, MINOR for structural changes across several days, and MAJOR when the trip scope changes. For a simple personal trip, a timestamped suffix is acceptable if it remains unique.
 
-Version history is one linear chain with exactly one root. Every later Change Log row names the immediately preceding version, and an Active or Completed trip points to the last row in that chain.
+Version history is one linear chain with exactly one root. Every Change Log version retains its complete Daily Plan snapshot, every later Change Log row names the immediately preceding version, and an Active or Completed trip points to the last row in that chain.
 
 The trip Owner authors the root version when confirming the first plan. Every successor version is named by an accepted Proposal resolved by the Owner; an Editor may author the resulting Change Log row, but cannot supply final approval.
 

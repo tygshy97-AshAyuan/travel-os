@@ -11,7 +11,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | User profiling | `Preferences` with scope, evidence and confidence | Automated preference integrity tests | Implemented |
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Manual behavior scenario | Implemented in Skill |
 | Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
-| Active Version recovery | Recovery protocol, Draft activation gate, auditable linear `Change Log` and latest-version rule | Automated Active Version, version audit-field, version-chain and unapproved-Draft tests | Implemented |
+| Active Version recovery | Recovery protocol, Draft activation gate, complete version snapshots, auditable linear `Change Log` and latest-version rule | Automated Active Version, snapshot completeness, version audit-field, version-chain and unapproved-Draft tests | Implemented |
 | Collaboration roles | `Members`, role permissions, complete Proposal lifecycle, bidirectional Owner approval and version traceability | Automated member-reference, Viewer boundary, proposal completeness, closure and proposal/version tests | Implemented |
 | Post-trip learning | Review workflow, closed execution state and durable preference rules | Automated completion-state and preference integrity tests; supported-client behavior scenario | Implemented and client-validated |
 | Weather re-planning | `weather-replanning.md`, fact states and atomic change workflow | Automated workflow contract; manual behavior scenarios | Implemented when a current weather source is available at runtime |

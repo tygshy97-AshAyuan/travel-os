@@ -70,7 +70,7 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Change Log has one root and a linear predecessor chain; Active Version is the final version in that chain.
 - The Owner authors the root version, and every successor version is backed by an accepted Proposal resolved by the Owner.
-- Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
+- Daily Plan rows use a unique Version plus Item ID pair; every referenced version exists in Change Log, and every Change Log version retains a Daily Plan snapshot.
 - Daily Plan rows contain the minimum executable fields, and successor versions never drop or regress Done or Skipped items.
 - Timed current items have valid ranges, explicit overnight intent and no same-time-zone overlaps.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
