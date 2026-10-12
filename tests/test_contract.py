@@ -67,6 +67,16 @@ class TravelOSContractTests(unittest.TestCase):
         )
         self.assertIn("security/advisories/new", config)
 
+    def test_workflow_actions_are_pinned_to_commits(self):
+        for name in ("validate.yml", "release.yml"):
+            workflow = (ROOT / ".github" / "workflows" / name).read_text(
+                encoding="utf-8"
+            )
+            refs = re.findall(r"uses:\s*[^\s@]+@([^\s#]+)", workflow)
+            self.assertTrue(refs, name)
+            for ref in refs:
+                self.assertRegex(ref, r"\A[0-9a-f]{40}\Z", name)
+
     def test_installed_skill_contains_canonical_template(self):
         self.assertEqual(
             XLSX.read_bytes(),
