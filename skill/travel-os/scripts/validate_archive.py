@@ -10,6 +10,12 @@ import zipfile
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
+try:
+    from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
+except ImportError:  # Python 3.8 fallback keeps syntax validation available.
+    ZoneInfo = None
+    ZoneInfoNotFoundError = KeyError
+
 
 NS = {
     "m": "http://schemas.openxmlformats.org/spreadsheetml/2006/main",
@@ -40,6 +46,13 @@ MAX_ARCHIVE_ENTRIES = 1000
 MAX_UNCOMPRESSED_BYTES = 64 * 1024 * 1024
 MAX_XML_BYTES = 8 * 1024 * 1024
 VERSION_PATTERN = re.compile(r"v\d+\.\d+\.\d+(?:-[0-9A-Za-z][0-9A-Za-z.-]*)?")
+TIME_ZONE_PATTERN = re.compile(
+    r"(?:[A-Za-z0-9][A-Za-z0-9._+-]*/)*[A-Za-z0-9][A-Za-z0-9._+-]*"
+)
+try:
+    TIME_ZONE_DATABASE_AVAILABLE = ZoneInfo is not None and bool(ZoneInfo("Etc/UTC"))
+except ZoneInfoNotFoundError:
+    TIME_ZONE_DATABASE_AVAILABLE = False
 ARCHIVE_ERRORS = (
     KeyError,
     IndexError,
@@ -162,6 +175,18 @@ def _amount(value):
         return None
 
 
+def _valid_time_zone(value):
+    if not isinstance(value, str) or not TIME_ZONE_PATTERN.fullmatch(value):
+        return False
+    if not TIME_ZONE_DATABASE_AVAILABLE:
+        return True
+    try:
+        ZoneInfo(value)
+        return True
+    except ZoneInfoNotFoundError:
+        return False
+
+
 def _clock_seconds(value):
     if not value:
         return None
@@ -228,6 +253,11 @@ def validate_rows(rows):
             errors.append(
                 f"Daily Plan row {row_number} is missing: {', '.join(missing_fields)}"
             )
+        time_zone = row[5] if len(row) > 5 else ""
+        if time_zone and not _valid_time_zone(time_zone):
+            errors.append(
+                f"Daily Plan row {row_number} has an invalid time zone: {time_zone}"
+            )
         cost = row[12] if len(row) > 12 else ""
         currency = row[13] if len(row) > 13 else ""
         if bool(cost) != bool(currency):
@@ -292,6 +322,11 @@ def validate_rows(rows):
         errors.append("Completed trip must be in 旅行后 phase")
     start = _date(trip[overview_header.index("开始日期")])
     end = _date(trip[overview_header.index("结束日期")])
+    home_time_zone = trip[overview_header.index("主时区")]
+    if home_time_zone and not _valid_time_zone(home_time_zone):
+        errors.append(
+            f"Travel Overview has an invalid home time zone: {home_time_zone}"
+        )
     if not start or not end or start > end:
         errors.append("Travel Overview has an invalid date range")
 

@@ -1,7 +1,7 @@
-# Travel OS v0.4.32
+# Travel OS v0.4.33
 
-This release makes itinerary and booking costs safe to compare.
+This release protects local-time execution from missing or misspelled time zones.
 
-Costs remain optional when unknown. Once entered, itinerary costs and booking amounts must be non-negative numbers, and each must be paired with a three-letter uppercase currency code such as `CNY` or `USD`.
+Travel Overview and every Daily Plan row now use IANA names such as `Asia/Shanghai` or `America/New_York`. The validator checks the installed time-zone database when available and retains a portable syntax check when it is not.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 59 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 60 contract tests.

@@ -468,6 +468,15 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_time_zones_are_valid_iana_names(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        overview_header = broken["Travel Overview"][1]
+        broken["Travel Overview"][2][overview_header.index("主时区")] = "China time"
+        broken["Daily Plan"][2][5] = "Asia Shanghai"
+        errors = validate_rows(broken)
+        self.assertIn("Travel Overview has an invalid home time zone: China time", errors)
+        self.assertIn("Daily Plan row 3 has an invalid time zone: Asia Shanghai", errors)
+
     def test_new_version_preserves_completed_execution_state(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         prior_plan = broken["Daily Plan"][2][:]

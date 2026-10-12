@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.33 - 2026-10-12
+
+### Fixed
+
+- Validated Travel Overview and Daily Plan time zones as IANA names when the runtime time-zone database is available.
+- Kept portable syntax validation for Python environments without a local time-zone database.
+
 ## v0.4.32 - 2026-10-12
 
 ### Fixed
