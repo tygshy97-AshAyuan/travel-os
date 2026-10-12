@@ -151,6 +151,38 @@ class TravelOSContractTests(unittest.TestCase):
     def test_example_passes_runtime_validator(self):
         self.assertEqual([], validate(EXAMPLE_XLSX))
 
+    def test_operational_rows_require_minimum_fields(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        overview_header = broken["Travel Overview"][1]
+        trip = broken["Travel Overview"][2]
+        for field in ("旅行标题", "目的地", "人数", "旅行阶段"):
+            trip[overview_header.index(field)] = ""
+        booking = broken["Bookings"][2]
+        booking[1] = ""
+        booking[2] = ""
+        booking[6] = ""
+        checklist = broken["Checklist"][2]
+        checklist[1] = ""
+        checklist[2] = ""
+        checklist[3] = ""
+        checklist[4] = ""
+        checklist[5] = ""
+        errors = validate_rows(broken)
+        for field in ("旅行标题", "目的地", "人数", "旅行阶段"):
+            self.assertIn(f"Travel Overview is missing {field}", errors)
+        self.assertIn("Bookings row 3 is missing: 类别, 供应方, 状态", errors)
+        self.assertIn(
+            "Checklist row 3 is missing: 类别, 任务, 负责人, 截止日期, 状态",
+            errors,
+        )
+
+        invalid_date = {
+            name: [row[:] for row in rows] for name, rows in self.rows.items()
+        }
+        invalid_date["Checklist"][2][4] = "not-a-date"
+        errors = validate_rows(invalid_date)
+        self.assertIn("Checklist row 3 has an invalid due date", errors)
+
     def test_completed_trip_requires_closed_execution_state(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         overview_header = broken["Travel Overview"][1]

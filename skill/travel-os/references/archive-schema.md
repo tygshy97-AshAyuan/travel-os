@@ -8,7 +8,7 @@ A canonical workbook with the exact eight-sheet schema and no data rows is an un
 
 ## Travel Overview
 
-Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.
+Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, phase, status, home time zone and notes. Every field except Active Version and notes is required; Draft leaves Active Version empty.
 
 Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. A Draft has no Active Version until the Owner confirms the first plan.
 
@@ -20,7 +20,7 @@ Every preference row requires its ID, scope, category, priority, subject, statem
 
 ## Bookings
 
-One row per booking: ID, category, provider, start/end, city, status, refundable, amount, currency, reference location, source, checked time and notes. Store where a booking reference can be found, not the credential or full sensitive document.
+One row per booking: ID, category, provider, start/end, city, status, refundable, amount, currency, reference location, source, checked time and notes. ID, category, provider and status are required. Store where a booking reference can be found, not the credential or full sensitive document.
 
 When both booking times are present, use consistent time-zone notation and ensure the end does not precede the start. A current itinerary row cannot rely on a cancelled booking unless the row is Skipped or Blocked. A `Ready` itinerary row may reference only a confirmed or completed booking.
 
@@ -38,7 +38,7 @@ Execution status and notes may be updated in place because they record what happ
 
 ## Checklist
 
-One row per action: ID, category, task, owner, due date, status, dependency, related booking or plan item and notes. Typical categories include visa, transport, accommodation, packing, payment, insurance and confirmation.
+One row per action: ID, category, task, owner, due date, status, dependency, related booking or plan item and notes. ID, category, task, owner, valid due date and status are required. Typical categories include visa, transport, accommodation, packing, payment, insurance and confirmation.
 
 Dependencies must form an acyclic chain: a task cannot depend on itself, directly or through other tasks. Resolve a dependency cycle before using the checklist for execution.
 
@@ -63,6 +63,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Exactly one trip overview data row exists in a workbook.
 - Workbook cells contain literal values only; formulas are rejected because the archive does not need executable spreadsheet content.
 - Every filled row in the other seven sheets has its sheet-specific ID.
+- Travel Overview, Bookings and Checklist retain the minimum fields needed for recovery and execution.
 - Active and Completed trips have a non-empty Active Version.
 - Draft trips have no Active Version, so recovery cannot mistake an unapproved plan for the current itinerary.
 - A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.
