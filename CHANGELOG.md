@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.17 - 2026-10-12
+
+### Verified
+
+- Completed an installed-Skill end-to-end run on the fictional workbook: recovery, Owner-approved version change, execution update, unavailable-weather fallback and post-trip preference writeback.
+- Revalidated the generated workbook with the repository validator, a formula-error scan and rendered-sheet inspection.
+
 ## v0.4.16 - 2026-10-12
 
 ### Fixed
