@@ -467,6 +467,7 @@ def validate_rows(rows):
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
+    version_by_id = {row[0]: row for row in version_rows}
     plan_versions = {
         row[1] for row in rows["Daily Plan"][2:] if len(row) > 1 and row[1]
     }
@@ -575,10 +576,17 @@ def validate_rows(rows):
                     f"Resolved proposal on row {row_number} needs a resolution"
                 )
         if status == "接受":
+            proposal_id = row[0] if row else ""
             result_version = row[9] if len(row) > 9 else ""
             if not result_version or result_version not in versions:
                 errors.append(
                     f"Accepted proposal on row {row_number} has no valid result version"
+                )
+            elif proposal_id not in " ".join(
+                str(value or "") for value in version_by_id[result_version][3:5]
+            ):
+                errors.append(
+                    f"Accepted proposal {proposal_id} is not referenced by result version {result_version}"
                 )
     return errors
 

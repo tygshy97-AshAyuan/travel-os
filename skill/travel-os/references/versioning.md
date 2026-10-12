@@ -16,6 +16,6 @@ Apply an accepted change atomically:
 
 If any step fails, leave Active Version unchanged and report the partial write. Never delete the prior version.
 
-Suggestions remain Pending until the trip Owner resolves them. Accepted and rejected suggestions name the Owner as decision maker and retain the resolution. Accepted suggestions must name the resulting version. Conflicting accepted suggestions require clarification before the itinerary changes.
+Suggestions remain Pending until the trip Owner resolves them. Accepted and rejected suggestions name the Owner as decision maker and retain the resolution. Accepted suggestions must name the resulting version, and that Change Log row must include the Proposal ID in its reason or summary. Conflicting accepted suggestions require clarification before the itinerary changes.
 
 Execution-only updates may change the active `Daily Plan` row's execution status and notes in place. Create a new version when a deviation changes any remaining itinerary item, booking dependency, cost commitment or hard constraint.
