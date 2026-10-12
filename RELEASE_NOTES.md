@@ -1,7 +1,7 @@
-# Travel OS v0.4.21
+# Travel OS v0.4.22
 
-This release enforces the first-plan approval boundary.
+This release turns collaboration roles into enforced archive permissions.
 
-A trip in `Draft` status can no longer claim an Active Version. The Owner must confirm the first plan before it becomes the current itinerary, preventing recovery from treating an unapproved draft as established trip state.
+Viewer members are now read-only: they cannot submit proposals, own checklist tasks or author versions. Change Log authors must be Owner or Editor, while Owner, Editor and Member may submit proposals and own work. Member rows must also retain a display name and role.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 47 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 49 contract tests.

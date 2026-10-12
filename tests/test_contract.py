@@ -471,6 +471,35 @@ class TravelOSContractTests(unittest.TestCase):
                     if len(row) > index and row[index]:
                         self.assertIn(row[index], member_ids)
 
+    def test_viewer_cannot_change_or_own_trip_work(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Members"][3][2] = "Viewer"
+        broken["Checklist"][2][3] = "M-002"
+        broken["Proposals"][2][1] = "M-002"
+        broken["Change Log"][2][2] = "M-002"
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Checklist row 3 assignee M-002 with role Viewer cannot own tasks",
+            errors,
+        )
+        self.assertIn(
+            "Proposals row 3 submitter M-002 with role Viewer cannot submit proposals",
+            errors,
+        )
+        self.assertIn(
+            "Change Log row 3 author M-002 must be Owner or Editor",
+            errors,
+        )
+
+    def test_members_require_display_name_and_role(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Members"][3][1] = ""
+        broken["Members"][3][2] = ""
+        self.assertIn(
+            "Members row 4 is missing: 显示名, 角色",
+            validate_rows(broken),
+        )
+
     def test_no_common_credentials_or_redskill_scope(self):
         secret = re.compile(r"BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}")
         for path in ROOT.rglob("*"):
