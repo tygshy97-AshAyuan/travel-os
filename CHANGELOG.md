@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.38 - 2026-10-12
+
+### Fixed
+
+- Rejected Change Log successors whose creation time predates their predecessor.
+- Rejected mixed zoned and unzoned creation times within a version chain so chronological comparison remains unambiguous.
+
 ## v0.4.37 - 2026-10-12
 
 ### Fixed

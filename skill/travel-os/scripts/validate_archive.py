@@ -682,7 +682,8 @@ def validate_rows(rows):
             errors.append(
                 f"Change Log row {row_number} is missing: {', '.join(missing_fields)}"
             )
-        if len(row) > 1 and row[1] and not _datetime(row[1]):
+        created_time = _datetime(row[1] if len(row) > 1 else "")
+        if len(row) > 1 and row[1] and not created_time:
             errors.append(f"Change Log row {row_number} has an invalid creation time")
         author = row[2] if len(row) > 2 else ""
         if author and author not in member_ids:
@@ -704,6 +705,19 @@ def validate_rows(rows):
             errors.append(
                 f"Change Log row {row_number} must follow previous version {version_rows[index - 1][0]}"
             )
+        if index and predecessor and created_time:
+            previous_created = _datetime(version_rows[index - 1][1])
+            if previous_created:
+                created_is_zoned = created_time.utcoffset() is not None
+                previous_is_zoned = previous_created.utcoffset() is not None
+                if created_is_zoned != previous_is_zoned:
+                    errors.append(
+                        f"Change Log row {row_number} mixes zoned and unzoned creation times with predecessor {predecessor}"
+                    )
+                elif created_time < previous_created:
+                    errors.append(
+                        f"Change Log row {row_number} predates predecessor {predecessor}"
+                    )
         if predecessor and (
             predecessor not in versions
             or version_order[predecessor] >= version_order[row[0]]

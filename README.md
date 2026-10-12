@@ -1,7 +1,7 @@
 # Travel OS
 
 [![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
-[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.37)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.38)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **让 AI 不再每次从零规划旅行。**
