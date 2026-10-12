@@ -344,6 +344,23 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_historical_plan_date_is_validated(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior_plan = broken["Daily Plan"][2][:]
+        prior_plan[1] = "v0.0.9"
+        prior_plan[2] = "not-a-date"
+        row_number = len(broken["Daily Plan"]) + 1
+        broken["Daily Plan"].append(prior_plan)
+        prior_history = broken["Change Log"][2][:]
+        prior_history[0] = "v0.0.9"
+        prior_history[5] = ""
+        broken["Change Log"].insert(2, prior_history)
+        broken["Change Log"][3][5] = "v0.0.9"
+        self.assertIn(
+            f"Daily Plan row {row_number} has an invalid date",
+            validate_rows(broken),
+        )
+
     def test_daily_plan_time_range_is_validated(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][2][3] = "11:00"

@@ -1,7 +1,7 @@
-# Travel OS v0.4.34
+# Travel OS v0.4.35
 
-This release protects trip recovery from malformed traveler counts.
+This release protects version recovery from malformed historical itinerary dates.
 
-Travel Overview now rejects fractional, zero, negative and non-numeric traveler counts. A valid count remains required to match the number of Members rows, so values such as `2.5` can no longer be silently truncated to `2`.
+Daily Plan dates are now validated in every version, not only the active version. A damaged historical snapshot can no longer pass validation and later undermine audit or recovery.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 61 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 62 contract tests.
