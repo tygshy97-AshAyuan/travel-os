@@ -56,7 +56,7 @@ A proposal marked Accepted or Rejected must name the trip Owner as decision owne
 
 ## Change Log
 
-One row per version: version, valid created time, author, reason, summary, predecessor and archive hash when available. Version, created time, author, reason and summary are required. Never reuse or silently overwrite a version number.
+One row per version: version, valid created time, author, reason, summary, predecessor and archive hash when available. Version, created time, author, reason and summary are required. Successor creation times use consistent time-zone notation and never predate their predecessors. Never reuse or silently overwrite a version number.
 
 ## Required integrity checks
 
@@ -68,7 +68,7 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Draft trips have no Active Version, so recovery cannot mistake an unapproved plan for the current itinerary.
 - A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.
 - Active Version has Daily Plan rows and exactly one Change Log row.
-- Change Log has one root and a linear predecessor chain; Active Version is the final version in that chain.
+- Change Log has one root, chronological creation times and a linear predecessor chain; Active Version is the final version in that chain.
 - Change Log version labels use `vMAJOR.MINOR.PATCH` with an optional hyphenated timestamp suffix.
 - The Owner authors the root version, and every successor version is backed by an accepted Proposal resolved by the Owner.
 - Daily Plan rows use a unique Version plus Item ID pair; every referenced version exists in Change Log, and every Change Log version retains a Daily Plan snapshot.

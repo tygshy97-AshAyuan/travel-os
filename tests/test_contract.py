@@ -309,6 +309,25 @@ class TravelOSContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_version_creation_times_follow_the_chain(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior = broken["Change Log"][2][:]
+        prior[0] = "v0.0.9"
+        prior[1] = "2030-05-03T10:00:00Z"
+        prior[5] = ""
+        broken["Change Log"].insert(2, prior)
+        broken["Change Log"][3][1] = "2030-05-02T10:00:00Z"
+        broken["Change Log"][3][5] = "v0.0.9"
+        self.assertIn(
+            "Change Log row 4 predates predecessor v0.0.9",
+            validate_rows(broken),
+        )
+        broken["Change Log"][3][1] = "2030-05-04T10:00:00"
+        self.assertIn(
+            "Change Log row 4 mixes zoned and unzoned creation times with predecessor v0.0.9",
+            validate_rows(broken),
+        )
+
     def test_plan_version_must_exist_in_change_log(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][2][1] = "v9.9.9"
