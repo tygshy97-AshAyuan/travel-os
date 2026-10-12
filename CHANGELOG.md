@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Updated the five-minute onboarding path to the current release and added an automated guard against stale README release links.
+
 ## v0.4.39 - 2026-10-12
 
 ### Fixed
