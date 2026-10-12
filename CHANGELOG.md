@@ -5,6 +5,7 @@
 ### Fixed
 
 - Updated the five-minute onboarding path to the current release and added an automated guard against stale README release links.
+- Added redaction guidance to Feature requests and a direct private security-report link to the Issue chooser, with regression coverage for both public feedback forms.
 
 ## v0.4.39 - 2026-10-12
 
