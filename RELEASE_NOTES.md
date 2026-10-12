@@ -1,7 +1,7 @@
-# Travel OS v0.4.35
+# Travel OS v0.4.36
 
-This release protects version recovery from malformed historical itinerary dates.
+This release protects version recovery from malformed historical itinerary times.
 
-Daily Plan dates are now validated in every version, not only the active version. A damaged historical snapshot can no longer pass validation and later undermine audit or recovery.
+Daily Plan start and end times are now checked in every version. Historical rows can no longer pass with only one endpoint, an invalid clock value or a reversed range without an overnight marker.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 62 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 63 contract tests.

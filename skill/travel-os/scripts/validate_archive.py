@@ -256,6 +256,25 @@ def validate_rows(rows):
         date_value = row[2] if len(row) > 2 else ""
         if date_value and not _date(date_value):
             errors.append(f"Daily Plan row {row_number} has an invalid date")
+        start_value = row[3] if len(row) > 3 else ""
+        end_value = row[4] if len(row) > 4 else ""
+        if bool(start_value) != bool(end_value):
+            errors.append(
+                f"Daily Plan row {row_number} needs both start and end times"
+            )
+        elif start_value:
+            start_seconds = _clock_seconds(start_value)
+            end_seconds = _clock_seconds(end_value)
+            if start_seconds is None or end_seconds is None:
+                errors.append(f"Daily Plan row {row_number} has an invalid time range")
+            elif end_seconds <= start_seconds:
+                note = row[16].lower() if len(row) > 16 else ""
+                if not any(
+                    marker in note for marker in ("[overnight]", "跨夜", "过夜")
+                ):
+                    errors.append(
+                        f"Daily Plan row {row_number} ends before it starts without an overnight marker"
+                    )
         time_zone = row[5] if len(row) > 5 else ""
         if time_zone and not _valid_time_zone(time_zone):
             errors.append(
@@ -421,16 +440,12 @@ def validate_rows(rows):
             start_value = row[3] if len(row) > 3 else ""
             end_value = row[4] if len(row) > 4 else ""
             if bool(start_value) != bool(end_value):
-                errors.append(
-                    f"Daily Plan row {row_number} needs both start and end times"
-                )
                 continue
             if not start_value:
                 continue
             start_seconds = _clock_seconds(start_value)
             end_seconds = _clock_seconds(end_value)
             if start_seconds is None or end_seconds is None:
-                errors.append(f"Daily Plan row {row_number} has an invalid time range")
                 continue
             day = _date(row[2] if len(row) > 2 else "")
             if not day:
@@ -441,9 +456,6 @@ def validate_rows(rows):
             )
             if end_seconds <= start_seconds:
                 if not overnight:
-                    errors.append(
-                        f"Daily Plan row {row_number} ends before it starts without an overnight marker"
-                    )
                     continue
                 end_seconds += 86400
             execution_status = row[11] if len(row) > 11 else ""

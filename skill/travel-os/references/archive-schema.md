@@ -32,7 +32,7 @@ Item IDs remain stable when an item is copied into a new version. The unique key
 
 Every Daily Plan row requires its item ID, version, valid date, IANA time zone, activity and execution status, including rows from historical versions. Cost and currency are optional together; when present, cost is non-negative and currency uses a three-letter uppercase code. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
 
-When either local start or end is present, both are required and must use a valid Excel time or `HH:MM[:SS]`. End must follow start; add `[overnight]`, `跨夜` or `过夜` to Notes when the end falls on the next day. Executable items in the Active Version cannot overlap when they share a time zone.
+In every version, when either local start or end is present, both are required and must use a valid Excel time or `HH:MM[:SS]`. End must follow start; add `[overnight]`, `跨夜` or `过夜` to Notes when the end falls on the next day. Executable items in the Active Version cannot overlap when they share a time zone.
 
 Execution status and notes may be updated in place because they record what happened rather than changing the plan. If reality changes any remaining itinerary item, use the version workflow.
 

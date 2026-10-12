@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.36 - 2026-10-12
+
+### Fixed
+
+- Validated paired and well-formed Daily Plan times in every version, including historical snapshots.
+- Added regression coverage for malformed and incomplete historical time ranges.
+
 ## v0.4.35 - 2026-10-12
 
 ### Fixed
