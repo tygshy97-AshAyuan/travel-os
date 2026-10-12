@@ -1,7 +1,7 @@
-# Travel OS v0.4.31
+# Travel OS v0.4.32
 
-This release gives durable preferences a verifiable lifecycle.
+This release makes itinerary and booking costs safe to compare.
 
-Every preference or constraint now requires a valid effective date. Optional expiry dates must also be valid and cannot precede the effective date, so recovery can distinguish current memory from expired trip context.
+Costs remain optional when unknown. Once entered, itinerary costs and booking amounts must be non-negative numbers, and each must be paired with a three-letter uppercase currency code such as `CNY` or `USD`.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 58 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 59 contract tests.

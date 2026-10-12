@@ -10,7 +10,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | In-trip calibration | Execute workflow, execution status, booking consistency and version rules | Automated archive, booking and execution-history integrity tests; manual behavior scenario | Implemented in Skill |
 | User profiling | `Preferences` with scope, evidence, confidence and validity dates | Automated preference integrity and lifecycle tests | Implemented |
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Automated confirmed-fact source and timestamp checks; manual behavior scenario | Implemented in Skill |
-| Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
+| Route, flight and hotel logic | `planning-rules.md` | Automated amount/currency integrity; manual behavior scenario | Implemented in Skill |
 | Active Version recovery | Recovery protocol, Draft activation gate, stable version labels, complete snapshots, auditable linear `Change Log` and latest-version rule | Automated Active Version, label-format, snapshot-completeness, audit-field, version-chain and unapproved-Draft tests | Implemented |
 | Collaboration roles | `Members`, role permissions, complete Proposal lifecycle, bidirectional Owner approval and version traceability | Automated member-reference, Viewer boundary, proposal completeness, closure and proposal/version tests | Implemented |
 | Post-trip learning | Review workflow, closed execution state and durable preference rules | Automated completion-state and preference integrity tests; supported-client behavior scenario | Implemented and client-validated |
