@@ -248,6 +248,21 @@ class TravelOSContractTests(unittest.TestCase):
         errors = validate_rows(invalid_date)
         self.assertIn("Checklist row 3 has an invalid due date", errors)
 
+    def test_short_overview_row_reports_missing_fields(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Travel Overview"][2] = broken["Travel Overview"][2][:1]
+        errors = validate_rows(broken)
+        self.assertIn("Travel Overview is missing 旅行标题", errors)
+        self.assertIn("Travel Overview is missing 主时区", errors)
+
+    def test_damaged_headers_return_schema_error(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Travel Overview"][1][1] = "Wrong title"
+        self.assertEqual(
+            ["Travel Overview headers do not match the Travel OS schema"],
+            validate_rows(broken),
+        )
+
     def test_completed_trip_requires_closed_execution_state(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         overview_header = broken["Travel Overview"][1]

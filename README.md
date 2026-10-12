@@ -1,7 +1,7 @@
 # Travel OS
 
 [![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
-[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.41)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.42)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **让 AI 不再每次从零规划旅行。**
@@ -47,7 +47,7 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 ## 5 分钟开始
 
-1. 打开 [Travel OS v0.4.41](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.41)，下载 `Travel-OS-Skill-v0.4.41.zip`。
+1. 打开 [Travel OS v0.4.42](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.42)，下载 `Travel-OS-Skill-v0.4.42.zip`。
 2. 将这个 ZIP 安装到支持 Agent Skill 的客户端；包根目录就是 `SKILL.md`，并已包含 Excel 模板。
 3. 复制 `assets/TravelOS-Template.xlsx` 并上传副本。空白模板不需要手工填表，直接把目的地、日期、同行人和已确定的订单用自然语言告诉 AI，例如：
 

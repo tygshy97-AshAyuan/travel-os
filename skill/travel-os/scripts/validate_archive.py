@@ -225,10 +225,15 @@ def validate_rows(rows):
     if unexpected:
         errors.append(f"Unexpected sheets: {', '.join(sorted(unexpected))}")
 
+    header_errors = []
     for sheet_name, expected in EXPECTED_HEADERS.items():
         actual = rows[sheet_name][1][:len(expected)] if len(rows[sheet_name]) > 1 else []
         if actual != expected:
-            errors.append(f"{sheet_name} headers do not match the Travel OS schema")
+            header_errors.append(
+                f"{sheet_name} headers do not match the Travel OS schema"
+            )
+    if header_errors:
+        return errors + header_errors
 
     for sheet_name, fields in ENUM_FIELDS.items():
         for row_number, row in enumerate(rows[sheet_name][2:], start=3):
@@ -338,7 +343,7 @@ def validate_rows(rows):
         return [f"Travel Overview must contain exactly one trip row; found {len(trips)}"]
 
     overview_header = rows["Travel Overview"][1]
-    trip = trips[0]
+    trip = trips[0] + [""] * (len(overview_header) - len(trips[0]))
     for field in (
         "Trip ID",
         "旅行标题",
@@ -944,7 +949,11 @@ def main():
     if is_uninitialized_template(rows):
         print(f"READY: {args.workbook} is an uninitialized Travel OS template")
         return 0
-    errors = validate_rows(rows)
+    try:
+        errors = validate_rows(rows)
+    except ARCHIVE_ERRORS as error:
+        print(f"ERROR: Unreadable Travel OS archive: {error}")
+        return 1
     if errors:
         for error in errors:
             print(f"ERROR: {error}")

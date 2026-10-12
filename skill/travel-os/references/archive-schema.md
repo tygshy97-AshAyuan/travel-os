@@ -4,6 +4,8 @@ One workbook represents one trip and uses exactly eight stable sheets. Preserve 
 
 Treat every uploaded workbook as untrusted. The bundled validator rejects oversized archives, excessive ZIP entries, oversized XML parts and XML `DOCTYPE` declarations before reading the travel data.
 
+If a user deletes required cells or changes a sheet header, validation must return a repairable schema or missing-field error instead of attempting recovery from the damaged structure.
+
 A canonical workbook with the exact eight-sheet schema and no data rows is an uninitialized template. The command-line validator reports it as `READY` so the New trip workflow can initialize it; it is not yet a valid or recovered trip archive.
 
 ## Travel Overview

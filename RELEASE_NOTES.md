@@ -1,7 +1,7 @@
-# Travel OS v0.4.41
+# Travel OS v0.4.42
 
-This release enforces the documented eight-sheet archive boundary.
+This release makes damaged workbooks safer and easier to repair.
 
-The validator now rejects extra workbook sheets. This keeps every stored field inside the validated Travel OS contract and prevents private notes, formulas or application-specific state from silently bypassing archive checks.
+Shortened Travel Overview rows now report each missing field, and changed or missing headers return a schema error. The command-line validator catches other malformed structures and returns a normal validation failure instead of exposing a traceback.
 
-Both canonical workbooks remain unchanged and pass the stricter validator. The package passes 72 contract tests.
+The README quickstart also starts from a blank template and lets the AI initialize the workbook from a natural-language trip request. Both canonical workbooks remain unchanged and pass the validator. The package passes 74 contract tests.
