@@ -329,6 +329,31 @@ class TravelOSContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_proposal_lifecycle_is_complete(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        proposal = broken["Proposals"][2]
+        proposal[2] = "not-a-date"
+        proposal[3] = ""
+        proposal[4] = ""
+        proposal[9] = "v0.1.0"
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Proposals row 3 is missing: 影响项目或日期, 提案",
+            errors,
+        )
+        self.assertIn("Proposals row 3 has an invalid date", errors)
+        self.assertIn(
+            "Non-accepted proposal PR-001 must not name a result version",
+            errors,
+        )
+
+        overview_header = broken["Travel Overview"][1]
+        trip = broken["Travel Overview"][2]
+        trip[overview_header.index("状态")] = "Completed"
+        self.assertIn(
+            "Completed trip has unresolved proposals: PR-001",
+            validate_rows(broken),
+        )
     def test_invalid_status_is_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][2][11] = "Probably"

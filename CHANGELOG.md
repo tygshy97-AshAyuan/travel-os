@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.25 - 2026-10-12
+
+### Fixed
+
+- Required every Proposal to retain its submitter, valid date, affected scope, proposal, reason and status.
+- Allowed only accepted proposals to name a result version.
+- Prevented Completed trips from retaining pending or clarification-needed proposals.
+
 ## v0.4.24 - 2026-10-12
 
 ### Fixed

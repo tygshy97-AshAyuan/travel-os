@@ -50,9 +50,9 @@ Exactly one member has the Owner role, that member matches Travel Overview's own
 
 ## Proposals
 
-One row per suggestion or decision: ID, submitted by, date, affected item/day, proposal, reason, status, decision owner, resolution and resulting version.
+One row per suggestion or decision: ID, submitted by, date, affected item/day, proposal, reason, status, decision owner, resolution and resulting version. ID, submitter, valid date, affected scope, proposal, reason and status are required.
 
-A proposal marked Accepted or Rejected must name the trip Owner as decision owner and record the resolution. An accepted proposal must also name the resulting valid version, whose Change Log reason or summary includes the Proposal ID. Pending or Needs clarification proposals never change the itinerary.
+A proposal marked Accepted or Rejected must name the trip Owner as decision owner and record the resolution. An accepted proposal must also name the resulting valid version, whose Change Log reason or summary includes the Proposal ID. Other statuses never name a result version. Pending or Needs clarification proposals never change the itinerary and must be resolved before the trip is Completed.
 
 ## Change Log
 
@@ -76,6 +76,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Booking time ranges are valid, cancelled bookings do not support executable current items, and `Ready` items use confirmed or completed bookings.
 - Accepted decisions that changed the plan name the resulting version.
 - Accepted and rejected proposals are resolved by the trip Owner and include the resolution.
+- Proposal rows retain decision-driving context; only Accepted proposals name a result version, and Completed trips have no unresolved proposals.
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
