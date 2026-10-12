@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.35 - 2026-10-12
+
+### Fixed
+
+- Validated Daily Plan dates in every version instead of allowing malformed dates in historical snapshots.
+- Added regression coverage for historical itinerary date integrity.
+
 ## v0.4.34 - 2026-10-12
 
 ### Fixed

@@ -253,6 +253,9 @@ def validate_rows(rows):
             errors.append(
                 f"Daily Plan row {row_number} is missing: {', '.join(missing_fields)}"
             )
+        date_value = row[2] if len(row) > 2 else ""
+        if date_value and not _date(date_value):
+            errors.append(f"Daily Plan row {row_number} has an invalid date")
         time_zone = row[5] if len(row) > 5 else ""
         if time_zone and not _valid_time_zone(time_zone):
             errors.append(
@@ -406,9 +409,7 @@ def validate_rows(rows):
                     marker in note
                     for marker in ("[pre-trip]", "[post-trip]", "行前", "行后")
                 )
-                if not day:
-                    errors.append(f"Daily Plan row {row_number} has an invalid date")
-                elif not outside_marker and not start <= day <= end:
+                if day and not outside_marker and not start <= day <= end:
                     errors.append(
                         f"Daily Plan row {row_number} falls outside the trip date range"
                     )
