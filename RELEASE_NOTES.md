@@ -1,7 +1,7 @@
-# Travel OS v0.4.33
+# Travel OS v0.4.34
 
-This release protects local-time execution from missing or misspelled time zones.
+This release protects trip recovery from malformed traveler counts.
 
-Travel Overview and every Daily Plan row now use IANA names such as `Asia/Shanghai` or `America/New_York`. The validator checks the installed time-zone database when available and retains a portable syntax check when it is not.
+Travel Overview now rejects fractional, zero, negative and non-numeric traveler counts. A valid count remains required to match the number of Members rows, so values such as `2.5` can no longer be silently truncated to `2`.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 60 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 61 contract tests.

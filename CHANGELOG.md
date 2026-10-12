@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.34 - 2026-10-12
+
+### Fixed
+
+- Rejected fractional, zero, negative and non-numeric traveler counts instead of truncating them during member reconciliation.
+- Documented that the Travel Overview traveler count is a positive whole number and must equal the number of Members rows.
+
 ## v0.4.33 - 2026-10-12
 
 ### Fixed

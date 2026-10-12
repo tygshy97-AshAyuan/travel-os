@@ -587,6 +587,19 @@ class TravelOSContractTests(unittest.TestCase):
             errors,
         )
 
+    def test_traveler_count_is_a_positive_whole_number(self):
+        for value in ("2.5", "0", "-1", "two"):
+            with self.subTest(value=value):
+                broken = {
+                    name: [row[:] for row in rows]
+                    for name, rows in self.rows.items()
+                }
+                broken["Travel Overview"][2][5] = value
+                self.assertIn(
+                    f"Travel Overview has an invalid traveler count: {value}",
+                    validate_rows(broken),
+                )
+
     def test_preference_member_reference_is_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Preferences"][2][4] = "M-404"

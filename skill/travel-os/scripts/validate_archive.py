@@ -493,10 +493,20 @@ def validate_rows(rows):
 
     travelers = trip[overview_header.index("人数")]
     try:
-        traveler_count = int(float(travelers))
-    except (TypeError, ValueError):
-        traveler_count = -1
-    if traveler_count != len(member_rows):
+        traveler_number = Decimal(str(travelers))
+        if (
+            not traveler_number.is_finite()
+            or traveler_number <= 0
+            or traveler_number != traveler_number.to_integral_value()
+        ):
+            raise InvalidOperation
+        traveler_count = int(traveler_number)
+    except (InvalidOperation, TypeError, ValueError):
+        traveler_count = None
+        errors.append(
+            f"Travel Overview has an invalid traveler count: {travelers or 'blank'}"
+        )
+    if traveler_count is not None and traveler_count != len(member_rows):
         errors.append(
             f"Travel Overview traveler count {travelers or 'blank'} does not match {len(member_rows)} Members rows"
         )
