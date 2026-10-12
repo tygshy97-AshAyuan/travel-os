@@ -1,7 +1,7 @@
-# Travel OS v0.4.23
+# Travel OS v0.4.24
 
-This release prevents recovery from selecting a stale or ambiguous plan history.
+This release prevents new plan versions from bypassing Owner approval.
 
-Change Log must now contain exactly one root followed by a linear predecessor chain. For Active and Completed trips, Active Version must point to the final version in that chain. Branched histories, multiple roots and stale active pointers are rejected before planning or edits continue.
+The Owner must author the root version when confirming the first plan. Every successor version must be named by an accepted Proposal resolved by the Owner. Editors can still prepare and author approved changes, but cannot create an independently valid version without that decision record.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 50 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 51 contract tests.

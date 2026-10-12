@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.24 - 2026-10-12
+
+### Fixed
+
+- Required the trip Owner to author the root version when activating the first plan.
+- Required every successor version to be backed by an accepted Proposal resolved by the Owner.
+- Prevented direct version creation from bypassing the collaboration approval flow.
+
 ## v0.4.23 - 2026-10-12
 
 ### Fixed
