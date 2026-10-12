@@ -1,7 +1,7 @@
-# Travel OS v0.4.24
+# Travel OS v0.4.25
 
-This release prevents new plan versions from bypassing Owner approval.
+This release makes the full Proposal lifecycle auditable and closable.
 
-The Owner must author the root version when confirming the first plan. Every successor version must be named by an accepted Proposal resolved by the Owner. Editors can still prepare and author approved changes, but cannot create an independently valid version without that decision record.
+Every Proposal now requires its submitter, valid date, affected item or day, proposed change, reason and status. Only accepted proposals may name a result version, and a trip cannot become Completed while proposals remain pending or need clarification.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 51 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 52 contract tests.

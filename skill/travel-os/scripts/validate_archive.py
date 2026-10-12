@@ -628,7 +628,39 @@ def validate_rows(rows):
             task = dependencies[task]
         processed.update(trail)
 
+    if status == "Completed":
+        unresolved_proposals = sorted(
+            row[0]
+            for row in rows["Proposals"][2:]
+            if row and row[0] and (len(row) <= 6 or row[6] not in {"接受", "拒绝"})
+        )
+        if unresolved_proposals:
+            errors.append(
+                "Completed trip has unresolved proposals: "
+                + ", ".join(unresolved_proposals)
+            )
+
     for row_number, row in enumerate(rows["Proposals"][2:], start=3):
+        proposal_id = row[0] if row else ""
+        if proposal_id:
+            required = {
+                1: "提交人",
+                2: "日期",
+                3: "影响项目或日期",
+                4: "提案",
+                5: "原因",
+                6: "状态",
+            }
+            missing_fields = [
+                name for index, name in required.items()
+                if len(row) <= index or not row[index]
+            ]
+            if missing_fields:
+                errors.append(
+                    f"Proposals row {row_number} is missing: {', '.join(missing_fields)}"
+                )
+            if len(row) > 2 and row[2] and not _date(row[2]):
+                errors.append(f"Proposals row {row_number} has an invalid date")
         submitter = row[1] if len(row) > 1 else ""
         role = member_roles.get(submitter)
         if submitter in member_roles and role not in {"Owner", "Editor", "Member"}:
@@ -648,7 +680,6 @@ def validate_rows(rows):
                     f"Resolved proposal on row {row_number} needs a resolution"
                 )
         if status == "接受":
-            proposal_id = row[0] if row else ""
             result_version = row[9] if len(row) > 9 else ""
             if not result_version or result_version not in versions:
                 errors.append(
@@ -660,6 +691,10 @@ def validate_rows(rows):
                 errors.append(
                     f"Accepted proposal {proposal_id} is not referenced by result version {result_version}"
                 )
+        elif len(row) > 9 and row[9]:
+            errors.append(
+                f"Non-accepted proposal {proposal_id} must not name a result version"
+            )
     return errors
 
 
