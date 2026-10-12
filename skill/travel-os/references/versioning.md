@@ -2,6 +2,8 @@
 
 Use `vMAJOR.MINOR.PATCH` labels. Increment PATCH for ordinary itinerary edits, MINOR for structural changes across several days, and MAJOR when the trip scope changes. For a simple personal trip, a timestamped suffix is acceptable if it remains unique.
 
+Version history is one linear chain with exactly one root. Every later Change Log row names the immediately preceding version, and an Active or Completed trip points to the last row in that chain.
+
 Before a write, summarize the proposed change, affected items, dependencies, confirmed bookings, constraints and facts requiring verification.
 
 Apply an accepted change atomically:

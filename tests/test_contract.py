@@ -174,14 +174,33 @@ class TravelOSContractTests(unittest.TestCase):
 
     def test_stable_plan_ids_can_be_copied_to_a_new_version(self):
         copied = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
-        prior = copied["Daily Plan"][2][:]
-        prior[1] = "v0.3.0"
-        copied["Daily Plan"].append(prior)
+        for row in copied["Daily Plan"][2:4]:
+            successor = row[:]
+            successor[1] = "v0.1.1"
+            copied["Daily Plan"].append(successor)
         history = copied["Change Log"][2][:]
-        history[0] = "v0.3.0"
-        history[5] = ""
-        copied["Change Log"].insert(2, history)
+        history[0] = "v0.1.1"
+        history[5] = "v0.1.0"
+        copied["Change Log"].append(history)
+        overview_header = copied["Travel Overview"][1]
+        copied["Travel Overview"][2][overview_header.index("Active Version")] = "v0.1.1"
         self.assertEqual([], validate_rows(copied))
+
+    def test_version_history_has_one_root_and_latest_active_version(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        history = broken["Change Log"][2][:]
+        history[0] = "v0.1.1"
+        history[5] = ""
+        broken["Change Log"].append(history)
+        errors = validate_rows(broken)
+        self.assertIn(
+            "Change Log must contain exactly one root version; found 2",
+            errors,
+        )
+        self.assertIn(
+            "Active Version v0.1.0 is not latest Change Log version v0.1.1",
+            errors,
+        )
 
     def test_plan_version_must_exist_in_change_log(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
