@@ -8,7 +8,7 @@ A canonical workbook with the exact eight-sheet schema and no data rows is an un
 
 ## Travel Overview
 
-Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, phase, status, home time zone and notes. Every field except Active Version and notes is required; Draft leaves Active Version empty.
+Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, phase, status, home time zone and notes. Every field except Active Version and notes is required; Draft leaves Active Version empty. Time zones use IANA names such as `Asia/Shanghai` or `America/New_York`.
 
 Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. A Draft has no Active Version until the Owner confirms the first plan.
 
@@ -30,7 +30,7 @@ One row per itinerary item: item ID, version, date, start/end time, time zone, c
 
 Item IDs remain stable when an item is copied into a new version. The unique key is Version plus Item ID, so the same Item ID may appear once in every version. Every Daily Plan version must exist in Change Log. Execution status is Planned, Ready, In progress, Done, Skipped or Blocked.
 
-Every Daily Plan row requires its item ID, version, date, time zone, activity and execution status. Cost and currency are optional together; when present, cost is non-negative and currency uses a three-letter uppercase code. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
+Every Daily Plan row requires its item ID, version, date, IANA time zone, activity and execution status. Cost and currency are optional together; when present, cost is non-negative and currency uses a three-letter uppercase code. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
 
 When either local start or end is present, both are required and must use a valid Excel time or `HH:MM[:SS]`. End must follow start; add `[overnight]`, `跨夜` or `过夜` to Notes when the end falls on the next day. Executable items in the Active Version cannot overlap when they share a time zone.
 
@@ -81,6 +81,7 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Accepted and rejected proposals are resolved by the trip Owner and include the resolution.
 - Proposal rows retain decision-driving context; only Accepted proposals name a result version, and Completed trips have no unresolved proposals.
 - Current Daily Plan dates fall within the trip range unless Notes contains `[pre-trip]`, `[post-trip]`, `行前` or `行后`.
+- Travel Overview and Daily Plan time zones use valid IANA names when the runtime time-zone database is available, with syntax validation as the portable fallback.
 - Change Log predecessors name an existing earlier version and never point to themselves.
 - Checklist dependencies name an existing task; related IDs name an existing booking or plan item.
 - Checklist dependencies contain no direct or indirect cycles.

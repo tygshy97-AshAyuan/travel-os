@@ -7,7 +7,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | AI-native conversation entry | `SKILL.md` workflow and output contract | Current-tag Codex install, official Skill validator, reference-link test and full supported-client scenario | Installation and one complete client path verified; repeatability across models remains |
 | Excel-first Trip Master | Eight-sheet `TravelOS-Template.xlsx` with minimum operational fields | Workbook schema, completeness, relationship and dependency-cycle tests; visual review | Implemented |
 | Pre-trip planning | `planning-rules.md` and New trip workflow | Automated itinerary time-conflict tests; manual regression scenarios | Implemented in Skill |
-| In-trip calibration | Execute workflow, execution status, booking consistency and version rules | Automated archive, booking and execution-history integrity tests; manual behavior scenario | Implemented in Skill |
+| In-trip calibration | Execute workflow, local time zones, execution status, booking consistency and version rules | Automated archive, time-zone, booking and execution-history integrity tests; manual behavior scenario | Implemented in Skill |
 | User profiling | `Preferences` with scope, evidence, confidence and validity dates | Automated preference integrity and lifecycle tests | Implemented |
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Automated confirmed-fact source and timestamp checks; manual behavior scenario | Implemented in Skill |
 | Route, flight and hotel logic | `planning-rules.md` | Automated amount/currency integrity; manual behavior scenario | Implemented in Skill |
