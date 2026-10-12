@@ -4,7 +4,7 @@ Travel OS is currently in Early Access. Work is ordered by whether it makes a re
 
 ## Now
 
-- Validate the complete planning, change, execution and review flow in supported Agent clients.
+- Repeat the complete planning, change, execution and review regression after workflow or spreadsheet-write changes in supported Agent clients.
 - Improve first-run instructions from real user reports.
 - Validate weather-driven changes in supported Agent clients.
 
