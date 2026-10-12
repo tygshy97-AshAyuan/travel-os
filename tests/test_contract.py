@@ -129,6 +129,16 @@ class TravelOSContractTests(unittest.TestCase):
             self.assertIn(active, [row[1] for row in itinerary[2:] if len(row) > 1])
             self.assertEqual(1, sum(1 for row in versions[2:] if row and row[0] == active))
 
+    def test_draft_cannot_claim_an_active_version(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        overview_header = broken["Travel Overview"][1]
+        trip = broken["Travel Overview"][2]
+        trip[overview_header.index("状态")] = "Draft"
+        self.assertIn(
+            "Draft trip must not have an Active Version",
+            validate_rows(broken),
+        )
+
     def test_current_booking_references_exist(self):
         self.assertEqual(set(), missing_booking_references(self.rows))
 

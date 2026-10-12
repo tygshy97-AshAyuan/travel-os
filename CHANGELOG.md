@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.21 - 2026-10-12
+
+### Fixed
+
+- Rejected Draft trips that claim an Active Version before Owner confirmation.
+- Kept unapproved first plans from becoming the recovered current itinerary.
+
 ## v0.4.20 - 2026-10-12
 
 ### Security

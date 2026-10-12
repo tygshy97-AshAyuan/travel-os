@@ -254,6 +254,8 @@ def validate_rows(rows):
     status = trip[overview_header.index("状态")]
     if status in {"Active", "Completed"} and not active:
         errors.append(f"{status} trip has no Active Version")
+    if status == "Draft" and active:
+        errors.append("Draft trip must not have an Active Version")
     if status == "Completed" and phase != "旅行后":
         errors.append("Completed trip must be in 旅行后 phase")
     start = _date(trip[overview_header.index("开始日期")])
