@@ -22,7 +22,7 @@ Every preference row requires its ID, scope, category, priority, subject, statem
 
 One row per booking: ID, category, provider, start/end, city, status, refundable, amount, currency, reference location, source, checked time and notes. ID, category, provider and status are required. Store where a booking reference can be found, not the credential or full sensitive document.
 
-When both booking times are present, use consistent time-zone notation and ensure the end does not precede the start. A current itinerary row cannot rely on a cancelled booking unless the row is Skipped or Blocked. A `Ready` itinerary row may reference only a confirmed or completed booking.
+When amount or currency is present, both are required: amount is a non-negative number and currency is a three-letter uppercase code such as `CNY`. When both booking times are present, use consistent time-zone notation and ensure the end does not precede the start. A current itinerary row cannot rely on a cancelled booking unless the row is Skipped or Blocked. A `Ready` itinerary row may reference only a confirmed or completed booking.
 
 ## Daily Plan
 
@@ -30,7 +30,7 @@ One row per itinerary item: item ID, version, date, start/end time, time zone, c
 
 Item IDs remain stable when an item is copied into a new version. The unique key is Version plus Item ID, so the same Item ID may appear once in every version. Every Daily Plan version must exist in Change Log. Execution status is Planned, Ready, In progress, Done, Skipped or Blocked.
 
-Every Daily Plan row requires its item ID, version, date, time zone, activity and execution status. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
+Every Daily Plan row requires its item ID, version, date, time zone, activity and execution status. Cost and currency are optional together; when present, cost is non-negative and currency uses a three-letter uppercase code. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
 
 When either local start or end is present, both are required and must use a valid Excel time or `HH:MM[:SS]`. End must follow start; add `[overnight]`, `跨夜` or `过夜` to Notes when the end falls on the next day. Executable items in the Active Version cannot overlap when they share a time zone.
 
@@ -76,6 +76,7 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Timed current items have valid ranges, explicit overnight intent and no same-time-zone overlaps.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
 - Booking time ranges are valid, cancelled bookings do not support executable current items, and `Ready` items use confirmed or completed bookings.
+- Daily Plan costs and booking amounts are non-negative and paired with a three-letter currency code.
 - Accepted decisions that changed the plan name the resulting version.
 - Accepted and rejected proposals are resolved by the trip Owner and include the resolution.
 - Proposal rows retain decision-driving context; only Accepted proposals name a result version, and Completed trips have no unresolved proposals.

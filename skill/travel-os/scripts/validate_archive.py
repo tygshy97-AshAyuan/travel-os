@@ -3,6 +3,7 @@
 
 import argparse
 from datetime import datetime, timedelta
+from decimal import Decimal, InvalidOperation
 import re
 import sys
 import zipfile
@@ -153,6 +154,14 @@ def _date(value):
     return parsed.date() if parsed else None
 
 
+def _amount(value):
+    try:
+        amount = Decimal(str(value))
+        return amount if amount.is_finite() and amount >= 0 else None
+    except (InvalidOperation, TypeError, ValueError):
+        return None
+
+
 def _clock_seconds(value):
     if not value:
         return None
@@ -219,6 +228,17 @@ def validate_rows(rows):
             errors.append(
                 f"Daily Plan row {row_number} is missing: {', '.join(missing_fields)}"
             )
+        cost = row[12] if len(row) > 12 else ""
+        currency = row[13] if len(row) > 13 else ""
+        if bool(cost) != bool(currency):
+            errors.append(f"Daily Plan row {row_number} needs both cost and currency")
+        elif cost:
+            if _amount(cost) is None:
+                errors.append(f"Daily Plan row {row_number} has an invalid cost")
+            if not re.fullmatch(r"[A-Z]{3}", currency):
+                errors.append(
+                    f"Daily Plan row {row_number} has an invalid currency: {currency}"
+                )
 
     for sheet_name in REQUIRED_SHEETS - {"Travel Overview", "Daily Plan"}:
         identifiers = [row[0] for row in rows[sheet_name][2:] if row and row[0]]
@@ -512,6 +532,17 @@ def validate_rows(rows):
             if missing_fields:
                 errors.append(
                     f"Bookings row {row_number} is missing: {', '.join(missing_fields)}"
+                )
+        amount = row[8] if len(row) > 8 else ""
+        currency = row[9] if len(row) > 9 else ""
+        if bool(amount) != bool(currency):
+            errors.append(f"Bookings row {row_number} needs both amount and currency")
+        elif amount:
+            if _amount(amount) is None:
+                errors.append(f"Bookings row {row_number} has an invalid amount")
+            if not re.fullmatch(r"[A-Z]{3}", currency):
+                errors.append(
+                    f"Bookings row {row_number} has an invalid currency: {currency}"
                 )
         start_time = _datetime(row[3] if len(row) > 3 else "")
         end_time = _datetime(row[4] if len(row) > 4 else "")

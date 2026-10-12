@@ -523,6 +523,19 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertIn("Bookings row 3 has an invalid checked time", errors)
         self.assertIn("Ready Daily Plan row 3 has an invalid checked time", errors)
 
+    def test_costs_require_non_negative_amounts_and_currencies(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        plan = broken["Daily Plan"][2]
+        plan[12] = "100"
+        plan[13] = ""
+        booking = broken["Bookings"][2]
+        booking[8] = "-1"
+        booking[9] = "yuan"
+        errors = validate_rows(broken)
+        self.assertIn("Daily Plan row 3 needs both cost and currency", errors)
+        self.assertIn("Bookings row 3 has an invalid amount", errors)
+        self.assertIn("Bookings row 3 has an invalid currency: yuan", errors)
+
     def test_ready_plan_requires_usable_booking(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Bookings"][2][6] = "已取消"

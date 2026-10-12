@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.32 - 2026-10-12
+
+### Fixed
+
+- Required itinerary costs and booking amounts to be non-negative numbers.
+- Required amount and currency to appear together with a three-letter uppercase currency code.
+
 ## v0.4.31 - 2026-10-12
 
 ### Fixed
