@@ -1,6 +1,6 @@
 # Travel archive schema and invariants
 
-One workbook represents one trip and uses eight stable sheets. Preserve their names so the same archive works across sessions.
+One workbook represents one trip and uses exactly eight stable sheets. Preserve their names and do not add private or application-specific sheets, so every stored field remains inside the validated contract and the same archive works across sessions.
 
 Treat every uploaded workbook as untrusted. The bundled validator rejects oversized archives, excessive ZIP entries, oversized XML parts and XML `DOCTYPE` declarations before reading the travel data.
 
@@ -60,6 +60,7 @@ One row per version: version, valid created timestamp, author, reason, summary, 
 
 ## Required integrity checks
 
+- The workbook contains exactly the eight named Travel OS sheets and no unvalidated extra sheets.
 - Exactly one trip overview data row exists in a workbook.
 - Workbook cells contain literal values only; formulas are rejected because the archive does not need executable spreadsheet content.
 - Every filled row in the other seven sheets has its sheet-specific ID.

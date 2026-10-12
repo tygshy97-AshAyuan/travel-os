@@ -150,8 +150,13 @@ class TravelOSContractTests(unittest.TestCase):
 
     def test_workbook_schema(self):
         required = {"Travel Overview", "Daily Plan", "Bookings", "Checklist", "Preferences", "Change Log", "Members", "Proposals"}
-        self.assertTrue(required.issubset(self.rows), required - self.rows.keys())
+        self.assertEqual(required, set(self.rows))
         self.assertEqual(1, sum(any(row) for row in self.rows["Travel Overview"][2:]), "one workbook must contain exactly one trip row")
+
+    def test_unexpected_sheets_are_rejected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Private Notes"] = [["unvalidated data"]]
+        self.assertIn("Unexpected sheets: Private Notes", validate_rows(broken))
 
     def test_active_version_integrity(self):
         overview = self.rows["Travel Overview"]

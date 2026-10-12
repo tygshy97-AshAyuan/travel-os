@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.4.41 - 2026-10-12
+
+### Fixed
+
+- Rejected extra workbook sheets so private or application-specific data cannot bypass the eight-sheet archive contract.
 
 ### Documentation
 
