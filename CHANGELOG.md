@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.20 - 2026-10-12
+
+### Security
+
+- Rejected formulas in Travel OS workbooks because the archive contract requires literal values only.
+- Required imported text that begins with spreadsheet formula prefixes to remain literal text.
+- Added a regression workbook containing a malicious `WEBSERVICE` formula.
+
 ## v0.4.19 - 2026-10-12
 
 ### Fixed

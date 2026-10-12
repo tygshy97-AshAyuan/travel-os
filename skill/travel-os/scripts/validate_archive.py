@@ -112,6 +112,10 @@ def workbook_rows(path):
                 archive,
                 target if target.startswith("xl/") else f"xl/{target}",
             )
+            if xml.find(".//m:f", NS) is not None:
+                raise ValueError(
+                    f"{sheet.attrib['name']} contains formulas; Travel OS cells must be literal values"
+                )
             rows = []
             for row in xml.findall("m:sheetData/m:row", NS):
                 values = []
