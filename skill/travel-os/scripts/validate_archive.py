@@ -221,6 +221,9 @@ def validate_rows(rows):
     missing = REQUIRED_SHEETS - rows.keys()
     if missing:
         return [f"Missing sheets: {', '.join(sorted(missing))}"]
+    unexpected = rows.keys() - REQUIRED_SHEETS
+    if unexpected:
+        errors.append(f"Unexpected sheets: {', '.join(sorted(unexpected))}")
 
     for sheet_name, expected in EXPECTED_HEADERS.items():
         actual = rows[sheet_name][1][:len(expected)] if len(rows[sheet_name]) > 1 else []

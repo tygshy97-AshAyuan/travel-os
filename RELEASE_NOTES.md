@@ -1,7 +1,7 @@
-# Travel OS v0.4.40
+# Travel OS v0.4.41
 
-This release makes fact and version timestamps precise enough for audit and staleness checks.
+This release enforces the documented eight-sheet archive boundary.
 
-Confirmed booking and `Ready` itinerary checked times, plus Change Log creation times, must now include both a date and a time. Date-only text no longer passes as a timestamp; native Excel date-time values remain supported.
+The validator now rejects extra workbook sheets. This keeps every stored field inside the validated Travel OS contract and prevents private notes, formulas or application-specific state from silently bypassing archive checks.
 
-This release also includes the current-download guard, safer public feedback forms, pinned workflow Actions and weekly Dependabot checks merged since v0.4.39. Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 71 contract tests.
+Both canonical workbooks remain unchanged and pass the stricter validator. The package passes 72 contract tests.
