@@ -476,6 +476,20 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_accepted_proposal_does_not_postdate_result_version(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        proposal = broken["Proposals"][2]
+        proposal[2] = "2040-01-01"
+        proposal[6] = "接受"
+        proposal[7] = "M-001"
+        proposal[8] = "负责人接受"
+        proposal[9] = "v0.1.0"
+        broken["Change Log"][2][3] = "批准 PR-001"
+        self.assertIn(
+            "Accepted proposal PR-001 postdates result version v0.1.0",
+            validate_rows(broken),
+        )
+
     def test_resolved_proposal_requires_owner_and_resolution(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Proposals"][2][6] = "拒绝"

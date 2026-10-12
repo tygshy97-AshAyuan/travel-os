@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.39 - 2026-10-12
+
+### Fixed
+
+- Rejected accepted proposals whose proposal date is later than the creation date of their result version.
+- Added regression coverage for Proposal-to-version causal ordering.
+
 ## v0.4.38 - 2026-10-12
 
 ### Fixed

@@ -1,7 +1,7 @@
-# Travel OS v0.4.38
+# Travel OS v0.4.39
 
-This release makes version-history time order auditable.
+This release makes the Proposal-to-version decision sequence auditable.
 
-Change Log successors can no longer predate their predecessors or mix zoned and unzoned creation times within the chain. Recovery now rejects histories whose row order and timestamps disagree.
+An accepted Proposal can no longer postdate the creation of its result version. Recovery now rejects histories that claim a plan version existed before the suggestion and Owner decision that produced it.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 65 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 66 contract tests.
