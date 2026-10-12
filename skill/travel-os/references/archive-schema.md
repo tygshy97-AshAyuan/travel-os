@@ -61,6 +61,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 ## Required integrity checks
 
 - Exactly one trip overview data row exists in a workbook.
+- Workbook cells contain literal values only; formulas are rejected because the archive does not need executable spreadsheet content.
 - Every filled row in the other seven sheets has its sheet-specific ID.
 - Active and Completed trips have a non-empty Active Version.
 - A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.

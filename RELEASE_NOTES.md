@@ -1,7 +1,7 @@
-# Travel OS v0.4.19
+# Travel OS v0.4.20
 
-This release makes accepted collaboration decisions traceable to the plan version that implements them.
+This release closes a spreadsheet-formula injection path in imported or pasted travel data.
 
-An accepted proposal can no longer point at any existing version and appear valid. Its Proposal ID must be retained in the reason or summary of the result version's Change Log row, so the Owner decision and the resulting itinerary edit can be audited together.
+Travel OS archives now accept literal cell values only and reject workbook formulas. Import guidance also requires formula-like external text to remain text, preventing booking messages or pasted content from becoming executable spreadsheet formulas when a user opens the workbook.
 
-The stricter validator accepts the previously generated end-to-end fictional workbook. The package passes 45 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 46 contract tests, including a malicious `WEBSERVICE` formula case.

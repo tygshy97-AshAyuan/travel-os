@@ -431,6 +431,23 @@ class TravelOSContractTests(unittest.TestCase):
                 validate(path),
             )
 
+    def test_validator_rejects_workbook_formulas(self):
+        with tempfile.TemporaryDirectory(dir=ROOT / "tests") as directory:
+            path = Path(directory) / "formula.xlsx"
+            with zipfile.ZipFile(EXAMPLE_XLSX) as source, zipfile.ZipFile(path, "w") as target:
+                for info in source.infolist():
+                    data = source.read(info)
+                    if info.filename == "xl/worksheets/sheet1.xml":
+                        root = ET.fromstring(data)
+                        cell = root.find(".//m:c[@r='L3']", NS)
+                        ET.SubElement(cell, f"{{{NS['m']}}}f").text = 'WEBSERVICE("https://example.invalid")'
+                        data = ET.tostring(root, encoding="utf-8", xml_declaration=True)
+                    target.writestr(info, data)
+            self.assertIn(
+                "Unreadable Travel OS archive: Travel Overview contains formulas; Travel OS cells must be literal values",
+                validate(path),
+            )
+
     def test_member_references_and_owner(self):
         members = self.rows["Members"]
         member_ids = {row[0] for row in members[2:] if row and row[0]}
