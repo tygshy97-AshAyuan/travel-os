@@ -10,7 +10,7 @@ A canonical workbook with the exact eight-sheet schema and no data rows is an un
 
 Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, status, home time zone and notes.
 
-Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. Draft trips may leave it blank.
+Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. A Draft has no Active Version until the Owner confirms the first plan.
 
 ## Preferences
 
@@ -64,6 +64,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Workbook cells contain literal values only; formulas are rejected because the archive does not need executable spreadsheet content.
 - Every filled row in the other seven sheets has its sheet-specific ID.
 - Active and Completed trips have a non-empty Active Version.
+- Draft trips have no Active Version, so recovery cannot mistake an unapproved plan for the current itinerary.
 - A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.

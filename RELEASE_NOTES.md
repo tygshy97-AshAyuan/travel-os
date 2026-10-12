@@ -1,7 +1,7 @@
-# Travel OS v0.4.20
+# Travel OS v0.4.21
 
-This release closes a spreadsheet-formula injection path in imported or pasted travel data.
+This release enforces the first-plan approval boundary.
 
-Travel OS archives now accept literal cell values only and reject workbook formulas. Import guidance also requires formula-like external text to remain text, preventing booking messages or pasted content from becoming executable spreadsheet formulas when a user opens the workbook.
+A trip in `Draft` status can no longer claim an Active Version. The Owner must confirm the first plan before it becomes the current itinerary, preventing recovery from treating an unapproved draft as established trip state.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 46 contract tests, including a malicious `WEBSERVICE` formula case.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 47 contract tests.
