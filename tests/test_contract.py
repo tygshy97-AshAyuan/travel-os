@@ -577,6 +577,25 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertIn("Bookings row 3 has an invalid checked time", errors)
         self.assertIn("Ready Daily Plan row 3 has an invalid checked time", errors)
 
+    def test_historical_ready_plan_keeps_fact_evidence(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior_plan = broken["Daily Plan"][2][:]
+        prior_plan[0] = "I-H1"
+        prior_plan[1] = "v0.0.9"
+        prior_plan[14] = ""
+        prior_plan[15] = ""
+        row_number = len(broken["Daily Plan"]) + 1
+        broken["Daily Plan"].append(prior_plan)
+        prior_history = broken["Change Log"][2][:]
+        prior_history[0] = "v0.0.9"
+        prior_history[5] = ""
+        broken["Change Log"].insert(2, prior_history)
+        broken["Change Log"][3][5] = "v0.0.9"
+        self.assertIn(
+            f"Ready Daily Plan row {row_number} needs source and checked time",
+            validate_rows(broken),
+        )
+
     def test_costs_require_non_negative_amounts_and_currencies(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         plan = broken["Daily Plan"][2]

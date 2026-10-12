@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.37 - 2026-10-12
+
+### Fixed
+
+- Required source evidence and a valid checked time for `Ready` Daily Plan rows in every version, including historical snapshots.
+- Added regression coverage for historical confirmed-fact evidence.
+
 ## v0.4.36 - 2026-10-12
 
 ### Fixed
