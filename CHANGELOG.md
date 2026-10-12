@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.28 - 2026-10-12
+
+### Fixed
+
+- Required every Change Log version to retain a corresponding Daily Plan snapshot.
+- Rejected incomplete history chains that could not recover an earlier itinerary version.
+
 ## v0.4.27 - 2026-10-12
 
 ### Fixed

@@ -293,6 +293,25 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_every_version_has_a_plan_snapshot(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        prior = broken["Change Log"][2][:]
+        prior[0] = "v0.0.9"
+        prior[5] = ""
+        broken["Change Log"].insert(2, prior)
+        current = broken["Change Log"][3]
+        current[3] = "批准 PR-001"
+        current[5] = "v0.0.9"
+        proposal = broken["Proposals"][2]
+        proposal[6] = "接受"
+        proposal[7] = "M-001"
+        proposal[8] = "负责人接受"
+        proposal[9] = "v0.1.0"
+        self.assertIn(
+            "Change Log versions have no Daily Plan snapshot: v0.0.9",
+            validate_rows(broken),
+        )
+
     def test_out_of_range_plan_date_is_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][2][2] = "2040-01-01T00:00:00.000Z"
