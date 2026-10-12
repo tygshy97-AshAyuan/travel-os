@@ -56,7 +56,7 @@ A proposal marked Accepted or Rejected must name the trip Owner as decision owne
 
 ## Change Log
 
-One row per version: version, valid created time, author, reason, summary, predecessor and archive hash when available. Version, created time, author, reason and summary are required. Successor creation times use consistent time-zone notation and never predate their predecessors. Never reuse or silently overwrite a version number.
+One row per version: version, valid created timestamp, author, reason, summary, predecessor and archive hash when available. Version, created timestamp, author, reason and summary are required. A timestamp includes both date and time; Excel date-time values are accepted. Successor creation times use consistent time-zone notation and never predate their predecessors. Never reuse or silently overwrite a version number.
 
 ## Required integrity checks
 
@@ -88,6 +88,6 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Travel Overview traveler count, owner and preference subjects reconcile with Members.
 - Change Log authors, Proposal submitters and Checklist assignees obey their member roles; Viewer remains read-only.
 - Preference rows include the decision-driving statement, evidence, confidence and a valid lifecycle instead of an unsupported or timeless profile label.
-- Confirmed facts include a source and checked time when time-sensitive, including facts retained in historical plan snapshots.
-- A booking marked `已确认` and a Daily Plan item marked `Ready` in any version both require Source and a valid Checked Time.
+- Confirmed facts include a source and checked timestamp when time-sensitive, including facts retained in historical plan snapshots.
+- A booking marked `已确认` and a Daily Plan item marked `Ready` in any version both require Source and a valid Checked Time containing date and time; Excel date-time values are accepted.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.
