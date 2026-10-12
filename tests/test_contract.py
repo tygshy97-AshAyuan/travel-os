@@ -180,11 +180,40 @@ class TravelOSContractTests(unittest.TestCase):
             copied["Daily Plan"].append(successor)
         history = copied["Change Log"][2][:]
         history[0] = "v0.1.1"
+        history[3] = "批准 PR-001"
         history[5] = "v0.1.0"
         copied["Change Log"].append(history)
         overview_header = copied["Travel Overview"][1]
         copied["Travel Overview"][2][overview_header.index("Active Version")] = "v0.1.1"
+        proposal = copied["Proposals"][2]
+        proposal[6] = "接受"
+        proposal[8] = "负责人接受"
+        proposal[9] = "v0.1.1"
         self.assertEqual([], validate_rows(copied))
+
+    def test_versions_require_owner_approval(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        for row in broken["Daily Plan"][2:4]:
+            successor = row[:]
+            successor[1] = "v0.1.1"
+            broken["Daily Plan"].append(successor)
+        history = broken["Change Log"][2][:]
+        history[0] = "v0.1.1"
+        history[5] = "v0.1.0"
+        broken["Change Log"].append(history)
+        overview_header = broken["Travel Overview"][1]
+        broken["Travel Overview"][2][overview_header.index("Active Version")] = "v0.1.1"
+        self.assertIn(
+            "Version v0.1.1 has no accepted Owner proposal",
+            validate_rows(broken),
+        )
+
+        broken["Members"][3][2] = "Editor"
+        broken["Change Log"][2][2] = "M-002"
+        self.assertIn(
+            "Root version must be authored by trip Owner M-001",
+            validate_rows(broken),
+        )
 
     def test_version_history_has_one_root_and_latest_active_version(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}

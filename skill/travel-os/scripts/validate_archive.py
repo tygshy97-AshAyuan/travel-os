@@ -496,6 +496,11 @@ def validate_rows(rows):
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}
     version_by_id = {row[0]: row for row in version_rows}
+    accepted_result_versions = {
+        row[9]
+        for row in rows["Proposals"][2:]
+        if len(row) > 9 and row[6] == "接受" and row[9]
+    }
     root_versions = [
         row[0] for row in version_rows if len(row) <= 5 or not row[5]
     ]
@@ -528,6 +533,12 @@ def validate_rows(rows):
         elif author and member_roles.get(author) not in {"Owner", "Editor"}:
             errors.append(
                 f"Change Log row {row_number} author {author} must be Owner or Editor"
+            )
+        if not index and author != owner:
+            errors.append(f"Root version must be authored by trip Owner {owner}")
+        if index and row[0] not in accepted_result_versions:
+            errors.append(
+                f"Version {row[0]} has no accepted Owner proposal"
             )
         predecessor = row[5] if len(row) > 5 else ""
         if index and predecessor != version_rows[index - 1][0]:

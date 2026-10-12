@@ -68,6 +68,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - A Completed trip is in the `旅行后` phase, every active plan item is `Done` or `Skipped`, and every checklist task is `已完成` or `已取消`.
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Change Log has one root and a linear predecessor chain; Active Version is the final version in that chain.
+- The Owner authors the root version, and every successor version is backed by an accepted Proposal resolved by the Owner.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Daily Plan rows contain the minimum executable fields, and successor versions never drop or regress Done or Skipped items.
 - Timed current items have valid ranges, explicit overnight intent and no same-time-zone overlaps.

@@ -4,6 +4,8 @@ Use `vMAJOR.MINOR.PATCH` labels. Increment PATCH for ordinary itinerary edits, M
 
 Version history is one linear chain with exactly one root. Every later Change Log row names the immediately preceding version, and an Active or Completed trip points to the last row in that chain.
 
+The trip Owner authors the root version when confirming the first plan. Every successor version is named by an accepted Proposal resolved by the Owner; an Editor may author the resulting Change Log row, but cannot supply final approval.
+
 Before a write, summarize the proposed change, affected items, dependencies, confirmed bookings, constraints and facts requiring verification.
 
 Apply an accepted change atomically:
