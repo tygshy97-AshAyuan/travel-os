@@ -7,6 +7,7 @@
 - Updated the five-minute onboarding path to the current release and added an automated guard against stale README release links.
 - Added redaction guidance to Feature requests and a direct private security-report link to the Issue chooser, with regression coverage for both public feedback forms.
 - Pinned the checkout Action in validation and release workflows to the verified v4 commit, with a test that rejects mutable Action references.
+- Added weekly Dependabot checks for pinned GitHub Actions, capped at two open update PRs.
 
 ## v0.4.39 - 2026-10-12
 

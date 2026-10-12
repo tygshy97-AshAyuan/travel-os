@@ -77,6 +77,12 @@ class TravelOSContractTests(unittest.TestCase):
             for ref in refs:
                 self.assertRegex(ref, r"\A[0-9a-f]{40}\Z", name)
 
+    def test_dependabot_monitors_github_actions_weekly(self):
+        config = (ROOT / ".github" / "dependabot.yml").read_text(encoding="utf-8")
+        self.assertIn('package-ecosystem: "github-actions"', config)
+        self.assertIn('directory: "/"', config)
+        self.assertIn('interval: "weekly"', config)
+
     def test_installed_skill_contains_canonical_template(self):
         self.assertEqual(
             XLSX.read_bytes(),
