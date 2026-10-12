@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.30 - 2026-10-12
+
+### Fixed
+
+- Required confirmed booking evidence to contain a valid checked timestamp.
+- Required Ready itinerary evidence to contain a valid checked timestamp.
+
 ## v0.4.29 - 2026-10-12
 
 ### Fixed
