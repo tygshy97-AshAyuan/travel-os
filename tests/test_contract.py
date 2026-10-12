@@ -47,6 +47,14 @@ class TravelOSContractTests(unittest.TestCase):
         for relative in [".github/workflows/release.yml", "README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "docs/client-validation.md", "docs/images/travel-overview.png", "docs/images/daily-plan.png", "skill/travel-os/SKILL.md", "skill/travel-os/agents/openai.yaml", "skill/travel-os/assets/travel-os.svg", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "skill/travel-os/references/weather-replanning.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
+    def test_readme_points_to_the_current_release(self):
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        notes = (ROOT / "RELEASE_NOTES.md").read_text(encoding="utf-8")
+        current = re.search(r"\A# Travel OS (v\d+\.\d+\.\d+)", notes).group(1)
+        linked = set(re.findall(r"/releases/tag/(v\d+\.\d+\.\d+)", readme))
+        self.assertEqual({current}, linked)
+        self.assertIn(f"Travel-OS-Skill-{current}.zip", readme)
+
     def test_installed_skill_contains_canonical_template(self):
         self.assertEqual(
             XLSX.read_bytes(),

@@ -47,7 +47,7 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 ## 5 分钟开始
 
-1. 打开 [Travel OS v0.4.33](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.33)，下载 `Travel-OS-Skill-v0.4.33.zip`。
+1. 打开 [Travel OS v0.4.39](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.39)，下载 `Travel-OS-Skill-v0.4.39.zip`。
 2. 将这个 ZIP 安装到支持 Agent Skill 的客户端；包根目录就是 `SKILL.md`，并已包含 Excel 模板。
 3. 复制 `assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。完整仓库包另有填写好的虚构示例。
 4. 上传表格，把下面这句话发给 AI：
