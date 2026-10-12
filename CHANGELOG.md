@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## v0.4.42 - 2026-10-12
+
+### Fixed
+
+- Returned repairable validation errors for shortened overview rows and damaged headers instead of crashing.
 
 ### Documentation
 
