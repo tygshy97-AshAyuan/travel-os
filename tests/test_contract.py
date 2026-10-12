@@ -173,6 +173,33 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_daily_plan_time_range_is_validated(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][2][3] = "11:00"
+        broken["Daily Plan"][2][4] = "10:00"
+        self.assertIn(
+            "Daily Plan row 3 ends before it starts without an overnight marker",
+            validate_rows(broken),
+        )
+
+    def test_daily_plan_overlap_is_detected(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        broken["Daily Plan"][3][3] = "10:30"
+        broken["Daily Plan"][3][4] = "11:30"
+        self.assertIn(
+            "Active Daily Plan items I-001 and I-002 overlap",
+            validate_rows(broken),
+        )
+
+    def test_overnight_daily_plan_is_allowed(self):
+        overnight = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        overnight["Daily Plan"][2][3] = "23:00"
+        overnight["Daily Plan"][2][4] = "01:00"
+        overnight["Daily Plan"][2][16] = "[overnight]"
+        self.assertFalse(
+            any("Daily Plan row 3 ends before" in error for error in validate_rows(overnight))
+        )
+
     def test_broken_version_and_checklist_links_are_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Change Log"][2][5] = "v9.9.9"

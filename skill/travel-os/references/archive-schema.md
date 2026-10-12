@@ -32,6 +32,8 @@ Item IDs remain stable when an item is copied into a new version. The unique key
 
 Every Daily Plan row requires its item ID, version, date, time zone, activity and execution status. When a new version succeeds another, items already marked Done or Skipped remain present with the same stable ID and execution status.
 
+When either local start or end is present, both are required and must use a valid Excel time or `HH:MM[:SS]`. End must follow start; add `[overnight]`, `跨夜` or `过夜` to Notes when the end falls on the next day. Executable items in the Active Version cannot overlap when they share a time zone.
+
 Execution status and notes may be updated in place because they record what happened rather than changing the plan. If reality changes any remaining itinerary item, use the version workflow.
 
 ## Checklist
@@ -64,6 +66,7 @@ One row per version: version, created time, author, reason, summary, predecessor
 - Active Version has Daily Plan rows and exactly one Change Log row.
 - Daily Plan rows use a unique Version plus Item ID pair, and every referenced version exists in Change Log.
 - Daily Plan rows contain the minimum executable fields, and successor versions never drop or regress Done or Skipped items.
+- Timed current items have valid ranges, explicit overnight intent and no same-time-zone overlaps.
 - Booking IDs referenced by current Daily Plan rows exist in `Bookings`.
 - Booking time ranges are valid, cancelled bookings do not support executable current items, and `Ready` items use confirmed or completed bookings.
 - Accepted decisions that changed the plan name the resulting version.

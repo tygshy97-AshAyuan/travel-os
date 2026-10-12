@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.4.15 - 2026-10-12
+
+### Fixed
+
+- Validated paired local start/end times on current itinerary rows.
+- Required an explicit overnight marker for cross-midnight activities.
+- Rejected overlapping executable activities in the same time zone.
+
 ## v0.4.14 - 2026-10-12
 
 ### Fixed
