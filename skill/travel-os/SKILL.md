@@ -5,7 +5,7 @@ description: Plan, execute and maintain a trip from a workbook or itinerary with
 
 # Travel OS
 
-Travel OS follows `Planning → Execution → Memory → Collaboration`. The travel archive is the durable source of truth; chat history is context only.
+Travel OS follows `Planning -> Execution -> Memory -> Collaboration`. The travel archive is the durable source of truth; chat history is context only.
 
 For a new trip, copy [assets/TravelOS-Template.xlsx](assets/TravelOS-Template.xlsx). One workbook represents one trip.
 

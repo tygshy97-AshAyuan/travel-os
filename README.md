@@ -1,7 +1,7 @@
 # Travel OS
 
 [![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
-[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.15)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.16)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **让 AI 不再每次从零规划旅行。**
@@ -47,7 +47,7 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 ## 5 分钟开始
 
-1. 打开 [Travel OS v0.4.15](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.15)，下载 `Travel-OS-Skill-v0.4.15.zip`。
+1. 打开 [Travel OS v0.4.16](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.16)，下载 `Travel-OS-Skill-v0.4.16.zip`。
 2. 将这个 ZIP 安装到支持 Agent Skill 的客户端；包根目录就是 `SKILL.md`，并已包含 Excel 模板。
 3. 复制 `assets/TravelOS-Template.xlsx`，填写旅行概况、偏好、已确认预订和同行成员。完整仓库包另有填写好的虚构示例。
 4. 上传表格，把下面这句话发给 AI：
@@ -97,13 +97,14 @@ Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清�
 - [`templates/TravelOS-Template.xlsx`](templates/TravelOS-Template.xlsx)：旅行档案模板
 - [`templates/TravelOS-Example.xlsx`](templates/TravelOS-Example.xlsx)：使用虚构数据填写的完整示例
 - [`docs/`](docs/)：用户指南、设计覆盖和反馈说明
+- [`docs/client-validation.md`](docs/client-validation.md)：真实客户端安装验证记录与剩余测试边界
 - [`tests/`](tests/)：Excel 与版本一致性的自动检查
 - [Issues](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)：问题反馈和功能建议
 - [Roadmap](ROADMAP.md)：当前、下一步和长期方向
 
 ## 当前状态
 
-这是 **Early Access** 版本。自动测试会检查 Skill 结构、8 张工作表、Active Version、预订引用、成员和凭据泄露等关键约束；不同 Agent 客户端对 Skill 的安装和文件写回方式仍可能不同。
+这是 **Early Access** 版本。Skill 已通过 Codex 的 GitHub 安装器和官方格式检查器；自动测试会检查 Skill 结构、8 张工作表、Active Version、预订引用、成员和凭据泄露等关键约束。不同 Agent 客户端的指令遵循和文件写回方式仍可能不同。
 
 如果你愿意试用，请从一个短途行程开始。遇到问题时使用 [Bug 报告模板](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)，只需说明你做了什么、预期结果和实际结果。产品设计覆盖与延期项见 [`docs/design-coverage.md`](docs/design-coverage.md)。
 

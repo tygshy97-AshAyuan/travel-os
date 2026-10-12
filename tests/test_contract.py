@@ -44,7 +44,7 @@ class TravelOSContractTests(unittest.TestCase):
         cls.rows = workbook_rows(EXAMPLE_XLSX)
 
     def test_required_files(self):
-        for relative in [".github/workflows/release.yml", "README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "docs/images/travel-overview.png", "docs/images/daily-plan.png", "skill/travel-os/SKILL.md", "skill/travel-os/agents/openai.yaml", "skill/travel-os/assets/travel-os.svg", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "skill/travel-os/references/weather-replanning.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
+        for relative in [".github/workflows/release.yml", "README.md", "ROADMAP.md", "CONTRIBUTING.md", "SECURITY.md", "docs/client-validation.md", "docs/images/travel-overview.png", "docs/images/daily-plan.png", "skill/travel-os/SKILL.md", "skill/travel-os/agents/openai.yaml", "skill/travel-os/assets/travel-os.svg", "skill/travel-os/assets/TravelOS-Template.xlsx", "skill/travel-os/scripts/validate_archive.py", "skill/travel-os/scripts/build_map_url.py", "skill/travel-os/references/archive-schema.md", "skill/travel-os/references/versioning.md", "skill/travel-os/references/operating-rules.md", "skill/travel-os/references/planning-rules.md", "skill/travel-os/references/import-rules.md", "skill/travel-os/references/weather-replanning.md", "templates/TravelOS-Template.xlsx", "templates/TravelOS-Example.xlsx"]:
             self.assertTrue((ROOT / relative).is_file(), relative)
 
     def test_installed_skill_contains_canonical_template(self):
@@ -86,6 +86,9 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertRegex(text, r"\A---\s+name: travel-os\s+description: .+?\s+---")
         for reference in re.findall(r"\]\((references/[^)]+)\)", text):
             self.assertTrue((ROOT / "skill/travel-os" / reference).is_file(), reference)
+
+    def test_skill_markdown_is_ascii_for_legacy_windows_validators(self):
+        (ROOT / "skill/travel-os/SKILL.md").read_bytes().decode("ascii")
 
     def test_skill_interface_metadata(self):
         metadata = (ROOT / "skill/travel-os/agents/openai.yaml").read_text(encoding="utf-8")
