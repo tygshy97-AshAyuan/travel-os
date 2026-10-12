@@ -56,7 +56,7 @@ A proposal marked Accepted or Rejected must name the trip Owner as decision owne
 
 ## Change Log
 
-One row per version: version, created time, author, reason, summary, predecessor and archive hash when available. Never reuse or silently overwrite a version number.
+One row per version: version, valid created time, author, reason, summary, predecessor and archive hash when available. Version, created time, author, reason and summary are required. Never reuse or silently overwrite a version number.
 
 ## Required integrity checks
 

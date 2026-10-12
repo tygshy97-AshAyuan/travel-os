@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.4.27 - 2026-10-12
+
+### Fixed
+
+- Required every Change Log row to retain its creation time, author, reason and change summary.
+- Rejected invalid Change Log creation times before archive recovery or mutation.
+
 ## v0.4.26 - 2026-10-12
 
 ### Fixed
