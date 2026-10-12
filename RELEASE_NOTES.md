@@ -1,7 +1,7 @@
-# Travel OS v0.4.29
+# Travel OS v0.4.30
 
-This release makes itinerary version labels predictable across sessions and clients.
+This release prevents invalid timestamps from masquerading as verified travel facts.
 
-Change Log versions must now use `vMAJOR.MINOR.PATCH`. A hyphenated timestamp suffix such as `v0.1.1-20300401T020000Z` remains supported for simple personal trips. Ambiguous labels such as `latest` or `final-final` are rejected before recovery.
+Confirmed bookings and Ready itinerary items must now pair their source with a valid checked timestamp. Values such as `unknown` or `not-a-time` no longer satisfy the evidence requirement used for recovery and stale-fact review.
 
-Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 56 contract tests.
+Both canonical workbooks and the prior end-to-end fictional workbook pass the stricter validator. The package passes 57 contract tests.

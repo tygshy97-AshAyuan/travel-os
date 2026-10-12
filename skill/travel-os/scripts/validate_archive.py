@@ -338,6 +338,10 @@ def validate_rows(rows):
                     errors.append(
                         f"Ready Daily Plan row {row_number} needs source and checked time"
                     )
+                elif not _datetime(row[15]):
+                    errors.append(
+                        f"Ready Daily Plan row {row_number} has an invalid checked time"
+                    )
 
         if start and end and start <= end:
             for row_number, row in enumerate(active_rows, start=3):
@@ -514,6 +518,8 @@ def validate_rows(rows):
                 errors.append(
                     f"Confirmed booking on row {row_number} needs source and checked time"
                 )
+            elif not _datetime(row[12]):
+                errors.append(f"Bookings row {row_number} has an invalid checked time")
 
     version_rows = [row for row in rows["Change Log"][2:] if row and row[0]]
     versions = {row[0] for row in version_rows}

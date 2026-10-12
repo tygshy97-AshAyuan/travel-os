@@ -87,5 +87,5 @@ One row per version: version, valid created time, author, reason, summary, prede
 - Change Log authors, Proposal submitters and Checklist assignees obey their member roles; Viewer remains read-only.
 - Preference rows include the decision-driving statement, evidence and confidence instead of an unsupported profile label.
 - Confirmed facts include a source and checked time when time-sensitive.
-- A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and Checked Time.
+- A booking marked `已确认` and a Daily Plan item marked `Ready` both require Source and a valid Checked Time.
 - Status, role, scope and priority values must use the dropdown vocabulary in the canonical template.
