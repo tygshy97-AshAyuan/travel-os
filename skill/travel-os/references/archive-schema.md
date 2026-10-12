@@ -8,7 +8,7 @@ A canonical workbook with the exact eight-sheet schema and no data rows is an un
 
 ## Travel Overview
 
-Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, phase, status, home time zone and notes. Every field except Active Version and notes is required; Draft leaves Active Version empty. Time zones use IANA names such as `Asia/Shanghai` or `America/New_York`.
+Exactly one trip data row: Trip ID, title, destination, start/end dates, travelers, owner, Active Version, phase, status, home time zone and notes. Every field except Active Version and notes is required; Draft leaves Active Version empty. Travelers is a positive whole number and must match the number of Members rows. Time zones use IANA names such as `Asia/Shanghai` or `America/New_York`.
 
 Active Version is required for Active or Completed trips. It must exist in both `Daily Plan` and `Change Log`. A Draft has no Active Version until the Owner confirms the first plan.
 
