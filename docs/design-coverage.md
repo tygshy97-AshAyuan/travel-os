@@ -8,7 +8,7 @@ This file maps the v0.1 product design to the GitHub implementation so maintenan
 | Excel-first Trip Master | Eight-sheet `TravelOS-Template.xlsx` with minimum operational fields | Workbook schema, completeness, relationship and dependency-cycle tests; visual review | Implemented |
 | Pre-trip planning | `planning-rules.md` and New trip workflow | Automated itinerary time-conflict tests; manual regression scenarios | Implemented in Skill |
 | In-trip calibration | Execute workflow, execution status, booking consistency and version rules | Automated archive, booking and execution-history integrity tests; manual behavior scenario | Implemented in Skill |
-| User profiling | `Preferences` with scope, evidence and confidence | Automated preference integrity tests | Implemented |
+| User profiling | `Preferences` with scope, evidence, confidence and validity dates | Automated preference integrity and lifecycle tests | Implemented |
 | Source hierarchy | Official, traveler experience and AI reasoning roles | Automated confirmed-fact source and timestamp checks; manual behavior scenario | Implemented in Skill |
 | Route, flight and hotel logic | `planning-rules.md` | Manual behavior scenario | Implemented in Skill |
 | Active Version recovery | Recovery protocol, Draft activation gate, stable version labels, complete snapshots, auditable linear `Change Log` and latest-version rule | Automated Active Version, label-format, snapshot-completeness, audit-field, version-chain and unapproved-Draft tests | Implemented |
