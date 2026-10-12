@@ -1,6 +1,6 @@
 # Versioning and collaboration
 
-Use `vMAJOR.MINOR.PATCH` labels. Increment PATCH for ordinary itinerary edits, MINOR for structural changes across several days, and MAJOR when the trip scope changes. For a simple personal trip, a timestamped suffix is acceptable if it remains unique.
+Use `vMAJOR.MINOR.PATCH` labels. Increment PATCH for ordinary itinerary edits, MINOR for structural changes across several days, and MAJOR when the trip scope changes. For a simple personal trip, a hyphenated timestamp suffix such as `v0.1.1-20300401T020000Z` is acceptable if it remains unique.
 
 Version history is one linear chain with exactly one root. Every Change Log version retains its complete Daily Plan snapshot, every later Change Log row names the immediately preceding version, and an Active or Completed trip points to the last row in that chain.
 
