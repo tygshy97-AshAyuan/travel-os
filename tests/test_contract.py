@@ -370,6 +370,34 @@ class TravelOSContractTests(unittest.TestCase):
             validate_rows(broken),
         )
 
+    def test_historical_plan_time_ranges_are_validated(self):
+        broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
+        invalid_time = broken["Daily Plan"][2][:]
+        invalid_time[0] = "I-H1"
+        invalid_time[1] = "v0.0.9"
+        invalid_time[3] = "25:00"
+        invalid_time[4] = "26:00"
+        missing_end = invalid_time[:]
+        missing_end[0] = "I-H2"
+        missing_end[3] = "10:00"
+        missing_end[4] = ""
+        first_row = len(broken["Daily Plan"]) + 1
+        broken["Daily Plan"].extend((invalid_time, missing_end))
+        prior_history = broken["Change Log"][2][:]
+        prior_history[0] = "v0.0.9"
+        prior_history[5] = ""
+        broken["Change Log"].insert(2, prior_history)
+        broken["Change Log"][3][5] = "v0.0.9"
+        errors = validate_rows(broken)
+        self.assertIn(
+            f"Daily Plan row {first_row} has an invalid time range",
+            errors,
+        )
+        self.assertIn(
+            f"Daily Plan row {first_row + 1} needs both start and end times",
+            errors,
+        )
+
     def test_daily_plan_overlap_is_detected(self):
         broken = {name: [row[:] for row in rows] for name, rows in self.rows.items()}
         broken["Daily Plan"][3][3] = "10:30"
