@@ -876,12 +876,24 @@ def validate_rows(rows):
                 errors.append(
                     f"Accepted proposal on row {row_number} has no valid result version"
                 )
-            elif proposal_id not in " ".join(
-                str(value or "") for value in version_by_id[result_version][3:5]
-            ):
-                errors.append(
-                    f"Accepted proposal {proposal_id} is not referenced by result version {result_version}"
-                )
+            else:
+                proposal_date = _date(row[2] if len(row) > 2 else "")
+                result_row = version_by_id[result_version]
+                result_created = _datetime(result_row[1] if len(result_row) > 1 else "")
+                if (
+                    proposal_date
+                    and result_created
+                    and result_created.date() < proposal_date
+                ):
+                    errors.append(
+                        f"Accepted proposal {proposal_id} postdates result version {result_version}"
+                    )
+                if proposal_id not in " ".join(
+                    str(value or "") for value in result_row[3:5]
+                ):
+                    errors.append(
+                        f"Accepted proposal {proposal_id} is not referenced by result version {result_version}"
+                    )
         elif len(row) > 9 and row[9]:
             errors.append(
                 f"Non-accepted proposal {proposal_id} must not name a result version"
