@@ -3,6 +3,9 @@ description: 描述需要解决的旅行协作问题
 title: "[Feature] "
 labels: [enhancement]
 body:
+  - type: markdown
+    attributes:
+      value: "请删除姓名、订单号、电话、证件、精确住宿地址和凭据，使用虚构数据描述需求。"
   - type: textarea
     id: problem
     attributes:

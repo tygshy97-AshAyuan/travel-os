@@ -55,6 +55,18 @@ class TravelOSContractTests(unittest.TestCase):
         self.assertEqual({current}, linked)
         self.assertIn(f"Travel-OS-Skill-{current}.zip", readme)
 
+    def test_public_feedback_forms_protect_private_trip_data(self):
+        for name in ("bug.yml", "feature.yml"):
+            form = (ROOT / ".github" / "ISSUE_TEMPLATE" / name).read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("请删除姓名", form, name)
+            self.assertIn("凭据", form, name)
+        config = (ROOT / ".github" / "ISSUE_TEMPLATE" / "config.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("security/advisories/new", config)
+
     def test_installed_skill_contains_canonical_template(self):
         self.assertEqual(
             XLSX.read_bytes(),
