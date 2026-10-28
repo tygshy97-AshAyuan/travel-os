@@ -2,7 +2,7 @@
 
 ## Understand the trip before recommending
 
-Capture purpose, traveler relationships, dates, entry and exit cities, confirmed transport, budget range, pace, comfort, mobility, food and attraction preferences. Ask only questions that can change the route. Treat MBTI or astrology as optional entertainment context, never as evidence about a person.
+Reuse purpose, traveler relationships, dates, entry and exit cities, confirmed transport, budget range, pace, comfort, mobility, food and attraction preferences when provided. These are planning dimensions, not a required opening questionnaire. Ask only questions that can change the next route decision; use the entry points in [user-journey.md](user-journey.md). Treat MBTI or astrology as optional entertainment context, never as evidence about a person.
 
 ## Research with distinct evidence roles
 
@@ -14,7 +14,7 @@ For time-sensitive facts, record URL or source name, checked time and fact state
 
 ## Build the route from large to small
 
-Choose country or region, entry city, exit city, route shape, city nights and intercity transport before daily attractions. Minimize unnecessary backtracking while respecting confirmed bookings and user priorities.
+For a multi-city trip, choose country or region, entry city, exit city, route shape, city nights and intercity transport before daily attractions. For a local day trip or a route within an already selected city, start with neighborhoods and experiences; do not require airport or intercity decisions. Minimize unnecessary backtracking while respecting confirmed bookings and user priorities.
 
 ## Evaluate attractions for this user
 
@@ -22,7 +22,7 @@ For each shortlisted place capture why it matters, historical context, core expe
 
 ## Transport and accommodation
 
-Choose entry and exit transport before hotel locations. Compare low-cost flights by baggage, seats, comfort, transfer time, airport distance and total cost, not fare alone. Choose accommodation in relation to the next day's route, airport or station access, parking, view and room experience; explain the travel-time consequence.
+When arrival or departure transport affects the requested route, account for it before recommending hotel locations. Do not block a local route or exploratory outline on unspecified flights or hotels. Compare low-cost flights by baggage, seats, comfort, transfer time, airport distance and total cost, not fare alone. Choose accommodation in relation to the next day's route, airport or station access, parking, view and room experience; explain the travel-time consequence.
 
 ## Produce an executable plan
 

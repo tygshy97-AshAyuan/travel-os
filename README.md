@@ -1,7 +1,7 @@
 # Travel OS
 
 [![Validate package](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml/badge.svg)](https://github.com/tygshy97-AshAyuan/travel-os/actions/workflows/validate.yml)
-[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.42)
+[![Latest release](https://img.shields.io/github/v/release/tygshy97-AshAyuan/travel-os?include_prereleases&label=release)](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.5.0)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **让 AI 不再每次从零规划旅行。**
@@ -47,15 +47,15 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 ## 5 分钟开始
 
-1. 打开 [Travel OS v0.4.42](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.4.42)，下载 `Travel-OS-Skill-v0.4.42.zip`。
+1. 打开 [Travel OS v0.5.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.5.0)，下载 `Travel-OS-Skill-v0.5.0.zip`。
 2. 将这个 ZIP 安装到支持 Agent Skill 的客户端；包根目录就是 `SKILL.md`，并已包含 Excel 模板。
-3. 复制 `assets/TravelOS-Template.xlsx` 并上传副本。空白模板不需要手工填表，直接把目的地、日期、同行人和已确定的订单用自然语言告诉 AI，例如：
+3. 直接告诉 AI 想怎么玩。有文件能力时，AI 会复制内置模板；日期未定也能先讨论路线，无需填表。例如：
 
 ```text
-这是一个空白 Travel OS 模板。帮我建立 5 月 1 日到 3 日的杭州双人旅行；我们从上海出发，不早于 9 点出门，酒店还没订。先问会改变路线的必要问题，再生成 Draft，不要替我确认预订。
+从上海去杭州玩三天，两个人，不想早起，日期还没定。先给我路线骨架，只问影响安排的问题。
 ```
 
-AI 应先识别模板的 `READY` 状态，收集必要信息并创建 Draft；你确认方案后，它才会激活首个版本。以后继续这趟旅行时，上传最新档案并发送：
+日期、同行信息和固定安排明确后，AI 创建 Draft；你确认方案后再保存、校验并激活首个版本。可以要求同时生成手机可读的 HTML。客户端无法自动访问模板时，上传 `assets/TravelOS-Template.xlsx` 的副本；没有文件执行能力时，仅提供未保存的文本方案。以后继续这趟旅行时，上传最新档案并发送：
 
 ```text
 恢复当前旅行状态。告诉我 Active Version、硬约束、已确认预订、未处理提案和下一步；先不要修改档案。
@@ -109,7 +109,11 @@ Excel 模板包含 8 张工作表：旅行概况、每日计划、预订、清�
 
 ## 当前状态
 
-这是 **Early Access** 版本。Skill 已通过 Codex 的 GitHub 安装器和官方格式检查器；自动测试会检查 Skill 结构、8 张工作表、Active Version、预订引用、成员和凭据泄露等关键约束。不同 Agent 客户端的指令遵循和文件写回方式仍可能不同。
+当前源码已加入首次体验与便携行程页：新旅行先讨论路线，在具备文件能力时由 AI 准备内置模板；确认保存后可生成无需账号的单文件 HTML，提供每日安排、下一段行动、地图查询、版本差异和浏览器打印入口。中国用户国内游与出境游优先，同时提供英文界面和入境中国的适配规则。见[新版上手流程](docs/五分钟上手.md)与[导出说明](skill/travel-os/references/export-view.md)。
+
+v0.5.0 安装包包含这些功能。自动检查及桌面/手机宽度的布局检查已完成，手机直接打开/打印、ChatGPT / Codex 完整对话使用仍需验收；具体证据见[便携页验收记录](docs/portable-view-validation.md)。开发者可运行 `python3 tests/build_view_examples.py` 生成四类虚构演示页，输出在本地 `artifacts/`，不包含真实旅行数据。
+
+这是 **Early Access** 版本。新包通过官方格式检查和隔离解压后的导出测试；历史版本另有 Codex GitHub 安装器验收记录。自动测试会检查 Skill 结构、8 张工作表、Active Version、预订引用、成员和凭据泄露等关键约束。不同 Agent 客户端的指令遵循和文件写回方式仍可能不同。
 
 如果你愿意试用，请从一个短途行程开始。遇到问题时使用 [Bug 报告模板](https://github.com/tygshy97-AshAyuan/travel-os/issues/new/choose)，只需说明你做了什么、预期结果和实际结果。产品设计覆盖与延期项见 [`docs/design-coverage.md`](docs/design-coverage.md)。
 

@@ -1,7 +1,13 @@
-# Travel OS v0.4.42
+# Travel OS v0.5.0
 
-This release makes damaged workbooks safer and easier to repair.
+把确认好的行程带在手机里：这一版新增无需账号的单文件行程页，按天查看下一站、复制地点、打开地图、查看改期前后，以及调用浏览器打印或保存 PDF。Excel 仍是完整档案，行程页是只读副本。
 
-Shortened Travel Overview rows now report each missing field, and changed or missing headers return a schema error. The command-line validator catches other malformed structures and returns a normal validation failure instead of exposing a traceback.
+新旅行先讨论路线，有文件能力时由 AI 准备模板；日期未定时不编造日期。优先支持中国用户国内游和出境游，同时提供中英文界面及外国人来华、海外旅行的适配规则。中国大陆目的地用高德查询入口，其他已指定地区用 Google Maps；语言不决定国籍或地图服务。
 
-The README quickstart also starts from a blank template and lets the AI initialize the workbook from a natural-language trip request. Both canonical workbooks remain unchanged and pass the validator. The package passes 74 contract tests.
+跨夜行程会标明“次日”，过零点后仍能显示当前安排；跨时区的下一站按实际时间排序。分享同行版需要明确选择项目，并剔除私人字段和关联住宿项目，分享前仍需检查内容。
+
+验证：89 项 Python 检查、12 项交互逻辑检查、官方 Skill 格式检查，以及隔离解压后模板校验和行程导出。中文和英文来华页面均检查了 1440、768、390px 布局。示例全部使用虚构数据；模板与八张表的档案格式保持兼容。
+
+这是 Early Access 预发布。手机直接打开 HTML、原生打印和各 ChatGPT / Codex 入口的完整对话行为仍需真机验收；不能将逻辑检查或布局截图视作这些兼容性已经通过。地图链接是地点查询，不保证实时交通、预订或准确的导航结果。没有新增账号、云端分享或遥测。
+
+下载 `Travel-OS-Skill-v0.5.0.zip` 获取可安装 Skill；`Travel-OS-v0.5.0.zip` 是完整源码。两份 ZIP 的校验值见 `Travel-OS-v0.5.0.sha256`。

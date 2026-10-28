@@ -64,4 +64,6 @@ This repeat confirms that the published v0.4.40 assets match the tagged source, 
 
 ## Remaining client evidence
 
+The 2026-10-27 source update adds portable HTML export and regional routing. Its automated/layout evidence and remaining ChatGPT / Codex / mobile checks are tracked separately in [portable-view-validation.md](portable-view-validation.md). Earlier installed-package evidence does not establish that this new source is installed or released.
+
 The original run proves one complete supported-client behavior path, and the v0.4.40 regression proves the latest package and workbook contract. Neither proves universal model compliance. Repeat the full model-behavior scenario after changes to `SKILL.md` workflow instructions or spreadsheet write tooling; repeat package and archive validation after schema or validator changes.

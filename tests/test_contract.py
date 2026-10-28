@@ -903,6 +903,8 @@ class TravelOSContractTests(unittest.TestCase):
     def test_no_common_credentials_or_redskill_scope(self):
         secret = re.compile(r"BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9]{20,}")
         for path in ROOT.rglob("*"):
+            if path.name == ".DS_Store":
+                continue
             if path.is_file() and ".git" not in path.parts and ".tmp" not in path.parts:
                 if path.suffix == ".xlsx":
                     with zipfile.ZipFile(path) as archive:

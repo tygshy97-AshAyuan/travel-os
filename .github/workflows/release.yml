@@ -21,6 +21,8 @@ jobs:
           grep -F "/tag/${GITHUB_REF_NAME}" README.md
       - name: Run contract tests
         run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - name: Run portable view interaction logic tests
+        run: node --test tests/test_trip_view.cjs
       - name: Build deterministic packages
         run: |
           source_archive="Travel-OS-${GITHUB_REF_NAME}.zip"
