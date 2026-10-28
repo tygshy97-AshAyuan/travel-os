@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.5.0 - 2026-10-28
+
+- Kept ongoing overnight activities visible after midnight, labeled next-day end times and ordered upcoming activities across time zones by actual time.
+- Preserved manually selected days during automatic refresh, and restored disclosure state after repeated print events.
+- Added a reproducible local preview builder and extracted-package validation/export checks.
+
+- Added a validated, dependency-free portable HTML exporter with local-time next actions, date filtering, map search/copy, browser printing and direct-predecessor itinerary comparison.
+- Added Chinese/English controls with destination-driven map selection and regional guidance for domestic, outbound, inbound-China and international journeys.
+- Added explicit item allowlists for companion exports, excluding private fields and lodging-linked items; content review is still required before sharing.
+- Updated first-run routing to prepare the bundled template when supported and preserve honest unsaved outlines when required facts or file tools are unavailable.
+- Added export and interaction-logic regression checks. Real phone/browser export and complete updated-client behavior remain pending; see the portable view validation record.
+
 ## v0.4.42 - 2026-10-12
 
 ### Fixed

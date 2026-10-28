@@ -8,6 +8,24 @@ from urllib.parse import urlencode
 TRAVEL_MODES = {"driving", "walking", "bicycling", "transit"}
 
 
+def build_place_url(location, city="", provider="google"):
+    """Keyword search, not a verified POI or a coordinate conversion.
+
+    Sources: developer.amap.com/api/uri-api/guide/search/search and
+    developers.google.com/maps/documentation/urls/get-started (2026-10-27).
+    """
+    if not location.strip():
+        raise ValueError("location is required")
+    if provider == "amap":
+        query = {"keyword": location.strip(), "city": city.strip(),
+                 "view": "list", "src": "TravelOS", "callnative": "0"}
+        return "https://uri.amap.com/search?" + urlencode(query)
+    if provider == "google":
+        query = {"api": "1", "query": " ".join(filter(None, [city.strip(), location.strip()]))}
+        return "https://www.google.com/maps/search/?" + urlencode(query)
+    raise ValueError("unsupported map provider")
+
+
 def build_directions_url(origin, destination, waypoints=(), travel_mode="driving"):
     if not origin.strip() or not destination.strip():
         raise ValueError("origin and destination are required")

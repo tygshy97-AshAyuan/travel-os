@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; base-uri 'none'; form-action 'none'">
+<title>{{TITLE}} · Travel OS</title>
+<style>{{CSS}}</style>
+</head>
+<body>
+<header class="masthead"><span>Travel OS</span><span>{{AUDIENCE}}</span></header>
+<main>
+  {{DEMO_NOTICE}}
+  <div class="trip-title"><h1>{{TITLE}}</h1><p>{{RANGE}}</p></div>
+  <div class="toolbar">
+    <div class="date-control"><label for="day-select">{{L_DATE}}</label><select id="day-select"><option value="all">{{L_ALL}}</option>{{DATE_OPTIONS}}</select></div>
+    <button id="today" type="button">{{L_TODAY}}</button><button id="print" type="button" class="primary">{{L_PRINT}}</button>
+  </div>
+  <noscript><p class="notice">{{L_NOJS}}</p></noscript>
+  <section id="next" class="next" hidden aria-labelledby="next-heading">
+    <div><h2 id="next-heading">{{L_NEXT}}</h2><p id="next-context" class="muted"></p></div>
+    <div class="next-detail"><p id="next-time" class="next-time"></p><h3 id="next-name"></h3><p id="next-place"></p><p id="next-state" class="muted"></p></div>
+  </section>
+  <div class="layout">
+    <div><h2 class="section-title">{{L_PLAN}}</h2><div id="days">{{DAYS}}</div></div>
+    <aside {{PRIVATE_HIDDEN}}><section class="side-section" {{TODO_HIDDEN}}><h2>{{L_TODOS}}</h2><ul>{{TODOS}}</ul></section><section class="side-section" {{PROPOSALS_HIDDEN}}><h2>{{L_PROPOSALS}}</h2><ul>{{PROPOSALS}}</ul></section></aside>
+  </div>
+  <section {{PRIVATE_HIDDEN}}><details class="changes" {{CHANGES_HIDDEN}}><summary>{{L_CHANGES}}</summary><p class="muted">{{L_BASELINE}} {{BASELINE}}</p>{{CHANGES}}</details></section>
+  <section class="return"><p>{{L_READONLY}}</p><button type="button" id="change-request">{{L_REQUEST}}</button></section>
+  <p id="feedback" role="status" aria-live="polite"></p><textarea id="copy-fallback" readonly hidden aria-label="Copy text"></textarea>
+  <footer><p class="offline-note">{{L_OFFLINE}}</p><p class="file-meta">{{L_VERSION}} {{VERSION}} / {{L_GENERATED}} {{GENERATED}}</p><details class="file-details"><summary>{{FILE_DETAILS}}</summary><p>{{WARNING}}</p></details></footer>
+</main>
+<script type="application/json" id="trip-data">{{DATA}}</script>
+<script>{{JS}}</script>
+</body>
+</html>
