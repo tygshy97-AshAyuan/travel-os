@@ -62,8 +62,24 @@ Environment: Codex desktop on Chinese Windows, using the standard `skill-install
 
 This repeat confirms that the published v0.4.40 assets match the tagged source, install without modification, and preserve the current workbook contract. It does not claim a new model-behavior run because the release did not change `SKILL.md` workflow instructions.
 
+## skills CLI isolated installation - 2026-11-05
+
+Environment: Linux, Node.js 24.22.1, Python 3.12.14 and `skills@1.7.6`. The public `main` and `v0.5.0` tag both resolved to `6890076c64045a2c43d8c2be520426eba3a4d671`. Each install used a new project directory, not a global agent directory. `DISABLE_TELEMETRY=1` and `DO_NOT_TRACK=1` were set for all CLI checks, so these tests do not establish public adoption or leaderboard activity.
+
+| Check | Evidence | Result |
+|---|---|---|
+| Repository discovery | `npx --yes skills@1.7.6 add tygshy97-AshAyuan/travel-os --list` | Found exactly `travel-os` |
+| Main installation | `npx --yes skills@1.7.6 add tygshy97-AshAyuan/travel-os --skill travel-os --agent codex --copy --yes` | Installed to the isolated project's `.agents/skills/travel-os` |
+| Release installation | Same installation command with source `tygshy97-AshAyuan/travel-os@v0.5.0` | Passed |
+| Installed content identity | All 19 tracked Skill files in both isolated installs matched the checked source byte for byte | Passed |
+| Installed template bootstrap | Installed `scripts/validate_archive.py` against installed `assets/TravelOS-Template.xlsx` | `READY` |
+| Installed HTML export | Installed `scripts/export_trip.py` against the fictional canonical example with `--locale en --region mainland-cn` | Exported a read-only HTML file |
+| Repository regression | Python unittest discovery, canonical example validation and `node --test tests/test_trip_view.cjs` | 89 Python tests, example validation and 12 JS tests passed |
+
+The CLI discovers `skill/travel-os/SKILL.md` through its recursive fallback; a directory rename is unnecessary. See the CLI's [discovery rules](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md) and [telemetry controls](https://github.com/vercel-labs/skills/blob/main/docs/troubleshooting.md#telemetry). These are package/discovery checks, not a new full model-behavior or mobile-device run.
+
 ## Remaining client evidence
 
-The 2026-10-27 source update adds portable HTML export and regional routing. Its automated/layout evidence and remaining ChatGPT / Codex / mobile checks are tracked separately in [portable-view-validation.md](portable-view-validation.md). Earlier installed-package evidence does not establish that this new source is installed or released.
+The 2026-10-27 source update added portable HTML export and regional routing, subsequently published in [v0.5.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.5.0). Its automated/layout evidence and remaining ChatGPT / Codex / mobile checks are tracked separately in [portable-view-validation.md](portable-view-validation.md). The isolated CLI checks above verify installation without changing an existing user's installed Skill.
 
-The original run proves one complete supported-client behavior path, and the v0.4.40 regression proves the latest package and workbook contract. Neither proves universal model compliance. Repeat the full model-behavior scenario after changes to `SKILL.md` workflow instructions or spreadsheet write tooling; repeat package and archive validation after schema or validator changes.
+The original run proves one complete supported-client behavior path; the later regressions prove the package and workbook checks listed for their specific versions. None proves universal model compliance. Repeat the full model-behavior scenario after changes to `SKILL.md` workflow instructions or spreadsheet write tooling; repeat package and archive validation after schema or validator changes.
