@@ -47,6 +47,20 @@ Travel OS 把这些信息放进一个可检查、可携带的 Excel 文件：
 
 ## 5 分钟开始
 
+### 通过 skills CLI 安装
+
+已安装 Node.js 22.20 或更新版本和 Git 的用户，可在希望使用 Skill 的项目目录中运行：
+
+```sh
+npx skills@1.7.6 add tygshy97-AshAyuan/travel-os@v0.5.0 --skill travel-os --agent codex
+```
+
+这是安装到当前项目的 Codex 示例；使用其他兼容 Agent 时，去掉 `--agent codex` 后按提示选择。需要跨项目使用时再加 `--global`。安装前可用 `npx skills@1.7.6 add tygshy97-AshAyuan/travel-os --list` 查看可发现的 Skill。
+
+安装会带上模板、规则和脚本。完整的 Excel 校验、保存和 HTML 导出还需要客户端提供文件读写与 Python 执行能力；安装成功不代表所有客户端的完整对话流程已验收。安装后从下面的旅行示例开始。具体测试范围见[客户端验收记录](docs/client-validation.md)。
+
+### 下载 ZIP 安装
+
 1. 打开 [Travel OS v0.5.0](https://github.com/tygshy97-AshAyuan/travel-os/releases/tag/v0.5.0)，下载 `Travel-OS-Skill-v0.5.0.zip`。
 2. 将这个 ZIP 安装到支持 Agent Skill 的客户端；包根目录就是 `SKILL.md`，并已包含 Excel 模板。
 3. 直接告诉 AI 想怎么玩。有文件能力时，AI 会复制内置模板；日期未定也能先讨论路线，无需填表。例如：
